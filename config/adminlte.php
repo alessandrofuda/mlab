@@ -220,4 +220,13 @@ return [
         'datatables' => true,
         'select2'    => true,
     ],
+
+    /* NOTA PER GRAFICI !!!
+    Also the ChartJS plugin is supported (https://www.chartjs.org/). If set to true, the necessary javascript CDN script tags will automatically be injected into the adminlte::page.blade file.
+
+    'plugins' => [
+        'datatables' => true,
+        'chartjs' => true,
+    ]
+    */
 ];
