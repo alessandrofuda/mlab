@@ -11,14 +11,26 @@
 |
 */
 
+//publics
 Route::get('/', function () {
     return view('welcome');
 });
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Auths
+Route::group(['middleware' => 'auth'], function() {
 
-Auth::routes();
+	// admin
+	Route::group(['prefix' => 'admin' , 'middleware' => 'admin'], function() {		
+		Route::get('/', function() {
+			return 'ok';
+		});  // to be copleted
+	});
 
-Route::get('/home', 'HomeController@index')->name('home');
+	// users
+	Route::get('/home', 'HomeController@index')->name('home');
+
+});
+
+
