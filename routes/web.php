@@ -11,21 +11,29 @@
 |
 */
 
-//publics
+
+// public pages
 Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+
+
 
 // Auths
+Auth::routes();
 Route::group(['middleware' => 'auth'], function() {
 
 	// admin
 	Route::group(['prefix' => 'admin' , 'middleware' => 'admin'], function() {		
-		Route::get('/', function() {
-			return 'ok';
-		});  // to be copleted
+		// Route::get('/', function() { return 'ok'; }); 
+		// Users CRUD operation
+		Route::get('users', 'AdminController@index');
+		Route::get('user/create', 'AdminController@create');
+		Route::post('user/store', 'AdminController@store');
+		Route::get('user/{user_id}/edit', 'AdminController@edit');
+		Route::post('user/{user_id}/update', 'AdminController@update');
+		Route::get('user/{user_id}/destroy', 'AdminController@destroy');
 	});
 
 	// users

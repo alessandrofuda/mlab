@@ -91,8 +91,30 @@
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
 
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                  <div class="pull-left image">
+                    <img src="{{ asset('img/default-img.jpg') }}" class="img-circle" alt="User Image">
+                  </div>
+                  <div class="pull-left info">
+                    <p>{{Auth::user()->name }} {!! Auth::user()->is_admin ? ' (<span style="color:#d33030;">Admin</span>)' : '' !!}</p>
+                    <!-- Status -->
+                    <!--a href="#"><i class="fa fa-circle text-success"></i> Online</a-->
+                  </div>
+                </div>
+
                 <!-- Sidebar Menu -->
                 <ul class="sidebar-menu" data-widget="tree">
+                    @if (Auth::user()->is_admin)
+                        <li class="header">ADMIN MENU</li>
+                        <li class=""> 
+                            <a href="{{ asset('admin/users') }}">
+                                <i class="fa fa-fw fa-users" style="color: #d33030;"></i>
+                                <span>Users Management</span>
+                            </a>
+                        </li>
+                    @endif
+
                     @each('adminlte::partials.menu-item', $adminlte->menu(), 'item')
                 </ul>
                 <!-- /.sidebar-menu -->
@@ -134,4 +156,12 @@
     <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
     @stack('js')
     @yield('js')
+
+    <!-- admin page script -->
+    <script>
+        $(document).ready(function() {
+            $('#userstable1').DataTable()
+        });
+    </script>
+
 @stop
