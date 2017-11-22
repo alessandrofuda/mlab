@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use App\User;
+
 
 class AdminController extends Controller
 {
@@ -58,7 +62,8 @@ class AdminController extends Controller
      */
     public function edit($id)
     {
-        //
+        //dd();
+        //return view();
     }
 
     /**
@@ -70,8 +75,39 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // dd($request);
+
+        // validation form
+        $rules = array(
+            'name'       => 'required',
+            'email'      => 'required|email',
+        );
+
+        $validator = Validator::make(Input::all(), $rules);
+
+        // process the login
+        if ($validator->fails()) {
+            dd('validazione fallita');
+            return Redirect::to('admin/users')
+                ->withErrors($validator)
+                ->withInput(Input::except('password'));
+        } else {
+            // store
+            $user = User::find($id);
+            dd($user);
+            $user->name       = Input::get('name');
+            $user->email      = Input::get('email');
+            // $user->password = Input::get('password');
+            $user->save();
+
+            // redirect
+            Session::flash('message', 'Utente aggiornato correttamente');
+            return Redirect::to('admin/users');
+        }
+
     }
+
+
 
     /**
      * Remove the specified resource from storage.
