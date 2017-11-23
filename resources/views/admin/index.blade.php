@@ -47,49 +47,6 @@
                         <a href="{{ asset('admin/user/'. $user->id . '/destroy') }}" class="col-md-4 btn btn-block btn-danger btn-xs" onclick="return confirm('Are you sure to delete?')"><i class="fa fa-fw fa-remove"></i> Delete</a>
 					</td>
 			    </tr>
-
-			    <!-- modal-->
-				<div id="edit-{{ $user->id }}" class="modal fade" role="dialog">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-						    	<button type="button" class="close" data-dismiss="modal">&times;</button>
-						    	<h3 class="modal-title">Modifica utente</h3>
-						    </div>
-						    <div class="modal-body">
-								<form role="form" id="form-{{ $user->id }}" method="post" action="{{ asset('admin/user/'. $user->id . '/update') }}">
-									{!! csrf_field() !!}
-									<div class="box-body">
-										<div class="col-md-6 form-group">
-											<label for="name">Nome</label>
-											<input type="text" name="name" class="form-control" value="{{ $user->name }}" placeholder="insert name">
-										</div>
-										<div class="col-md-6 form-group">
-											<label for="email">Email</label>
-											<input type="email" name="email" class="form-control" value="{{ $user->email }}" disabled>
-										</div>
-										<div class="clearfix"></div>
-										<div class="col-md-6 form-group">
-											<button id="reset-psw-{{$user->id}}" class="btn btn-block btn-danger">Reset Password / FARE</button>
-										</div>
-										<div class="col-md-6 form-group">
-											<span class=""><b><i>Amministratore ?</i></b></span>
-											<span class=""><input type="checkbox" name="admin" {{ $user->is_admin ? 'checked' : '' }}></span>
-										</div>
-										<div class="clearfix"></div>
-										<div class="col-md-6 form-group">	
-											<button type="submit" class="btn btn-primary">Submit</button>
-										</div>
-									</div>
-								</form>
-							</div><!--.modal-body-->
-							<div class="modal-footer">
-        						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      						</div>
-						</div><!--.modal-content-->
-					</div>
-				</div>
-
 		    @endforeach
 	    </tbody>
 	    <tfoot>
@@ -103,6 +60,53 @@
 			</tr>
 	    </tfoot>
 	  </table>
+
+
+	  	@foreach($users as $user)
+		<!-- modal-->
+		<div id="edit-{{ $user->id }}" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+				    	<button type="button" class="close" data-dismiss="modal">&times;</button>
+				    	<h3 class="modal-title">Modifica utente</h3>
+				    </div>
+				    <div class="modal-body">
+						<form role="form" id="form-{{ $user->id }}" method="post" action="{{ asset('admin/user/'. $user->id . '/update') }}">
+							{!! csrf_field() !!}
+							<div class="box-body">
+								<div class="col-md-6 form-group">
+									<label for="name">Nome</label>
+									<input type="text" name="name" class="form-control" value="{{ $user->name }}" placeholder="Insert name">
+								</div>
+								<div class="col-md-6 form-group">
+									<label for="email">Email</label>
+									<input type="email" name="email" class="form-control" value="{{ $user->email }}" disabled>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-md-6 form-group">
+									<button id="reset-psw-{{$user->id}}" class="btn btn-block btn-danger">Reset Password / FARE</button>
+								</div>
+								<div class="col-md-6 form-group">
+									<span class=""><b><i>Amministratore ?</i></b></span>
+									<span class=""><input type="checkbox" name="admin" value="true" {{ $user->is_admin ? 'checked' : '' }}></span>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-md-6 form-group">	
+									<button type="submit" class="btn btn-primary">Submit</button>
+								</div>
+							</div>
+						</form>
+					</div><!--.modal-body-->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						</div>
+				</div><!--.modal-content-->
+			</div>
+		</div>
+		@endforeach
+
+
 	</div>
 	<!-- /.box-body -->
 </div>

@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use App\User;
+use Session;
 
 
 class AdminController extends Controller
@@ -75,29 +75,24 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request);
-
         // validation form
         $rules = array(
-            'name'       => 'required',
-            'email'      => 'required|email',
+            'name' => 'required',
+            // 'email'      => 'required|email', // disabled input
         );
 
-        $validator = Validator::make(Input::all(), $rules);
+        $validator = Validator::make($request->all(), $rules);
 
-        // process the login
         if ($validator->fails()) {
-            dd('validazione fallita');
             return Redirect::to('admin/users')
                 ->withErrors($validator)
-                ->withInput(Input::except('password'));
+                ->withInput();
         } else {
             // store
             $user = User::find($id);
-            dd($user);
-            $user->name       = Input::get('name');
-            $user->email      = Input::get('email');
-            // $user->password = Input::get('password');
+            $user->name = $request->name;
+            $role = $request->admin == true ? 1 : 0;
+            $user->is_admin = $role;
             $user->save();
 
             // redirect
