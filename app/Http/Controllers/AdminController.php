@@ -27,9 +27,39 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create(Request $request)
+    {   
+        // validation form
+        $rules = array(
+            'name' => 'required',
+            'email'=> 'required|email',
+            'password' => 'required|confirmed',
+            'password_confirmation' => 'required'
+        );
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return Redirect::back()
+                ->withErrors($validator)
+                ->withInput();
+        } else {
+            // store
+            $role = $request->admin == true ? 1 : 0;
+
+            if( User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'is_admin' => $role
+            ]) ) {
+            
+                // redirect
+                return Redirect::to('admin/users')->with('success-message', 'L\'utente <b>'.$request->name.'</b> è stato creato correttamente');
+            } else {
+                return Redirect::back()->with('error-message', 'Si è verificato un problema con la creazione del nuovo utente');
+            }
+        }
     }
 
     /**
@@ -62,8 +92,7 @@ class AdminController extends Controller
      */
     public function edit($id)
     {
-        //dd();
-        //return view();
+        //
     }
 
     /**
@@ -84,7 +113,7 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-            return Redirect::to('admin/users')
+            return Redirect::back()
                 ->withErrors($validator)
                 ->withInput();
         } else {
@@ -96,8 +125,7 @@ class AdminController extends Controller
             $user->save();
 
             // redirect
-            Session::flash('message', 'Utente aggiornato correttamente');
-            return Redirect::to('admin/users');
+            return Redirect::to('admin/users')->with('success-message', 'Utente aggiornato correttamente');
         }
 
     }

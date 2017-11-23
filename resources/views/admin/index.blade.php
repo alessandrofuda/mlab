@@ -17,8 +17,10 @@
 	</div><!-- /.box-header -->
 
 	<div class="box-body">
-		<div class="text-right">	
-	  		<div class="btn btn-primary"><b>Crea nuovo utente /FARE</b></div>
+		<div class="text-right">
+	  		<button class="btn btn-primary" data-toggle="modal" data-target="#user-create" title="Create user">
+	  			<i class="fa fa-fw fa-plus"></i> Crea nuovo utente <i class="fa fa-fw fa-user"></i>
+	  		</button>
 	  	</div>
 	</div>
 
@@ -44,7 +46,7 @@
 					<td>{{ $user->created_at }}</td>
 					<td>
 						<button class="col-md-4 btn btn-block btn-warning btn-xs" data-toggle="modal" data-target="#edit-{{ $user->id }}" title="Edit user"><i class="fa fa-fw fa-edit"></i> Edit</button>
-                        <a href="{{ asset('admin/user/'. $user->id . '/destroy') }}" class="col-md-4 btn btn-block btn-danger btn-xs" onclick="return confirm('Are you sure to delete?')"><i class="fa fa-fw fa-remove"></i> Delete</a>
+                        <a href="{{ asset('admin/user/'. $user->id . '/destroy') }}" class="col-md-4 btn btn-block btn-danger btn-xs" onclick="return confirm('Are you sure to delete?')"><i class="fa fa-fw fa-remove"></i> Delete / FARE</a>
 					</td>
 			    </tr>
 		    @endforeach
@@ -63,7 +65,7 @@
 
 
 	  	@foreach($users as $user)
-		<!-- modal-->
+		<!-- modal - edit -->
 		<div id="edit-{{ $user->id }}" class="modal fade" role="dialog">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -77,7 +79,7 @@
 							<div class="box-body">
 								<div class="col-md-6 form-group">
 									<label for="name">Nome</label>
-									<input type="text" name="name" class="form-control" value="{{ $user->name }}" placeholder="Insert name">
+									<input type="text" name="name" class="form-control" value="{{ $user->name }}" placeholder="Insert name" required>
 								</div>
 								<div class="col-md-6 form-group">
 									<label for="email">Email</label>
@@ -106,9 +108,87 @@
 		</div>
 		@endforeach
 
+		<!-- modal- create -->
+		<div id="user-create" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+				    	<button type="button" class="close" data-dismiss="modal">&times;</button>
+				    	<h3 class="modal-title">Crea nuovo utente</h3>
+				    </div>
+				    <div class="modal-body">
+						<div class="register-box">
+					        <div class="register-box-body">
+					            <form action="{{ url('admin/user/create') }}" method="post">
+					                {!! csrf_field() !!}
 
-	</div>
-	<!-- /.box-body -->
+					                <div class="form-group has-feedback {{ $errors->has('name') ? 'has-error' : '' }}">
+					                    <input type="text" name="name" class="form-control" value="{{ old('name') }}"
+					                           placeholder="{{ trans('adminlte::adminlte.full_name') }} required">
+					                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+					                    @if ($errors->has('name'))
+					                        <span class="help-block">
+					                            <strong>{{ $errors->first('name') }}</strong>
+					                        </span>
+					                    @endif
+					                </div>
+					                <div class="form-group has-feedback {{ $errors->has('email') ? 'has-error' : '' }}">
+					                    <input type="email" name="email" class="form-control" value="{{ old('email') }}"
+					                           placeholder="{{ trans('adminlte::adminlte.email') }}">
+					                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+					                    @if ($errors->has('email'))
+					                        <span class="help-block">
+					                            <strong>{{ $errors->first('email') }}</strong>
+					                        </span>
+					                    @endif
+					                </div>
+					                <div class="form-group has-feedback {{ $errors->has('password') ? 'has-error' : '' }}">
+					                    <input type="password" name="password" class="form-control"
+					                           placeholder="{{ trans('adminlte::adminlte.password') }}">
+					                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+					                    @if ($errors->has('password'))
+					                        <span class="help-block">
+					                            <strong>{{ $errors->first('password') }}</strong>
+					                        </span>
+					                    @endif
+					                </div>
+					                <div class="form-group has-feedback {{ $errors->has('password_confirmation') ? 'has-error' : '' }}">
+					                    <input type="password" name="password_confirmation" class="form-control"
+					                           placeholder="{{ trans('adminlte::adminlte.retype_password') }}">
+					                    <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+					                    @if ($errors->has('password_confirmation'))
+					                        <span class="help-block">
+					                            <strong>{{ $errors->first('password_confirmation') }}</strong>
+					                        </span>
+					                    @endif
+					                </div>
+					                <div class="form-group">
+					                	<span>Iscrivi come <b><i>Amministratore</i></b></span>
+					                	<input type="checkbox" name="admin" value="true">
+					                </div>
+					                <button type="submit" class="btn btn-primary btn-block btn-flat">
+					                	{{ trans('adminlte::adminlte.register') }}
+					                </button>
+					            </form>					            
+					        </div>
+					        <!-- /.form-box -->
+					    </div><!-- /.register-box -->
+
+
+
+
+
+
+					</div><!--.modal-body-->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						</div>
+				</div><!--.modal-content-->
+			</div>
+		</div>
+
+
+	</div><!-- /.box-body -->
 </div>
 <!-- /.box -->
 

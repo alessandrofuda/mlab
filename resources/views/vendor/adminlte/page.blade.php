@@ -132,6 +132,37 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 @yield('content_header')
+
+                <!-- alert section -->
+                @if (Session::has('success-message'))
+                    <div class="alert alert-success alert-dismissible fade in">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <h4><i class="icon fa fa-check"></i> {!! Session::get('success-message') !!}</h4>
+                    </div>
+                @elseif (Session::has('error-message'))
+                    <div class="alert alert-danger alert-dismissible fade in">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <h4><i class="icon fa fa-ban"></i> Errore</h4>
+                        {!! Session::get('error-message') !!}
+                    </div>
+                @elseif (Session::has('message'))
+                    <div class="alert alert-info alert-dismissible fade in">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <h4><i class="icon fa fa-info"></i> {!! Session::get('message') !!}</h4>
+                    </div>
+                @elseif ($errors->any())  {{-- for forms validation errors --}}
+                    <div class="alert alert-danger alert-dismissible fade in">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <h4><i class="icon fa fa-ban"></i> Error</h4>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <!-- stop alert section -->
+
             </section>
 
             <!-- Main content -->
