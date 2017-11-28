@@ -89,10 +89,8 @@
 								</div>
 								<div class="clearfix"></div>
 								<div class="col-md-6 form-group">
-									<button id="reset-psw-{{$user->id}}" class="btn btn-block btn-danger">Reset Password / FARE</button>
-									{{-- sistemare --}}
-									<input type="text" name="password" placeholder="Nuova password">
-									<input type="text" name="password_confirmation" placeholder="Reimmetti password">
+									<div id="reset-psw-{{$user->id}}" class="btn btn-block btn-danger">Reset Password</div>
+									<div class="form-group rst-psw"></div>
 								</div>
 								<div class="col-md-6 form-group">
 									<span class=""><b><i>Amministratore ?</i></b></span>

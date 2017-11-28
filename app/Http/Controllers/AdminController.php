@@ -109,12 +109,11 @@ class AdminController extends Controller
         // validation form
         $rules = array(
             'name' => 'required',
-            // 'password' => 'required|string|min:6|confirmed', // metterlo condizionale
         );
 
-        //if (isset($request->password)) { // sistemare
-        //    $rules = array_push($rules, 'password' => 'required|string|min:6|confirmed');
-        //}
+        if (isset($request->password)) { // sistemare
+            $rules = array_merge($rules, ['password' => 'required|string|min:6|confirmed']);
+        }
 
         $validator = Validator::make($request->all(), $rules);
 
@@ -131,9 +130,11 @@ class AdminController extends Controller
             $user->name = $request->name;
             $user->is_admin = $role;
             $user->is_actuator = $actuator;
-            // if (isset($request->password)) {??
-            //   $user->password = bcrypt($request->password);
-            // }
+            
+            if (isset($request->password)) {
+               $user->password = bcrypt($request->password);
+            }
+            
             $user->save();
 
             // redirect

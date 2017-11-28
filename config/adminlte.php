@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => env('APP_LOGO', 'Logo'),
 
     'logo_mini' => '<b>A</b>LT',
 

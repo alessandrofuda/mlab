@@ -15,7 +15,19 @@ $(document).ready(function() {
 	});
 
 	// admin page - reset psw form
-	// ...
-
+	var inpt1 = "<input type='text' name='password' placeholder='Nuova password'>",
+		inpt2 = "<input type='text' name='password_confirmation' placeholder='Reimmetti password'>";	
+	function isEmpty(el){
+      return !$.trim(el.html())
+  	}	
+	$("div[id^='reset-psw-']").click(function(){
+		if(!isEmpty($(this).next())) {	
+			$(".rst-psw>input[name='password']").remove();
+			$(".rst-psw>input[name='password_confirmation']").remove();
+		} else {
+			$(this).next().html(inpt1+inpt2); 
+		}
+	});
+	
 
 });
