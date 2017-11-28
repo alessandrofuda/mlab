@@ -46,12 +46,14 @@ class AdminController extends Controller
         } else {
             // store
             $role = $request->admin == true ? 1 : 0;
+            $actuator = $request->actuator == true ? 1 : 0;
 
             if( User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
-                'is_admin' => $role
+                'is_admin' => $role,
+                'is_actuator' => $actuator
             ]) ) {
             
                 // redirect
@@ -107,8 +109,12 @@ class AdminController extends Controller
         // validation form
         $rules = array(
             'name' => 'required',
-            // 'email'      => 'required|email', // disabled input
+            // 'password' => 'required|string|min:6|confirmed', // metterlo condizionale
         );
+
+        //if (isset($request->password)) { // sistemare
+        //    $rules = array_push($rules, 'password' => 'required|string|min:6|confirmed');
+        //}
 
         $validator = Validator::make($request->all(), $rules);
 
@@ -118,10 +124,16 @@ class AdminController extends Controller
                 ->withInput();
         } else {
             // store
+            $role = $request->admin == true ? 1 : 0;
+            $actuator = $request->actuator == true ? 1 : 0;
+
             $user = User::find($id);
             $user->name = $request->name;
-            $role = $request->admin == true ? 1 : 0;
             $user->is_admin = $role;
+            $user->is_actuator = $actuator;
+            // if (isset($request->password)) {??
+            //   $user->password = bcrypt($request->password);
+            // }
             $user->save();
 
             // redirect
@@ -141,5 +153,37 @@ class AdminController extends Controller
     public function destroy($id)
     {
         //
+        $user = User::find($id);
+        $user->delete();
+
+        return Redirect::to('admin/users')->with('success-message', 'Utente cancellato correttamente');
     }
+
+    /**
+    * reimposta password utente lato admin
+    */
+    public function reset_psw(Request $request, $id) //     SISTEMARE INTEGRARE CON L'UPDATE FUNC
+    {
+        // validation form
+        $rules = array(
+            'password' => 'required|string|min:6|confirmed',
+        );
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return Redirect::back()
+                ->withErrors($validator)
+                ->withInput();
+        } else {
+            // store new psw
+            $user = User::find($id);
+            $user->password = $request->password; // bcrypt()            
+            $user->save();
+
+            // redirect
+            return Redirect::to('admin/users')->with('success-message', 'Password modificata correttamente');
+        }
+    }
+
 }

@@ -34,6 +34,7 @@ Route::group(['middleware' => 'auth'], function() {
 		Route::get('user/{user_id}/edit', 'AdminController@edit');
 		Route::post('user/{user_id}/update', 'AdminController@update');
 		Route::get('user/{user_id}/destroy', 'AdminController@destroy');
+		// Route::post('user/{user_id}/reset-psw', 'AdminController@reset_psw');
 	});
 
 	// users

@@ -37,7 +37,7 @@
     <![endif]-->
 
     <!-- Google Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <body class="hold-transition @yield('body_class')">
 
@@ -59,6 +59,9 @@
 @endif
 
 @yield('adminlte_js')
+
+<!-- custom scripts -->
+<script src="{{ asset('js/custom-scripts.js') }}"></script>
 
 </body>
 </html>

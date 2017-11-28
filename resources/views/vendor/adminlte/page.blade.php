@@ -188,11 +188,4 @@
     @stack('js')
     @yield('js')
 
-    <!-- admin page script -->
-    <script>
-        $(document).ready(function() {
-            $('#userstable1').DataTable()
-        });
-    </script>
-
 @stop

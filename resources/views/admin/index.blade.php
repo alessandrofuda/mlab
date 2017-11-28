@@ -32,6 +32,7 @@
 				<th>Nome</th>
 				<th>Email</th>
 				<th>Ruolo</th>
+				<th>Actuator</th>
 				<th>Data creazione</th>
 				<th>Azione</th>
 		    </tr>
@@ -43,10 +44,11 @@
 					<td>{{ $user->name }}</td>
 					<td>{{ $user->email }}</td>
 					<td>{{ $user->is_admin ? 'Admin' : 'User' }}</td>
+					<td>{{ $user->is_actuator ? 'Yes' : 'No'}}</td>
 					<td>{{ $user->created_at }}</td>
 					<td>
 						<button class="col-md-4 btn btn-block btn-warning btn-xs" data-toggle="modal" data-target="#edit-{{ $user->id }}" title="Edit user"><i class="fa fa-fw fa-edit"></i> Edit</button>
-                        <a href="{{ asset('admin/user/'. $user->id . '/destroy') }}" class="col-md-4 btn btn-block btn-danger btn-xs" onclick="return confirm('Are you sure to delete?')"><i class="fa fa-fw fa-remove"></i> Delete / FARE</a>
+                        <a class="col-md-4 btn btn-block btn-danger btn-xs" href="{{ asset('admin/user/'. $user->id . '/destroy') }}" onclick="return confirm('Are you sure to delete?')"><i class="fa fa-fw fa-remove"></i> Delete</a>
 					</td>
 			    </tr>
 		    @endforeach
@@ -88,10 +90,17 @@
 								<div class="clearfix"></div>
 								<div class="col-md-6 form-group">
 									<button id="reset-psw-{{$user->id}}" class="btn btn-block btn-danger">Reset Password / FARE</button>
+									{{-- sistemare --}}
+									<input type="text" name="password" placeholder="Nuova password">
+									<input type="text" name="password_confirmation" placeholder="Reimmetti password">
 								</div>
 								<div class="col-md-6 form-group">
 									<span class=""><b><i>Amministratore ?</i></b></span>
 									<span class=""><input type="checkbox" name="admin" value="true" {{ $user->is_admin ? 'checked' : '' }}></span>
+								</div>
+								<div class="col-md-6 form-group">
+									<span class=""><b><i>Abilitato all'uso degli attuatori?</i></b></span>
+									<span class=""><input type="checkbox" name="actuator" value="true" {{ $user->is_actuator ? 'checked' : '' }}></span>
 								</div>
 								<div class="clearfix"></div>
 								<div class="col-md-6 form-group">	
@@ -102,10 +111,10 @@
 					</div><!--.modal-body-->
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						</div>
+					</div>
 				</div><!--.modal-content-->
 			</div>
-		</div>
+		</div><!--/modal-->
 		@endforeach
 
 		<!-- modal- create -->
@@ -165,6 +174,10 @@
 					                <div class="form-group">
 					                	<span>Iscrivi come <b><i>Amministratore</i></b></span>
 					                	<input type="checkbox" name="admin" value="true">
+					                </div>
+					                <div class="form-group">
+					                	<span>Abilita all'uso degli attuatori</span>
+					                	<input type="checkbox" name="actuator" value="true">
 					                </div>
 					                <button type="submit" class="btn btn-primary btn-block btn-flat">
 					                	{{ trans('adminlte::adminlte.register') }}
