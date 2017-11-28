@@ -85,7 +85,7 @@
 								</div>
 								<div class="col-md-6 form-group">
 									<label for="email">Email</label>
-									<input type="email" name="email" class="form-control" value="{{ $user->email }}" disabled>
+									<input type="email" name="email" class="form-control" value="{{ $user->email }}">
 								</div>
 								<div class="clearfix"></div>
 								<div class="col-md-6 form-group">

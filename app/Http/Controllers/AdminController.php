@@ -108,10 +108,11 @@ class AdminController extends Controller
     {
         // validation form
         $rules = array(
-            'name' => 'required',
+            'name' => 'string|required',
+            'email' => 'email|required'
         );
 
-        if (isset($request->password)) { // sistemare
+        if (isset($request->password)) { 
             $rules = array_merge($rules, ['password' => 'required|string|min:6|confirmed']);
         }
 
@@ -128,6 +129,7 @@ class AdminController extends Controller
 
             $user = User::find($id);
             $user->name = $request->name;
+            $user->email = $request->email;
             $user->is_admin = $role;
             $user->is_actuator = $actuator;
             

@@ -36,4 +36,20 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+
+
+
+    /**
+     *  switch from 'email' to 'name' for Auth credentials 
+     *  this function overwrite itself into AuthenticatesUsers class
+     *
+     */
+    public function username()
+    {
+        return 'name';
+    }
+
+
+
 }
