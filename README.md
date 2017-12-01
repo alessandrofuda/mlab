@@ -1,1 +1,1 @@
-Energy Monitoring System - Private dashboard
+iMago 2.0 - Monitoring System
