@@ -18,4 +18,10 @@
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+	# custom config catcher
+	RewriteRule ^action/(.*)$ app/catcher.php?action=$1 [QSA]
+	
+	Options -Indexes
+
 </IfModule>
