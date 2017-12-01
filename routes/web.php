@@ -12,6 +12,12 @@
 */
 
 
+// redirect catcher
+// Route::get('action/{param}', function ($param){
+//	return ??tinker.php??;
+// });
+
+
 // public pages
 Route::get('/', function () {
     return view('welcome');
