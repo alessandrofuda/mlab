@@ -1,1 +1,2 @@
-@extends('adminlte::register')
+Auto-registrazione utente disabilitata
+{{-- @extends('adminlte::register') --}}
