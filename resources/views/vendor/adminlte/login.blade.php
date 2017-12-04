@@ -31,7 +31,7 @@
                 </div-->
                 <div class="form-group has-feedback {{ $errors->has('name') ? 'has-error' : '' }}">
                     <input type="text" name="name" class="form-control" value="{{ old('name') }}"
-                           placeholder="Name  (SISTEMARE..)">
+                           placeholder="Username">
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     @if ($errors->has('name'))
                         <span class="help-block">
