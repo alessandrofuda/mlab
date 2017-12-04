@@ -10,7 +10,16 @@ use Session;
 
 
 class AdminController extends Controller
-{
+{   
+
+    
+    public function dashboard()
+    {
+        return 'Admin Dashboard';
+    }
+
+
+
     /**
      * Display a listing of the resource.
      *

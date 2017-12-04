@@ -113,6 +113,12 @@
                                 <span>Users Management</span>
                             </a>
                         </li>
+                        <li class=""> 
+                            <a href="{{ asset('admin/mydashboard') }}">
+                                <i class="fa fa-fw fa-tachometer" style="color: #d33030;"></i>
+                                <span>My AdminDashboard</span>
+                            </a>
+                        </li>
                     @endif
 
                     @each('adminlte::partials.menu-item', $adminlte->menu(), 'item')

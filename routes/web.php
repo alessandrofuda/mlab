@@ -33,6 +33,8 @@ Route::group(['middleware' => 'auth'], function() {
 	// admin
 	Route::group(['prefix' => 'admin' , 'middleware' => 'admin'], function() {		
 		// Route::get('/', function() { return 'ok'; }); 
+		// admin dashboard
+		Route::get('home', 'AdminController@dashboard');
 		// Users CRUD operation
 		Route::get('users', 'AdminController@index');
 		Route::post('user/create', 'AdminController@create');
@@ -41,10 +43,15 @@ Route::group(['middleware' => 'auth'], function() {
 		Route::post('user/{user_id}/update', 'AdminController@update');
 		Route::get('user/{user_id}/destroy', 'AdminController@destroy');
 		// Route::post('user/{user_id}/reset-psw', 'AdminController@reset_psw');
+		// Route::get('mydashboard', 'AdminDashboardController@mydashboard');
 	});
+
+
 
 	// users
 	Route::get('/home', 'HomeController@index')->name('home');
+
+
 
 });
 
