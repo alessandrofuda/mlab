@@ -1,9 +1,9 @@
 @extends('adminlte::page')   {{-- from: .. /resources/views/vendor/adminlte/page.blade.php    --}}
 
-@section('title', 'AdminLTE')
+@section('title', config('adminlte.title', 'AdminLTE'))
 
 @section('content_header')
-    <h1>Dashboard</h1>
+    <h1>{{ $title }}</h1>
 @stop
 
 @section('content')

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 2',
+    'title' => env('APP_TITLE', 'AdminLTE 2'),
 
     'title_prefix' => '',
 
@@ -32,7 +32,7 @@ return [
 
     'logo' => env('APP_LOGO', 'Logo'),
 
-    'logo_mini' => '<b>A</b>LT',
+    'logo_mini' => env('APP_LOGO_MINI', '<b>A</b>LT'),
 
     /*
     |--------------------------------------------------------------------------
@@ -87,6 +87,8 @@ return [
 
     'dashboard_url' => 'home',
 
+    'admin_dashboard_url' => 'admin/home',
+
     'logout_url' => 'logout',
 
     'logout_method' => null,
@@ -107,30 +109,66 @@ return [
     |
     */
     'menu' => [
-        'MAIN NAVIGATION',
+         
         [
-            'text' => 'Blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
+            'header' => 'ADMIN MENU',
+            'can' => 'manage-app',   // only Admin
         ],
+        [
+            'text' => 'My AdminDashboard',
+            'url'  => 'admin/home',
+            'icon' => 'tachometer',
+            'can'  => 'manage-app',
+        ],
+        [
+            'text' => 'Users Management',
+            'url'  => 'admin/users',
+            'icon' => 'users',
+            'can'  => 'manage-app',
+        ],
+        [
+            'text' => 'Dashboards Customization',
+            'url'  => 'admin/dashboards-customization',
+            'icon' => 'wpforms',
+            'can'  => 'manage-app',
+        ],
+        [
+            'text' => 'Export Data',
+            'url'  => 'admin/exports',
+            'icon' => 'download',
+            'can'  => 'manage-app',
+        ],
+        [
+            'header' => 'USER MENU',
+            'can' => 'not-manage-app',
+        ],
+        [
+            'text' => 'My Dashboard',
+            'url' => 'home',
+            'icon' => 'tachometer',
+            'can' => 'not-manage-app',
+        ],
+        /*
         [
             'text'        => 'Pages',
             'url'         => 'admin/pages',
             'icon'        => 'file',
             'label'       => 4,
             'label_color' => 'success',
-        ],
+        ], 
+        */
         'ACCOUNT SETTINGS',
         [
-            'text' => 'Profile',
-            'url'  => 'admin/settings',
+            'text' => 'My Profile',
+            'url'  => '/my-profile',
             'icon' => 'user',
         ],
         [
             'text' => 'Change Password',
-            'url'  => 'admin/settings',
+            'url'  => '/change-my-psw',
             'icon' => 'lock',
         ],
+        /*
         [
             'text'    => 'Multilevel',
             'icon'    => 'share',
@@ -169,6 +207,7 @@ return [
                 ],
             ],
         ],
+        */
         'LABELS',
         [
             'text'       => 'Important',

@@ -3,7 +3,7 @@
 @section('title', 'AdminLTE')
 
 @section('content_header')
-    <h1>Gestione utenti</h1>
+    <h1>Users Management</h1>
 @stop
 
 @section('content')
@@ -13,7 +13,7 @@
 
 <div class="box">
 	<div class="box-header">
-		<h3 class="box-title">Lista utenti iscritti alla piattaforma</h3>
+		<h3 class="box-title">Users List</h3>
 	</div><!-- /.box-header -->
 
 	<div class="box-body">

@@ -12,10 +12,24 @@ use Session;
 class AdminController extends Controller
 {   
 
-    
-    public function dashboard()
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
     {
-        return 'Admin Dashboard';
+        $this->middleware('admin'); 
+    }
+
+    /**
+    * 
+    */
+    public function dashboard()
+    {   
+        $title = 'My Admin Dashboard';
+
+        return view('home', compact('title')); 
     }
 
 
@@ -196,6 +210,32 @@ class AdminController extends Controller
             // redirect
             return Redirect::to('admin/users')->with('success-message', 'Password modificata correttamente');
         }
+    }
+
+
+    /**
+    *   Dashboard Customization
+    *
+    *
+    */
+    public function dashboards_customization()
+    {
+        $title = 'Dashboards customization';
+
+        return view('home', compact('title'));
+    }
+
+
+    /**
+    *   Export Data section
+    *
+    *
+    */
+    public function exports()
+    {
+        $title = 'Exports Data';
+
+        return view('home', compact('title'));
     }
 
 }

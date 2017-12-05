@@ -39,7 +39,7 @@
                     <!-- /.navbar-collapse -->
             @else
             <!-- Logo -->
-            <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="logo">
+            <a href="{{ Auth::user()->is_admin ? url(config('adminlte.admin_dashboard_url', 'home')) : url(config('adminlte.dashboard_url', 'home')) }}" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-mini">{!! config('adminlte.logo_mini', '<b>A</b>LT') !!}</span>
                 <!-- logo for regular state and mobile devices -->
@@ -105,22 +105,6 @@
 
                 <!-- Sidebar Menu -->
                 <ul class="sidebar-menu" data-widget="tree">
-                    @if (Auth::user()->is_admin)
-                        <li class="header">ADMIN MENU</li>
-                        <li class=""> 
-                            <a href="{{ asset('admin/users') }}">
-                                <i class="fa fa-fw fa-users" style="color: #d33030;"></i>
-                                <span>Users Management</span>
-                            </a>
-                        </li>
-                        <li class=""> 
-                            <a href="{{ asset('admin/mydashboard') }}">
-                                <i class="fa fa-fw fa-tachometer" style="color: #d33030;"></i>
-                                <span>My AdminDashboard</span>
-                            </a>
-                        </li>
-                    @endif
-
                     @each('adminlte::partials.menu-item', $adminlte->menu(), 'item')
                 </ul>
                 <!-- /.sidebar-menu -->

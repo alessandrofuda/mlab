@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -25,6 +26,15 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        // definiti gate 'manage-app' e 'not-manage-app' per adminlte menu configuration (item menu diversi per Admin e Users)
+        Gate::define('manage-app', function ($user) {
+
+            return Auth::user()->is_admin;  // true/false
+        });
+        Gate::define('not-manage-app', function ($user) {
+
+            return !Auth::user()->is_admin;  // true/false
+        });
+
     }
 }

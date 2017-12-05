@@ -31,8 +31,7 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function() {
 
 	// admin
-	Route::group(['prefix' => 'admin' , 'middleware' => 'admin'], function() {		
-		// Route::get('/', function() { return 'ok'; }); 
+	Route::group(['prefix' => 'admin' , 'middleware' => 'admin'], function() {		 
 		// admin dashboard
 		Route::get('home', 'AdminController@dashboard');
 		// Users CRUD operation
@@ -43,13 +42,18 @@ Route::group(['middleware' => 'auth'], function() {
 		Route::post('user/{user_id}/update', 'AdminController@update');
 		Route::get('user/{user_id}/destroy', 'AdminController@destroy');
 		// Route::post('user/{user_id}/reset-psw', 'AdminController@reset_psw');
-		// Route::get('mydashboard', 'AdminDashboardController@mydashboard');
+		// dashboard customization
+		Route::get('dashboards-customization', 'AdminController@dashboards_customization');
+		// export data
+		Route::get('exports', 'AdminController@exports');
 	});
 
 
 
 	// users
 	Route::get('/home', 'HomeController@index')->name('home');
+	Route::get('my-profile', 'UserController@my_profile')->name('myprofile');
+	Route::get('change-my-psw', 'UserController@change_my_psw')->name('changeMyPsw');
 
 
 
