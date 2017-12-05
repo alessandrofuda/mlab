@@ -13,7 +13,7 @@ class AddIsActuatorToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('lr_users', function (Blueprint $table) {
             $table->boolean('is_actuator')->default(0)->after('is_admin');
         });
     }
@@ -25,7 +25,7 @@ class AddIsActuatorToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('lr_users', function (Blueprint $table) {
             $table->dropColumn('is_actuator');
         });
     }
