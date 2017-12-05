@@ -40,7 +40,7 @@ class AdminController extends Controller
     {   
         // validation form
         $rules = array(
-            'name' => 'required',
+            'name' => 'required|string|unique:lr_users',
             'email'=> 'required|email',
             'password' => 'required|confirmed',
             'password_confirmation' => 'required'
