@@ -26,7 +26,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        // definiti gate 'manage-app' e 'not-manage-app' per adminlte menu configuration (item menu diversi per Admin e Users)
+        // definiti gate 'manage-app' e 'not-manage-app' per adminlte menu configuration (item menu diversi per Admin e Users ('can' => '...'))
         Gate::define('manage-app', function ($user) {
 
             return Auth::user()->is_admin;  // true/false
