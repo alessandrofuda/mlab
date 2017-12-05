@@ -51,7 +51,7 @@ Route::group(['middleware' => 'auth'], function() {
 
 
 	// users
-	Route::get('/home', 'HomeController@index')->name('home');
+	Route::get('home', 'HomeController@index')->name('home');
 	Route::get('my-profile', 'UserController@my_profile')->name('myprofile');
 	Route::get('change-my-psw', 'UserController@change_my_psw')->name('changeMyPsw');
 

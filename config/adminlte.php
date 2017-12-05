@@ -91,7 +91,7 @@ return [
 
     'logout_url' => 'logout',
 
-    'logout_method' => null,
+    'logout_method' => null, // get, post, null
 
     'login_url' => 'login',
 
