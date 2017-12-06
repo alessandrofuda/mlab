@@ -72,7 +72,7 @@
                                         <li><!-- start message -->
                                             <a href="#">
                                                 <div class="pull-left">
-                                                    <img src="" class="img-circle" alt="User Image">
+                                                    <img src="/img/default-img.jpg" class="img-circle" alt="User Image">
                                                 </div>
                                                 <h4>
                                                     Support Team
@@ -210,13 +210,13 @@
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="" class="user-image" alt="Logo">
+                                <img src="/img/default-img.jpg" class="user-image" alt="Logo">
                                 <span class="hidden-xs">{{ Auth::user()->name }}</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
-                                    <img src="" class="img-circle" alt="Logo">
+                                    <img src="/img/default-img.jpg" class="img-circle" alt="Logo">
                                     <p>
                                     {{ Auth::user()->name }}
                                         <small>Subscription date: 00/00/0000</small>
@@ -226,13 +226,13 @@
                                 <li class="user-body">
                                     <div class="row">
                                         <div class="col-xs-4 text-center">
-                                            <a href="#">Followers</a>
+                                            <a href="#">Info 1</a>
                                         </div>
                                         <div class="col-xs-4 text-center">
-                                            <a href="#">Sales</a>
+                                            <a href="#">Info 2</a>
                                         </div>
                                         <div class="col-xs-4 text-center">
-                                            <a href="#">Friends</a>
+                                            <a href="#">Info 3</a>
                                         </div>
                                     </div>
                                     <!-- /.row -->
@@ -243,37 +243,47 @@
                                         <a href="#" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                        <a href="#" class="btn btn-default btn-flat" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            <i class="fa fa-fw fa-power-off"></i>Log Out
+                                        </a>
+                                        <form id="logout-form" action="{{ url(config('adminlte.logout_url', 'auth/logout')) }}" method="POST" style="display: none;">
+                                            @if(config('adminlte.logout_method'))
+                                                {{ method_field(config('adminlte.logout_method')) }}
+                                            @endif
+                                            {{ csrf_field() }}
+                                        </form>
                                     </div>
                                 </li>
                             </ul>
                         </li>
                         <!-- Control Sidebar Toggle Button -->
-                        <li>
-                            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                        <li id="widgets-list">
+                            <a href="#" data-toggle="control-sidebar">
+                                <i class="fa fa-chevron-left"></i> <span class="hidden-xs" style="margin:0 6px;">Widgets</span> <i class="fa fa-bar-chart" style="font-size:130%;"></i>
+                            </a>
                         </li>
 
 
 
-                        <li>
-                            @if(config('adminlte.logout_method') == 'GET' || !config('adminlte.logout_method') && version_compare(\Illuminate\Foundation\Application::VERSION, '5.3.0', '<'))
-                                <a href="{{ url(config('adminlte.logout_url', 'auth/logout')) }}">
-                                    <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
+                        <!--li>
+                            {{-- @if(config('adminlte.logout_method') == 'GET' || !config('adminlte.logout_method') && version_compare(\Illuminate\Foundation\Application::VERSION, '5.3.0', '<')) --}}
+                                <a href="{{-- url(config('adminlte.logout_url', 'auth/logout')) --}}">
+                                    <i class="fa fa-fw fa-power-off"></i> {{-- trans('adminlte::adminlte.log_out') --}}
                                 </a>
-                            @else
-                                <a href="#"
-                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                >
-                                    <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
+                            {{-- @else --}}
+                                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <i class="fa fa-fw fa-power-off"></i> {{-- trans('adminlte::adminlte.log_out') --}}
                                 </a>
-                                <form id="logout-form" action="{{ url(config('adminlte.logout_url', 'auth/logout')) }}" method="POST" style="display: none;">
-                                    @if(config('adminlte.logout_method'))
-                                        {{ method_field(config('adminlte.logout_method')) }}
-                                    @endif
-                                    {{ csrf_field() }}
+                                <form id="logout-form" action="{{-- url(config('adminlte.logout_url', 'auth/logout')) --}}" method="POST" style="display: none;">
+                                    {{-- @if(config('adminlte.logout_method')) --}}
+                                        {{-- method_field(config('adminlte.logout_method')) --}}
+                                    {{-- @endif --}}
+                                    {{-- csrf_field() --}}
                                 </form>
-                            @endif
-                        </li>
+                            {{-- @endif --}}
+                        </li-->
+
+
                     </ul>
                 </div>
                 @if(config('adminlte.layout') == 'top-nav')
@@ -366,6 +376,47 @@
             @endif
         </div>
         <!-- /.content-wrapper -->
+
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>{{ env('APP_NAME', '') }}</b> - <small>version {{ env('APP_VERSION', '') }}</small>
+            </div>
+            <strong>Copyright &copy; {{ date('Y') }} <a href=""></a>.</strong> All rights reserved.
+        </footer>
+
+
+
+        <!-- Control Sidebar -->
+        <aside class="container control-sidebar control-sidebar-dark">
+            <div class="control-sidebar-content">
+                <h3 class="row control-sidebar-heading text-center">Availables Widgets List</h3>
+                <div class="row control-sidebar-heading text-center">
+                    <span class="col-xs-3"><i class="fa fa-area-chart"></i></span>
+                    <span class="col-xs-3"><i class="fa fa-pie-chart"></i></span>
+                    <span class="col-xs-3"><i class="fa fa-bar-chart"></i></span>
+                    <span class="col-xs-3"><i class="fa fa-line-chart"></i></span>      
+                </div>
+                <ul class="control-sidebar-menu text-center">
+
+                    @for ($i = 0; $i < 10 ; $i++)
+                    <li id="widget-{{ $i }}" class="" style="height: 100px; background-color: green;">
+                        <div class="">
+                            Widget-{{ $i }}
+                        </div>
+                    </li>
+                    @endfor
+
+                </ul>
+            </div>
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
+        <div class="control-sidebar-bg"></div>
+
+
+
+
+
 
     </div>
     <!-- ./wrapper -->

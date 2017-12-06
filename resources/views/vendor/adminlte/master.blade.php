@@ -38,30 +38,32 @@
 
     <!-- Google Font -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <!-- Custom style -->
+    <link rel="stylesheet" href="{{ asset('css/custom-style.css') }}">
 </head>
 <body class="hold-transition @yield('body_class')">
 
-@yield('body')
+    @yield('body')
 
-<script src="{{ asset('vendor/adminlte/vendor/jquery/dist/jquery.min.js') }}"></script>
-<script src="{{ asset('vendor/adminlte/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('vendor/adminlte/vendor/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/adminlte/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
-@if(config('adminlte.plugins.select2'))
-    <!-- Select2 -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
-@endif
+    @if(config('adminlte.plugins.select2'))
+        <!-- Select2 -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    @endif
 
-@if(config('adminlte.plugins.datatables'))
-    <!-- DataTables -->
-    <!--script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script-->
-    <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
-@endif
+    @if(config('adminlte.plugins.datatables'))
+        <!-- DataTables -->
+        <!--script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script-->
+        <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+    @endif
 
-@yield('adminlte_js')
+    @yield('adminlte_js')
 
-<!-- custom scripts -->
-<script src="{{ asset('js/custom-scripts.js') }}"></script>
+    <!-- custom scripts -->
+    <script src="{{ asset('js/custom-scripts.js') }}"></script>
 
 </body>
 </html>
