@@ -43,7 +43,7 @@
 </head>
 <body class="hold-transition @yield('body_class')">
 
-    @yield('body')
+    {{-- @yield('body') spostato sotto ad alcune lib js --}}
 
     <script src="{{ asset('vendor/adminlte/vendor/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/adminlte/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
@@ -60,7 +60,14 @@
         <script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
     @endif
 
+    <!-- interactjs drag&drop CDN -->
+    <script src="//cdn.jsdelivr.net/npm/interactjs@1.3.0/dist/interact.min.js"></script>
+
+    @yield('body')
+
     @yield('adminlte_js')
+
+    
 
     <!-- custom scripts -->
     <script src="{{ asset('js/custom-scripts.js') }}"></script>

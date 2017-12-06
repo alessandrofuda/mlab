@@ -256,15 +256,10 @@
                                 </li>
                             </ul>
                         </li>
+
                         <!-- Control Sidebar Toggle Button -->
-                        <li id="widgets-list">
-                            <a href="#" data-toggle="control-sidebar">
-                                <i class="fa fa-chevron-left"></i> <span class="hidden-xs" style="margin:0 6px;">Widgets</span> <i class="fa fa-bar-chart" style="font-size:130%;"></i>
-                            </a>
-                        </li>
-
-
-
+                        @yield('widgets_button')
+                        
                         <!--li>
                             {{-- @if(config('adminlte.logout_method') == 'GET' || !config('adminlte.logout_method') && version_compare(\Illuminate\Foundation\Application::VERSION, '5.3.0', '<')) --}}
                                 <a href="{{-- url(config('adminlte.logout_url', 'auth/logout')) --}}">
@@ -398,7 +393,7 @@
                 </div>
                 <ul class="control-sidebar-menu text-center">
 
-                    @for ($i = 0; $i < 10 ; $i++)
+                    @for ($i = 1; $i <= 10 ; $i++)
                     <li id="widget-{{ $i }}" class="" style="height: 100px; background-color: green;">
                         <div class="">
                             Widget-{{ $i }}

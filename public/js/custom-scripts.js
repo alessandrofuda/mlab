@@ -31,12 +31,12 @@ $(document).ready(function() {
 	
 	// toggle widgets top-right button
 	$('#widgets-list').click(function () {
-		if($('a i').hasClass('fa-chevron-left')) {
-			$('a i').removeClass('fa-chevron-left');
-			$('a i').addClass('fa-chevron-right'); 
+		if($('#widgets-list a i').hasClass('fa-chevron-left')) {
+			$('#widgets-list a i').removeClass('fa-chevron-left');
+			$('#widgets-list a i').addClass('fa-chevron-right'); 
 		} else {      
-			$('a i').removeClass('fa-chevron-right');
-			$('a i').addClass('fa-chevron-left'); 
+			$('#widgets-list a i').removeClass('fa-chevron-right');
+			$('#widgets-list a i').addClass('fa-chevron-left'); 
 		}
 	}); 
 
