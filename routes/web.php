@@ -12,17 +12,10 @@
 */
 
 
-// redirect catcher
-// Route::get('action/{param}', function ($param){
-//	return ??tinker.php??;
-// });
-
-
 // public pages
 Route::get('/', function () {
     return view('welcome');
 });
-
 
 
 
@@ -51,7 +44,7 @@ Route::group(['middleware' => 'auth'], function() {
 
 
 	// users
-	Route::get('home', 'HomeController@index')->name('home');
+	Route::get('home', 'UserController@index')->name('home');
 	Route::get('my-profile', 'UserController@my_profile')->name('myprofile');
 	Route::get('change-my-psw', 'UserController@change_my_psw')->name('changeMyPsw');
 

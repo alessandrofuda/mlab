@@ -7,6 +7,30 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {   
+    
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $title = 'My Dashboard';
+        
+        return view('home', compact('title'));
+    }
+    
 
     /**
      * Display Auth user profile
@@ -16,7 +40,7 @@ class UserController extends Controller
     public function my_profile()
     {
         $title = 'My Profile';
-        return view('home', compact('title'));
+        return view('my-profile', compact('title'));
     }
 
 
@@ -27,7 +51,7 @@ class UserController extends Controller
     public function change_my_psw()
     {
         $title = 'Change password';
-        return view('home', compact('title'));
+        return view('change-my-psw', compact('title'));
     }
 
 

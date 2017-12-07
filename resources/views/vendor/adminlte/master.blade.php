@@ -60,8 +60,6 @@
         <script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
     @endif
 
-    <!-- interactjs drag&drop CDN -->
-    <script src="//cdn.jsdelivr.net/npm/interactjs@1.3.0/dist/interact.min.js"></script>
 
     @yield('body')
 

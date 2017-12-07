@@ -18,7 +18,7 @@
 
 @section('content')
     <p>You are logged in!</p>
-    <p>My user dashboard</p>
+    <p>dashboard customization</p>
 
 
 

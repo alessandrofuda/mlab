@@ -29,7 +29,7 @@ class AdminController extends Controller
     {   
         $title = 'My Admin Dashboard';
 
-        return view('home', compact('title')); 
+        return view('admin.home', compact('title')); 
     }
 
 
@@ -222,7 +222,7 @@ class AdminController extends Controller
     {
         $title = 'Dashboards customization';
 
-        return view('home', compact('title'));
+        return view('admin.dashboards_customization', compact('title'));
     }
 
 
@@ -235,7 +235,7 @@ class AdminController extends Controller
     {
         $title = 'Exports Data';
 
-        return view('home', compact('title'));
+        return view('admin.exports_data', compact('title'));
     }
 
 }
