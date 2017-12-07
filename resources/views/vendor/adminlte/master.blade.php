@@ -60,6 +60,9 @@
         <script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
     @endif
 
+    <!-- jquery UI -->
+    <!--script src="//code.jquery.com/jquery-1.12.4.js"></script-->
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     @yield('body')
 
