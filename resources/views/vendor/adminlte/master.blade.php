@@ -64,6 +64,15 @@
     <!--script src="//code.jquery.com/jquery-1.12.4.js"></script-->
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+    <!-- gridstack.js drag drop jquery plugin -->
+    <script src="{{ asset('js/lodash/4.17.4/lodash.js') }}"></script>
+    <script src="{{ asset('js/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('css/gridstack/src/0.3.0-gridstack.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/gridstack/src/gridstack-extra.css') }}" />
+    <script src="{{ asset('js/gridstack/src/gridstack.js') }}"></script>
+    <script src="{{ asset('js/gridstack/src/gridstack.jQueryUI.js') }}"></script>
+
+
     @yield('body')
 
     @yield('adminlte_js')

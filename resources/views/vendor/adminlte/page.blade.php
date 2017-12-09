@@ -391,15 +391,15 @@
                     <span class="col-xs-3"><i class="fa fa-bar-chart"></i></span>
                     <span class="col-xs-3"><i class="fa fa-line-chart"></i></span>      
                 </div>
-                <ul class="control-sidebar-menu text-center">
+                <ul id="grid1" class="grid-stack grid-stack-1 control-sidebar-menu text-center">
 
-                    @for ($i = 1; $i <= 10 ; $i++)
-                    <li id="widget-{{ $i }}" class="draggable" style="height: 100px; background-color: green; border:1px solid #FFF;">
+                    {{-- @for ($i = 1; $i <= 10 ; $i++)
+                    <!--li id="widget-{{ $i }}" class="grid-stack-item" style="height: 100px; background-color: green; border:1px solid #FFF;">
                         <div class="">
                             Widget-{{ $i }}
                         </div>
-                    </li>
-                    @endfor
+                    </li--> 
+                    @endfor --}}
 
                 </ul>
             </div>
@@ -409,9 +409,9 @@
         <div class="control-sidebar-bg"></div>
 
         <!--jQuery-UI draggable droppable sortable + ajax-->
-        <script>
+        <!--script>
             $( ".draggable" ).draggable({
-                scroll: true,  //  not works --> verify!
+                scroll: true,  //  not works -> verify!
                 scrollSensitivity: 100,
                 scrollSpeed: 100,
                 containment: ".content-wrapper",  // or onlyl ".content" ?
@@ -438,7 +438,7 @@
                 // resize when dropped
                 // ...
             });
-        </script>
+        </script-->
 
 
 
