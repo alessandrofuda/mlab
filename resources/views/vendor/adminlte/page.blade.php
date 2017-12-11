@@ -391,7 +391,19 @@
                     <span class="col-xs-3"><i class="fa fa-bar-chart"></i></span>
                     <span class="col-xs-3"><i class="fa fa-line-chart"></i></span>      
                 </div>
-                <ul id="grid1" class="grid-stack grid-stack-1 control-sidebar-menu text-center">
+
+
+                <!--div class="header-title">
+                    <h1>Inactive Widgets</h1>
+                </div-->
+                <div class="inactive-widgets">      
+                    <div class="grid-stack grid-stack-inactive">
+                    </div>
+                </div>
+
+
+
+                <ul id="grid___ZZZZ___1" class="gr___________id-stack gr_____________id-stack-1 control-sidebar-menu text-center">
 
                     {{-- @for ($i = 1; $i <= 10 ; $i++)
                     <!--li id="widget-{{ $i }}" class="grid-stack-item" style="height: 100px; background-color: green; border:1px solid #FFF;">
@@ -402,6 +414,7 @@
                     @endfor --}}
 
                 </ul>
+                <div id="grid1" class="gr___id-st____ack dx"> </div>
             </div>
         </aside>
         <!-- /.control-sidebar -->

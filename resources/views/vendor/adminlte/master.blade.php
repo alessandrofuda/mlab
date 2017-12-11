@@ -3,9 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>@yield('title_prefix', config('adminlte.title_prefix', ''))
-@yield('title', config('adminlte.title', 'AdminLTE 2'))
-@yield('title_postfix', config('adminlte.title_postfix', ''))</title>
+    <title>
+        @yield('title_prefix', config('adminlte.title_prefix', ''))
+        @yield('title', config('adminlte.title', 'AdminLTE 2'))
+        @yield('title_postfix', config('adminlte.title_postfix', ''))
+    </title>
+    
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -25,21 +28,25 @@
 
     @if(config('adminlte.plugins.datatables'))
         <!-- DataTables -->
-        <!--link rel="stylesheet" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"-->
         <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
     @endif
 
     @yield('adminlte_css')
+
+    <!-- Google Font -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <!-- Custom style -->
+    <link rel="stylesheet" href="{{ asset('css/custom-style.css') }}">
+    <!-- gridstack css-->
+    <link rel="stylesheet" href="{{ asset('css/gridstack/src/0.3.0-gridstack.min.css') }}" />
+    <!--link rel="stylesheet" href="{{-- asset('css/gridstack/src/gridstack-extra.css') --}}" /-->
+    <link rel="stylesheet" href="{{ asset('css/gridstack/src/third-party-integr/multiple-grids.css') }}" />
 
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <!-- Google Font -->
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <!-- Custom style -->
-    <link rel="stylesheet" href="{{ asset('css/custom-style.css') }}">
 </head>
 <body class="hold-transition @yield('body_class')">
 
@@ -55,22 +62,20 @@
 
     @if(config('adminlte.plugins.datatables'))
         <!-- DataTables -->
-        <!--script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script-->
         <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
         <script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
     @endif
 
     <!-- jquery UI -->
-    <!--script src="//code.jquery.com/jquery-1.12.4.js"></script-->
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    <!-- gridstack.js drag drop jquery plugin -->
+
+    <!-- gridstack js drag drop jquery plugin -->
     <script src="{{ asset('js/lodash/4.17.4/lodash.js') }}"></script>
     <script src="{{ asset('js/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('css/gridstack/src/0.3.0-gridstack.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/gridstack/src/gridstack-extra.css') }}" />
     <script src="{{ asset('js/gridstack/src/gridstack.js') }}"></script>
     <script src="{{ asset('js/gridstack/src/gridstack.jQueryUI.js') }}"></script>
+    
 
 
     @yield('body')
