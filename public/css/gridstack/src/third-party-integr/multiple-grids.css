@@ -49,7 +49,7 @@
 }
 /*----------------->> In-active Widget Grid Layout - 2 Columns <<-------------------*/
 .grid-stack-inactive .grid-stack-item[data-gs-width='1'] {
-  width: 50%;
+  width: 100%; /* 50%; */
 }
 .grid-stack-inactive .grid-stack-item[data-gs-x='1'] {
   left: 50%;
@@ -112,6 +112,7 @@
 .active-widgets {
 	width:100%;
 	float:left;
+	margin-bottom:40px;
 }
 
 .inactive-widgets {
@@ -130,6 +131,7 @@
 	border-top : dashed 1px #888888; */
 	padding-bottom: 30px;
 	min-height: 600px;
+	margin-bottom: 40px;
 }
      
 .grid-stack-inactive {
@@ -172,14 +174,14 @@
 }		
 
 .content {
-	height: 100%;
+	/* height: 100%; */
 	overflow-x:hidden;
 	overflow-y:auto;
 	padding: 15px;
 }
 
 /*----------------->> Widget Icons <<-------------------*/        
-.na-icon {display: block;float:right;background-repeat: no-repeat;position:relative;top:4px;padding:2px; }
+.na-icon {display: block;float:right;background-repeat: no-repeat;position:relative;top:0px;padding:0px; }
 .na-icon {width:16px;height:16px;}
 .na-icon-gear {background-image: url(../../../../img/icon-gear.png);}
 .na-icon-close {background-image: url(../../../../img/icon-close.png);}

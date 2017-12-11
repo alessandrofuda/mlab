@@ -6,17 +6,20 @@ var dashboardFn = {
             		height: 10,
 	            	cellHeight:100,
 					      alwaysShowResizeHandle: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+                resizable: {
+                    handles: 'e, se, s, sw, w'
+                },
             		// grid_class: 'grid-stack-active',
             		draggable: {
             			cursor: 'move',
-            			cancel: '.na-icon'
+            			cancel: '.na-icon',
                 		}
             };
             $('.active-widgets .grid-stack').gridstack(active_grid_options);
 
             // Grid area to hold in-active widgets
             var inactive_grid_options = {
-            		width: 2,
+            		width: 1,
             		height: 10,
             		cellHeight:100,
             		animate: false,
@@ -40,7 +43,7 @@ var dashboardFn = {
 				cell = dashboardFn.inactive_grid.getCellFromPixel(position);
 			}
 			// Check if widget will fit anywhere on Active grid, auto position set to true
-			if (dashboardFn.active_grid.willItFit(cell.x, cell.y, 1, 1, true)) {
+			if (dashboardFn.active_grid.willItFit(cell.x, cell.y, 1, 1, true)) {    
 				// Remove Widget from In-Active grid, remove from DOM set to false
 				dashboardFn.inactive_grid.removeWidget(widget, false);
 				// Add Widget to Active Grid, auto position set to true
@@ -60,11 +63,11 @@ var dashboardFn = {
 				cell = dashboardFn.active_grid.getCellFromPixel(position);
 			}
 			// Check if widget will fit anywhere on In-Active grid, auto position set to true
-			if (dashboardFn.inactive_grid.willItFit(cell.x, cell.y, 1, 1, true)) {
+			if (dashboardFn.inactive_grid.willItFit(cell.x, cell.y, 1, 1, true)) {             
 				// Remove Widget from Active grid, remove from DOM set to false
 				dashboardFn.active_grid.removeWidget(widget, false);
 				// Add Widget to In-Active Grid, auto position set to true
-				dashboardFn.inactive_grid.addWidget(widget, cell.x, cell.y, 1, 1, true);
+				dashboardFn.inactive_grid.addWidget(widget, cell.x, cell.y, 1, 1, true);        
 				// Disable re-sizing of Widget while In-Active
 				dashboardFn.inactive_grid.resizable('.grid-stack-inactive .grid-stack-item', false);
 				dashboardFn.update_button(widget);
@@ -117,7 +120,7 @@ var dashboardFn = {
             });
 
             //Click Widget Add Button
-            $('#dashboard').on('click', '.portlet-header .widget-add', function(){
+            $('.inactive-widgets').on('click', '.portlet-header .widget-add', function(){ 
 				      dashboardFn.activate_widget($(this).parents(".grid-stack-item:first"));
             });
 			

@@ -391,73 +391,18 @@
                     <span class="col-xs-3"><i class="fa fa-bar-chart"></i></span>
                     <span class="col-xs-3"><i class="fa fa-line-chart"></i></span>      
                 </div>
-
-
-                <!--div class="header-title">
-                    <h1>Inactive Widgets</h1>
-                </div-->
                 <div class="inactive-widgets">      
                     <div class="grid-stack grid-stack-inactive">
                     </div>
+                    <div class="" style="text-align: center; margin: 10px auto;">
+                        <div id="reposition-widgets" class="btn btn-default">Reposition all Widgets</div>
+                    </div>
                 </div>
-
-
-
-                <ul id="grid___ZZZZ___1" class="gr___________id-stack gr_____________id-stack-1 control-sidebar-menu text-center">
-
-                    {{-- @for ($i = 1; $i <= 10 ; $i++)
-                    <!--li id="widget-{{ $i }}" class="grid-stack-item" style="height: 100px; background-color: green; border:1px solid #FFF;">
-                        <div class="">
-                            Widget-{{ $i }}
-                        </div>
-                    </li--> 
-                    @endfor --}}
-
-                </ul>
-                <div id="grid1" class="gr___id-st____ack dx"> </div>
             </div>
         </aside>
         <!-- /.control-sidebar -->
         <!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
         <div class="control-sidebar-bg"></div>
-
-        <!--jQuery-UI draggable droppable sortable + ajax-->
-        <!--script>
-            $( ".draggable" ).draggable({
-                scroll: true,  //  not works -> verify!
-                scrollSensitivity: 100,
-                scrollSpeed: 100,
-                containment: ".content-wrapper",  // or onlyl ".content" ?
-                cursor: "move",
-                cursorAt: { top: 56, left: 56 },
-                start: function() {
-                    $(this).css('z-index', 9999);
-                    $(this).css('box-shadow', '2px 2px 2px 1px, -2px -2px 2px 1px #888');
-                    $(this).css('transform', 'scale(1.2,1.2)');
-                },
-                drag: function() {
-                    // counts[ 1 ]++;
-                    // updateCounterStatus( $drag_counter, counts[ 1 ] );
-                },
-                stop: function() {
-                    $(this).css('z-index', 'auto');
-                    $(this).css('box-shadow', 'none');
-                    $(this).css('transform', 'inherit');
-                },
-                // snap in drop-target
-                snap: ".drop-target",
-                snapMode: "inner",
-                snapTolerance: 30,
-                // resize when dropped
-                // ...
-            });
-        </script-->
-
-
-
-
-
-
 
     </div>
     <!-- ./wrapper -->
