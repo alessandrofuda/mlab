@@ -42,4 +42,29 @@ class User extends Authenticatable
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+
+    /**
+    * Relationships
+    *
+    *
+    */
+    public function dashboard()
+    {
+        return $this->hasMany('App\Dashboard'); 
+    }
+
+
+    /**
+    * Relationships
+    *
+    *
+    */
+    public function widget()
+    {
+        return $this->hasMany('App\Widget');  
+    }
+
+
+
 }
