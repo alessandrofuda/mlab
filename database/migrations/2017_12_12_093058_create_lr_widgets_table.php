@@ -18,7 +18,7 @@ class CreateLrWidgetsTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->integer('df_graphic_id')->unsigned();
-            $table->boolean('admin_only');  // visible only by admin 
+            $table->boolean('admin_only')->default(true);  // visible only by admin 
             $table->timestamps();
 
             $table->foreign('df_graphic_id')->references('id')->on('df_graphics');

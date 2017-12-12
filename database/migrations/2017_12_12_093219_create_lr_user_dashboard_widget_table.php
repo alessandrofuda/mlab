@@ -22,7 +22,7 @@ class CreateLrUserDashboardWidgetTable extends Migration
             $table->integer('y')->unsigned();
             $table->integer('width')->unsigned();
             $table->integer('height')->unsigned();
-            $table->boolean('active');
+            $table->boolean('active')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('lr_users');
