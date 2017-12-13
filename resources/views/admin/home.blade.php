@@ -22,6 +22,14 @@
 	
 	<script src="{{ asset('js/gridstack/src/third-party-integr/multiple-grids.js') }}"></script>
 	<script>
+
+		var serialized_data = [
+		@foreach ($widgets as $widget)
+			{id:{{ $widget->widget_id }}, name:'{{ $widget->widgets->name }}', x: {{$widget->x}}, y: {{$widget->y}}, width: {{$widget->width}}, height:{{$widget->height}}, active: {{$widget->active?'true':'false'}} },
+		@endforeach
+		];
+
+		/*
 		var serialized_data = [
 			{id: 1, name: 'Widget 1', x: 0, y: 0, width: 1, height: 3, active: true},
 			{id: 2, name: 'Widget 2', x: 1, y: 0, width: 2, height: 3, active: true},
@@ -35,6 +43,7 @@
 			{id: 10, name: 'Widget 10', x: 1, y: 0, width: 2, height: 1, active: false},
 			{id: 11, name: 'Widget 11', x: 1, y: 1, width: 2, height: 1, active: false},	
 		];
+		*/
 
 	</script>
 

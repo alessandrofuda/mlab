@@ -66,5 +66,28 @@ class User extends Authenticatable
     }
 
 
+    /**
+    * Relationships
+    *
+    *
+    */
+    public function userDashboardWidget()
+    {
+        return $this->hasMany('App\userDashboardWidget');  
+    }
+
+
+    /**
+    * Relationships
+    *
+    *
+    */
+    public function widgets()
+    {
+        return $this->belongsToMany('App\Widget', 'lr_user_dashboard_widget', 'widget_id', 'user_id');  //, 'widget_id', 'user_id'); 
+        // return $this->belongsToMany('App\Widget');
+
+    }
+
 
 }

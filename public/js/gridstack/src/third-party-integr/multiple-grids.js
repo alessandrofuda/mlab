@@ -36,7 +36,10 @@ var dashboardFn = {
 			
             dashboardFn.load_grid();
 		},
-      	activate_widget: function (widget, position) {
+
+
+
+    activate_widget: function (widget, position) {
 			// Get the position of the cell under a pixel on screen
 			var cell = dashboardFn.inactive_grid.getCellFromPixel(widget.position);
 			if(typeof(position) !== 'undefined' && position != null){
@@ -55,8 +58,10 @@ var dashboardFn = {
 			else {
 				alert('Not enough free space to add the widget');
 			}
-        },
-      	deactivate_widget: function (widget, position) {
+    },
+
+
+    deactivate_widget: function (widget, position) {
 			// Get the position of the cell under a pixel on screen
 			var	cell = dashboardFn.active_grid.getCellFromPixel(widget.position);
 			if(typeof(position) !== 'undefined' && position != null){
@@ -75,8 +80,10 @@ var dashboardFn = {
 			else {
 				alert('Not enough free space to remove the widget');
 			}
-        },
-        update_button: function (widget, button) {
+    },
+
+
+    update_button: function (widget, button) {
        		var	button = widget.find('.portlet-header .portlet-close,.portlet-header .widget-add');
         	if(button.hasClass('portlet-close')){
         		button.after('<span class="na-icon na-icon-triangle-1-s widget-add" title="Add"></span>');
@@ -85,62 +92,82 @@ var dashboardFn = {
         		button.after('<span class="na-icon na-icon-close portlet-close" title="Close"></span>');
         	}
         	button.remove();
-        },
-        load_grid : function () {
-        	 dashboardFn.active_grid.removeAll();
-        	 dashboardFn.inactive_grid.removeAll();
-            var items = GridStackUI.Utils.sort(serialized_data);
-            var widget;
-            _.each(items, function (node) {
-				      // Quick and dirty example using clone of a template widget div
-				      widget = $("#template .widget").clone();
-				      // Set Widget Id
-				      widget.attr('data-widget-id', node.id);
-				      // Set widget name
-				      widget.find('.header').html(node.name);
-              if(node.active == true){
-      					// Add 'close' widget button
-          			widget.find('.portlet-header .header').after('<span class="na-icon na-icon-close portlet-close" title="Close"></span>');
-          			// If item is active place in it's position on the active widget grid
-                dashboardFn.active_grid.addWidget(widget, node.x, node.y, node.width, node.height);  
-              }
-				else{           		
-					// Add 'Add' widget button
-    				widget.find('.portlet-header .header').after('<span class="na-icon na-icon-triangle-1-s widget-add" title="Add"></span>');
-    				// If item not active place in it's position on available widgets area
-	                dashboardFn.inactive_grid.addWidget(widget, node.x, node.y, 1, 1, true);
-					// Disable re-sizing of Widget while In-Active
-					dashboardFn.inactive_grid.resizable('.grid-stack-inactive .grid-stack-item', false);				
-				}
-            }, this);
-                    
-           //Click Widget Close Button
-           $('#dashboard').on('click', '.portlet-header .portlet-close', function(){
-				      dashboardFn.deactivate_widget($(this).parents(".grid-stack-item:first"));
-            });
+    },
 
-            //Click Widget Add Button
-            $('.inactive-widgets').on('click', '.portlet-header .widget-add', function(){ 
-				      dashboardFn.activate_widget($(this).parents(".grid-stack-item:first"));
-            });
-			
-            // Force Active grid to accept only Widgets from In-Active Grid, otherwise allow grid-stack to do it's thing
-            dashboardFn.active_grid.container.droppable({
-              accept: ".grid-stack-inactive .grid-stack-item",
-              tolerance: 'pointer',
-              drop: function( event, ui ) {
-				        dashboardFn.activate_widget(ui.draggable, ui.position);
-              }
-            });
 
-            // Force In-Active grid to accept only Widgets from Active Grid, otherwise allow grid-stack to do it's thing
-            dashboardFn.inactive_grid.container.droppable({
-              accept: ".grid-stack-active .grid-stack-item",
-              tolerance: 'pointer',
-              drop: function( event, ui ) {
-				        dashboardFn.deactivate_widget(ui.draggable, ui.position);
-               }
-            });
+    load_grid : function () {
+    	 dashboardFn.active_grid.removeAll();
+    	 dashboardFn.inactive_grid.removeAll();
+       var items = GridStackUI.Utils.sort(serialized_data);
+       var widget;
+       _.each(items, function (node) {
+		      // Quick and dirty example using clone of a template widget div
+		      widget = $("#template .widget").clone();
+		      // Set Widget Id
+		      widget.attr('data-widget-id', node.id);
+		      // Set widget name
+		      widget.find('.header').html(node.name);
+          if(node.active == true){
+  					// Add 'close' widget button
+      			widget.find('.portlet-header .header').after('<span class="na-icon na-icon-close portlet-close" title="Close"></span>');
+      			// If item is active place in it's position on the active widget grid
+            dashboardFn.active_grid.addWidget(widget, node.x, node.y, node.width, node.height);  
+          }
+  				else{           		
+  					// Add 'Add' widget button
+      				widget.find('.portlet-header .header').after('<span class="na-icon na-icon-triangle-1-s widget-add" title="Add"></span>');
+      				// If item not active place in it's position on available widgets area
+  	                dashboardFn.inactive_grid.addWidget(widget, node.x, node.y, 1, 1, true);
+  					// Disable re-sizing of Widget while In-Active
+  					dashboardFn.inactive_grid.resizable('.grid-stack-inactive .grid-stack-item', false);				
+  				}
+       }, this);
+                
+       //Click Widget Close Button
+       $('#dashboard').on('click', '.portlet-header .portlet-close', function(){
+		      dashboardFn.deactivate_widget($(this).parents(".grid-stack-item:first"));
+       });
 
-        }
+       //Click Widget Add Button
+       $('.inactive-widgets').on('click', '.portlet-header .widget-add', function(){ 
+		      dashboardFn.activate_widget($(this).parents(".grid-stack-item:first"));
+       });
+	
+       // Force Active grid to accept only Widgets from In-Active Grid, otherwise allow grid-stack to do it's thing
+       dashboardFn.active_grid.container.droppable({
+          accept: ".grid-stack-inactive .grid-stack-item",
+          tolerance: 'pointer',
+          drop: function( event, ui ) {
+		        dashboardFn.activate_widget(ui.draggable, ui.position);
+          }
+       });
+
+       // Force In-Active grid to accept only Widgets from Active Grid, otherwise allow grid-stack to do it's thing
+       dashboardFn.inactive_grid.container.droppable({
+          accept: ".grid-stack-active .grid-stack-item",
+          tolerance: 'pointer',
+          drop: function( event, ui ) {
+		        dashboardFn.deactivate_widget(ui.draggable, ui.position);
+           }
+       });
+
+
+
+
+       // Ajax call for reposizioning (x,y) on dragstop event
+       $('.grid-stack').on('dragstop', function(event, ui) {
+        var grid = this;
+        var element = event.target;
+        console.log('drag stop');
+       });
+
+       // Ajax call for resizing (width,height) on gsresizestop event
+       $('.grid-stack').on('gsresizestop', function(event, elem) {
+          var newHeight = $(elem).attr('data-gs-height');
+          console.log('New height: ' + newHeight);
+       });
+
+    }
+
+
 	};

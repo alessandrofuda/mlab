@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\UserDashboardWidget;
+use App\Dashboard;
+use App\Widget;
 use App\User;
 use Session;
 
@@ -28,8 +32,11 @@ class AdminController extends Controller
     public function dashboard()
     {   
         $title = 'My Admin Dashboard';
+        $widgets = UserDashboardWidget::where('user_id', Auth::user()->id)->with('widgets')->get();
 
-        return view('admin.home', compact('title')); 
+        // dd($widgets);
+
+        return view('admin.home', compact('title', 'widgets')); 
     }
 
 

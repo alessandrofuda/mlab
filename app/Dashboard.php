@@ -23,6 +23,15 @@ class Dashboard extends Model
     // protected $fillable = [''];
 
 
+    /**
+    * Relationships
+    *
+    *
+    */
+    public function userDashboardWidget()
+    {
+        return $this->hasMany('App\userDashboardWidget');  
+    }
     
 
 }

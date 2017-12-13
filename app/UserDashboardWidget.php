@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Widget;
+
 
 class UserDashboardWidget extends Model
 {
@@ -22,6 +24,9 @@ class UserDashboardWidget extends Model
      */
     // protected $fillable = [''];
 
+
+
+    // IMPORTANT! 
 
     /**
     * Relationships
@@ -50,9 +55,10 @@ class UserDashboardWidget extends Model
     *
     *
     */
-    public function widget()
+    public function widgets()
     {
-        return $this->belongsToMany('App\User', 'widget_id'); 
+        return $this->belongsTo('App\Widget', 'widget_id');  
+
     }
 
 
