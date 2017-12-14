@@ -85,7 +85,13 @@ class AdminController extends Controller
                 'is_admin' => $role,
                 'is_actuator' => $actuator
             ]) ) {
+
+
+                // create default widgets profile
+                // $user_id = ... ;
+                // $this->init_widgets($user_id);
             
+
                 // redirect
                 return Redirect::to('admin/users')->with('success-message', 'L\'utente <b>'.$request->name.'</b> è stato creato correttamente');
             } else {
@@ -93,6 +99,44 @@ class AdminController extends Controller
             }
         }
     }
+
+
+
+    /**
+    *  Cread "gruppo widget" di default alla creazione di ogni nuovo utente 
+    *
+    *
+    */
+    public function init_widgets($user_id){
+
+        // store defaults widgets configuration in db
+
+        $widgets = Widget::all();
+
+        // dd($widgets[0]->id);
+
+        foreach ($widgets as $widget) {
+            
+            $default_widgets = UserDashboardWidget::updateOrCreate([
+                'user_id' => $user_id,
+                'dashboard_id' => 1,
+                'widget_id' => $widget->id,
+                'x' => 0,
+                'y' => 0,
+                'width' => 1,
+                'height' => 1,
+                'active' => false,
+            ]);
+        }
+
+        // return to $this->create()
+        return;  // true;  // ???
+
+    }
+
+
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -245,4 +289,7 @@ class AdminController extends Controller
         return view('admin.exports_data', compact('title'));
     }
 
+
+
+    
 }

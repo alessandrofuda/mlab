@@ -22,7 +22,7 @@ class UserDashboardWidget extends Model
      *
      * @var array
      */
-    // protected $fillable = [''];
+    protected $fillable = ['user_id', 'dashboard_id', 'widget_id', 'x', 'y', 'width', 'height', 'active'];  
 
 
 

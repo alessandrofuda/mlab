@@ -175,7 +175,7 @@
 	              // console.log('chiamata ajax OK: ' + msg);
 	            },
 	            error: function(req, err) {
-	              console.log('chamata ajax errore: ');
+	              // console.log('chamata ajax errore: ');
 	              console.log(req);
 	              console.log(err);
 	            }

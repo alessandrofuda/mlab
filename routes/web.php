@@ -44,6 +44,12 @@ Route::group(['middleware' => 'auth'], function() {
 		Route::get('dashboards-customization', 'AdminController@dashboards_customization');
 		// export data
 		Route::get('exports', 'AdminController@exports');
+
+
+		// testing route
+		Route::get('test-{user_id}', 'AdminController@init_widgets');
+
+
 	});
 
 
