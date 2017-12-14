@@ -1,4 +1,5 @@
 var dashboardFn = {
+
 		initiate: function () {
             // Grid area to hold active widgets
             var active_grid_options = {
@@ -151,23 +152,7 @@ var dashboardFn = {
            }
        });
 
-
-
-
-       // Ajax call for reposizioning (x,y) on dragstop event
-       $('.grid-stack').on('dragstop', function(event, ui) {
-        var grid = this;
-        var element = event.target;
-        console.log('drag stop');
-       });
-
-       // Ajax call for resizing (width,height) on gsresizestop event
-       $('.grid-stack').on('gsresizestop', function(event, elem) {
-          var newHeight = $(elem).attr('data-gs-height');
-          console.log('New height: ' + newHeight);
-       });
-
-    }
+    }  // fine load_grid()
 
 
 	};

@@ -18,12 +18,15 @@ Route::get('/', function () {
 });
 
 
+// ajax calls (ony public?)
+Route::post('ajax/dashboard', 'AjaxDashboardController@repositioning');
+
 
 // Auths
 Auth::routes();
 Route::group(['middleware' => 'auth'], function() {
 
-	// admin
+	// admin only
 	Route::group(['prefix' => 'admin' , 'middleware' => 'admin'], function() {		 
 		// admin dashboard
 		Route::get('home', 'AdminController@dashboard');
@@ -43,10 +46,12 @@ Route::group(['middleware' => 'auth'], function() {
 
 
 
-	// users
+	// users or admins
 	Route::get('home', 'UserController@index')->name('home');
 	Route::get('my-profile', 'UserController@my_profile')->name('myprofile');
 	Route::get('change-my-psw', 'UserController@change_my_psw')->name('changeMyPsw');
+
+
 
 
 
