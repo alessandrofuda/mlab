@@ -126,13 +126,40 @@ var dashboardFn = {
                 
        //Click Widget Close Button
        $('#dashboard').on('click', '.portlet-header .portlet-close', function(){
-		      dashboardFn.deactivate_widget($(this).parents(".grid-stack-item:first"));
+		      // !!! IMPORTANTE: prima la chiamata ajax e POI la funzione deactivate !!!!
+          // ajax call to: 'active' = 0
+          var id = $(this).parents(".grid-stack-item:first").attr("data-widget-id");
+          var active = 0;
+          $.ajaxSetup({
+              headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+              }
+          });
+          $.ajax({
+              type: 'POST',
+              url: host + '/ajax/deactivate-widget',
+              data: { id:id }, 
+              success: function( msg ) {
+                //console.log('chiamata ajax OK: ' + msg);
+              },
+              error: function(req, err) {
+                //console.log('chamata ajax errore: ');
+                //console.log(req);
+                //console.log(err);
+              }
+          });
+
+          // deactivate func !!
+          dashboardFn.deactivate_widget($(this).parents(".grid-stack-item:first"));
+
        });
+
 
        //Click Widget Add Button
        $('.inactive-widgets').on('click', '.portlet-header .widget-add', function(){ 
-		      dashboardFn.activate_widget($(this).parents(".grid-stack-item:first"));
+		      dashboardFn.activate_widget($(this).parents(".grid-stack-item:first"));          
        });
+
 	
        // Force Active grid to accept only Widgets from In-Active Grid, otherwise allow grid-stack to do it's thing
        dashboardFn.active_grid.container.droppable({

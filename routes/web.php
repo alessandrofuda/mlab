@@ -20,6 +20,8 @@ Route::get('/', function () {
 
 // ajax calls (ony public?)
 Route::post('ajax/dashboard', 'AjaxDashboardController@repositioning');
+Route::post('/ajax/deactivate-widget', 'AjaxDashboardController@deactivate_widget');
+// Route::post('/ajax/activate-widget', 'AjaxDashboardController@activate_widget');
 
 
 // Auths
