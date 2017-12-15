@@ -114,16 +114,54 @@ return [
             'header' => 'ADMIN MENU',
             'can' => 'manage-app',   // only Admin
         ],
+
+
+
+
         [
+            'text' => 'My AdminDashboard',
+            'icon' => 'tachometer',
+            'submenu' => [
+                            [
+                                'text' => 'Dashboard 1',
+                                'url' => 'admin/home',
+                                'icon' => 'chevron-circle-right',
+                            ],
+                            [
+                                'text' => 'Dashboard 2',
+                                'url' => 'admin/dashboard-2',
+                                'icon' => 'chevron-circle-right',
+                            ],
+                            [
+                                'text' => 'Dashboard 3',
+                                'url' => 'admin/dashboard-3',
+                                'icon' => 'chevron-circle-right',
+                            ],
+                        ],
+            'can' => 'manage-app',
+        ],
+        /* [
             'text' => 'My AdminDashboard',
             'url'  => 'admin/home',
             'icon' => 'tachometer',
             'can'  => 'manage-app',
-        ],
+        ], */
         [
             'text' => 'Users Management',
             'url'  => 'admin/users',
             'icon' => 'users',
+            'can'  => 'manage-app',
+        ],
+        [
+            'text' => 'Structure Management',
+            'url'  => '#',
+            'icon' => 'cogs',
+            'can'  => 'manage-app',
+        ],
+        [
+            'text' => 'Tree Chart',
+            'url'  => '#',
+            'icon' => 'sitemap',
             'can'  => 'manage-app',
         ],
         [
