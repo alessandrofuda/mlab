@@ -119,7 +119,7 @@ return [
 
 
         [
-            'text' => 'My AdminDashboard',
+            'text' => 'My AdminDashboards',
             'icon' => 'tachometer',
             'submenu' => [
                             [
@@ -181,11 +181,33 @@ return [
             'can' => 'not-manage-app',
         ],
         [
+            'text' => 'My Dashboards',
+            'icon' => 'tachometer',
+            'submenu' => [
+                            [
+                                'text' => 'Dashboard 1',
+                                'url' => 'home',
+                                'icon' => 'chevron-circle-right',
+                            ],
+                            [
+                                'text' => 'Dashboard 2',
+                                'url' => 'dashboard-2',
+                                'icon' => 'chevron-circle-right',
+                            ],
+                            [
+                                'text' => 'Dashboard 3',
+                                'url' => 'dashboard-3',
+                                'icon' => 'chevron-circle-right',
+                            ],
+                        ],
+            'can' => 'not-manage-app',
+        ],
+        /* [
             'text' => 'My Dashboard',
             'url' => 'home',
             'icon' => 'tachometer',
             'can' => 'not-manage-app',
-        ],
+        ], */
         /*
         [
             'text'        => 'Pages',
@@ -205,6 +227,13 @@ return [
             'text' => 'Change Password',
             'url'  => '/change-my-psw',
             'icon' => 'lock',
+        ],
+        'NODES',
+        [
+            'text' => 'My Tree',
+            'url'  => '#',
+            'icon' => 'sitemap',
+            'can'  => 'not-manage-app',
         ],
         /*
         [
