@@ -29,14 +29,18 @@ class AdminController extends Controller
     /**
     * 
     */
-    public function dashboard()
+    public function dashboard($current_dashboard = 1)
     {   
-        $title = 'My Admin Dashboard';
-        $widgets = UserDashboardWidget::where('user_id', Auth::user()->id)->with('widgets')->get();
+        // dd($current_dashboard);
+        $title = 'My Admin Dashboard '. $current_dashboard;
+        $widgets = UserDashboardWidget::where('user_id', Auth::user()->id)
+                                        ->where('dashboard_id', $current_dashboard)
+                                        ->with('widgets')
+                                        ->get();
 
         // dd($widgets);
 
-        return view('admin.home', compact('title', 'widgets')); 
+        return view('admin.home', compact('title', 'current_dashboard', 'widgets')); 
     }
 
 
@@ -78,23 +82,29 @@ class AdminController extends Controller
             $role = $request->admin == true ? 1 : 0;
             $actuator = $request->actuator == true ? 1 : 0;
 
-            if( User::create([
+            
+            $newUser = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
                 'is_admin' => $role,
                 'is_actuator' => $actuator
-            ]) ) {
+            ]);
 
+            if($newUser) {
 
                 // create default widgets profile
-                // $user_id = ... ;
-                // $this->init_widgets($user_id);
-            
 
-                // redirect
+                $init_widgets = $this->init_widgets($newUser->id);
+
+                if($init_widgets !== true) {
+                    return Redirect::to('admin/users')->with('message', 'L\'utente <b>'.$request->name.'</b> è stato creato, ma non è stato possibile inizializzare la dashboard.');
+                }
+            
                 return Redirect::to('admin/users')->with('success-message', 'L\'utente <b>'.$request->name.'</b> è stato creato correttamente');
+
             } else {
+
                 return Redirect::back()->with('error-message', 'Si è verificato un problema con la creazione del nuovo utente');
             }
         }
@@ -112,25 +122,29 @@ class AdminController extends Controller
         // store defaults widgets configuration in db
 
         $widgets = Widget::all();
+        $dashboards = Dashboard::all();
 
         // dd($widgets[0]->id);
 
-        foreach ($widgets as $widget) {
-            
-            $default_widgets = UserDashboardWidget::updateOrCreate([
-                'user_id' => $user_id,
-                'dashboard_id' => 1,
-                'widget_id' => $widget->id,
-                'x' => 0,
-                'y' => 0,
-                'width' => 1,
-                'height' => 1,
-                'active' => false,
-            ]);
+        foreach ($dashboards as $dashboard) {
+            foreach ($widgets as $widget) {
+
+                
+                $default_widgets = UserDashboardWidget::updateOrCreate([
+                    'user_id' => $user_id,
+                    'dashboard_id' => $dashboard->id, 
+                    'widget_id' => $widget->id,
+                    'x' => 0,
+                    'y' => 0,
+                    'width' => 1,
+                    'height' => 1,
+                    'active' => false,
+                ]);
+            }
         }
 
         // return to $this->create()
-        return;  // true;  // ???
+        return true;  
 
     }
 

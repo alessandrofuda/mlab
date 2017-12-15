@@ -55,6 +55,7 @@
 	<script src="{{ asset('js/gridstack/src/third-party-integr/multiple-grids.js') }}"></script>
 	<script>
 		var host = '{{ url('/') }}';
+		var current_dashboard = '{{ $current_dashboard }}';
 		var serialized_data = [
 			@foreach ($widgets as $widget)
 				{id:{{ $widget->widget_id }}, name:'{{ $widget->widgets->name }}', x: {{$widget->x}}, y: {{$widget->y}}, width: {{$widget->width}}, height:{{$widget->height}}, active: {{$widget->active?'true':'false'}} },
@@ -144,7 +145,7 @@
        			}
 
 		        var widgetsObj = {
-
+		        	'dashboard_id': current_dashboard,
 		            'id': $(items[i]).attr('data-widget-id'),
 			        'x':  $(items[i]).attr('data-gs-x'),
 			        'y':  $(items[i]).attr('data-gs-y'),
@@ -156,6 +157,7 @@
 		        widgets.push(widgetsObj);
 		    }      		
        		
+       		// console.log(widgets);
        		/* console.log('-------START '+ Date($.now()) +'-------');
 		    for(i = 0; i < widgets.length; i++) {
 	        	console.log('Item:' + i + ' /// ' + ' id:'+ widgets[i].id + '  x:'+ widgets[i].x + '  y:'+ widgets[i].y + '  width:'+ widgets[i].width + '  height:' + widgets[i].height + '  active:' + widgets[i].active);

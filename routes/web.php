@@ -30,8 +30,9 @@ Route::group(['middleware' => 'auth'], function() {
 
 	// admin only
 	Route::group(['prefix' => 'admin' , 'middleware' => 'admin'], function() {		 
-		// admin dashboard
-		Route::get('home', 'AdminController@dashboard');
+		// admin dashboards
+		Route::get('home', 'AdminController@dashboard');			// verificare correttezza: --> più routes verso stesso controller e Metodo
+		Route::get('dashboard-{id?}', 'AdminController@dashboard');  
 		// Users CRUD operation
 		Route::get('users', 'AdminController@index');
 		Route::post('user/create', 'AdminController@create');
@@ -56,6 +57,7 @@ Route::group(['middleware' => 'auth'], function() {
 
 	// users or admins
 	Route::get('home', 'UserController@index')->name('home');
+	Route::get('dashboard-{id?}', 'UserController@index');   // verificare correttezza: --> più routes verso stesso controller e Metodo
 	Route::get('my-profile', 'UserController@my_profile')->name('myprofile');
 	Route::get('change-my-psw', 'UserController@change_my_psw')->name('changeMyPsw');
 

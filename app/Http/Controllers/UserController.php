@@ -24,11 +24,15 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($current_dashboard = 1)
     {
-        $title = 'My Dashboard';
+        $title = 'My Dashboard ' . $current_dashboard;
+        $widgets = UserDashboardWidget::where('user_id', Auth::user()->id)
+                                        ->where('dashboard_id', $current_dashboard)
+                                        ->with('widgets')
+                                        ->get();
         
-        return view('home', compact('title'));
+        return view('home', compact('title', 'current_dashboard', 'widgets'));
     }
     
 

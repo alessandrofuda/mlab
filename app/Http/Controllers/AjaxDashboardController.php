@@ -10,7 +10,26 @@ use App\UserDashboardWidget;
 
 
 class AjaxDashboardController extends Controller
-{
+{   
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth'); 
+
+
+        // dashboard dalla quale proviene la chiamata !!  sistemare!!!
+        // $this->current_dashboard = 1; //$current_dashboard; // per ora; HARD CODED !!!!!!!!!!!!!
+
+    }
+
+
+
+
     public function repositioning(Request $request){
 
     	// validation form
@@ -30,7 +49,7 @@ class AjaxDashboardController extends Controller
 
             // update in db
             $user_id = Auth::user()->id;  // per utente autenticato !! Per modificare le dashboard di altri user (da Admin) modificare questa variabile.
-	        $dashboard_id = 1; // per ora: Hard Coded !!
+	        $dashboard_id = $request->widgets[0]['dashboard_id']; 
 	        
 	        foreach ($request->widgets as $widget) {
 	            $widget_remap = UserDashboardWidget::where('user_id', $user_id)
@@ -67,7 +86,7 @@ class AjaxDashboardController extends Controller
         } else { 
 
 	    	$user_id = Auth::user()->id;  // per utente autenticato !! Per modificare le dashboard di altri user (da Admin) modificare questa variabile.
-		    $dashboard_id = 1; // per ora: Hard Coded !!
+		    $dashboard_id = 1; // per ora; HARD CODED !!!!!!!!!!!!! 
 
 		    $widget_deactivate = UserDashboardWidget::where('user_id', $user_id)
 		    										->where('dashboard_id', $dashboard_id)
