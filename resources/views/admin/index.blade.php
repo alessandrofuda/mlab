@@ -126,7 +126,7 @@
 				    <div class="modal-body">
 						<div class="register-box">
 					        <div class="register-box-body">
-					            <form action="{{ url('admin/user/create') }}" method="post">
+					            <form enctype="multipart/form-data" action="{{ url('admin/user/create') }}" method="post">
 					                {!! csrf_field() !!}
 
 					                <div class="form-group has-feedback {{ $errors->has('name') ? 'has-error' : '' }}">
@@ -148,6 +148,11 @@
 					                            <strong>{{ $errors->first('email') }}</strong>
 					                        </span>
 					                    @endif
+					                </div>
+					                <!-- logo upload -->
+					                <div class="form-group has-feedback">
+					                	<label for="logo">Upload Logo</label>
+					                	<input id="logo" class="btn btn-default" type="file" name="logo" style="width: 100%; border-radius: 0px; text-align: left;">
 					                </div>
 					                <div class="form-group has-feedback {{ $errors->has('password') ? 'has-error' : '' }}">
 					                    <input type="password" name="password" class="form-control"

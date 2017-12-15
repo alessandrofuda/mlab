@@ -138,7 +138,7 @@ var dashboardFn = {
           $.ajax({
               type: 'POST',
               url: host + '/ajax/deactivate-widget',
-              data: { id:id }, 
+              data: { id:id, dashboard_id:current_dashboard }, 
               success: function( msg ) {
                 //console.log('chiamata ajax OK: ' + msg);
               },

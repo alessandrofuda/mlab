@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\UserDashboardWidget;
@@ -67,6 +68,7 @@ class AdminController extends Controller
         $rules = array(
             'name' => 'required|string|unique:lr_users',
             'email'=> 'required|email',
+            'logo' => 'image|mimes:jpg,png,jpeg,gif,svg|dimensions:min_width=20,max_width=600,min_height=20,max_height=600',
             'password' => 'required|confirmed',
             'password_confirmation' => 'required'
         );
@@ -83,13 +85,22 @@ class AdminController extends Controller
             $actuator = $request->actuator == true ? 1 : 0;
 
             
+            $extension = Input::file('logo')->getClientOriginalExtension();
+            $newImageName = 'logo-'.str_slug($request->name).'-'. time().'.' . $extension;
+            //upload -- ottimizzazione: impostare max un logo per ogni user --> verificare se già esiste --> se sì: delete image in folder loghi
+            $request->file('logo')->move( base_path(). '/public/img/loghi/', $newImageName);
+            
             $newUser = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
+                'logo' => '/img/loghi/'. $newImageName,   //////////////////////////////////////////
                 'password' => bcrypt($request->password),
                 'is_admin' => $role,
                 'is_actuator' => $actuator
             ]);
+
+            dd($newUser);
+            dd('stop');
 
             if($newUser) {
 

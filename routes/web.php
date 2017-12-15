@@ -48,7 +48,7 @@ Route::group(['middleware' => 'auth'], function() {
 
 
 		// testing route
-		Route::get('test-{user_id}', 'AdminController@init_widgets');
+		// Route::get('test-{user_id}', 'AdminController@init_widgets');
 
 
 	});
