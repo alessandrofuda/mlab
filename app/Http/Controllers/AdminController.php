@@ -103,8 +103,8 @@ class AdminController extends Controller
                 'is_actuator' => $actuator
             ]);
 
-            dd($newUser);
-            dd('stop');
+            //dd($newUser);
+            //dd('stop');
 
             if($newUser) {
 
