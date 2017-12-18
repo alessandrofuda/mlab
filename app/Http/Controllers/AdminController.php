@@ -297,8 +297,10 @@ class AdminController extends Controller
     public function dashboards_customization()
     {
         $title = 'Dashboards customization';
+        $users = User::all();
+        // dd($users);
 
-        return view('admin.dashboards_customization', compact('title'));
+        return view('admin.dashboards_customization', compact('title', 'users'));
     }
 
 

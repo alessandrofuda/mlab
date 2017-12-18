@@ -19,6 +19,7 @@
 @section('content')
     <p>You are logged in!</p>
     <p>My admin dashboard</p>
+    <p>Per personalizzare le dashboards cliccare su 'Widgets' in alto a dx</p>
 	
 	
 	

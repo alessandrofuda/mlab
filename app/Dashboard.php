@@ -30,7 +30,7 @@ class Dashboard extends Model
     */
     public function userDashboardWidget()
     {
-        return $this->hasMany('App\userDashboardWidget');  
+        return $this->hasMany('App\userDashboardWidget', 'dashboard_id');  
     }
     
 

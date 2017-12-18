@@ -15,7 +15,8 @@ class CreateLrDashboardsTable extends Migration
     {
         Schema::create('lr_dashboards', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('description');
+            $table->string('name');
+            $table->text('description')->nullable;
             $table->timestamps();
         });
     }

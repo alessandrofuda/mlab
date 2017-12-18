@@ -18,10 +18,12 @@ Route::get('/', function () {
 });
 
 
-// ajax calls (ony public?)
+// ajax calls (todo: MIDDLEWARE!!!! GROUP !!)
 Route::post('ajax/dashboard', 'AjaxDashboardController@repositioning');
 Route::post('/ajax/deactivate-widget', 'AjaxDashboardController@deactivate_widget');
 // Route::post('/ajax/activate-widget', 'AjaxDashboardController@activate_widget');
+Route::get('ajax/dashboard-customization/user-{user_id}', 'AjaxDashboardController@admin_select_user');
+
 
 
 // Auths
@@ -43,6 +45,7 @@ Route::group(['middleware' => 'auth'], function() {
 		// Route::post('user/{user_id}/reset-psw', 'AdminController@reset_psw');
 		// dashboard customization
 		Route::get('dashboards-customization', 'AdminController@dashboards_customization');
+
 		// export data
 		Route::get('exports', 'AdminController@exports');
 

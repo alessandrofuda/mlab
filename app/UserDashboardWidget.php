@@ -46,7 +46,7 @@ class UserDashboardWidget extends Model
     */
     public function dashboard()
     {
-        return $this->belongsToMany('App\Dashboard', 'dashboard_id'); 
+        return $this->belongsTo('App\Dashboard', 'dashboard_id'); 
     }
 
 

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\UserDashboardWidget;
+use \DB;
 
 
 class AjaxDashboardController extends Controller
@@ -104,6 +105,30 @@ class AjaxDashboardController extends Controller
     //public function activate_widget(Request $request) {
     	//	
     //}
+
+
+
+    /**
+    *   Admin side: Dashboard customization page --> select user/dashboard to modify
+    *
+    */
+    public function admin_select_user($user_id) {
+
+        $dashboards = UserDashboardWidget::with('dashboard:id,name')
+                                        ->where('user_id', $user_id)
+                                        ->orderBy('dashboard_id')
+                                        ->groupBy('dashboard_id')
+                                        ->get();
+        // groupBy --> per fuzionare con eloquent disabilitare strict mode in config/database.php (con larav 5.5 di default è true)
+
+        /*$dashboards = DB::table('lr_user_dashboard_widget')
+                        ->select('dashboard_id') //, \DB::raw('count(*) as total'))
+                        ->groupBy('dashboard_id')
+                        ->get();*/
+
+        return json_encode($dashboards);
+
+    }
 
 
 
