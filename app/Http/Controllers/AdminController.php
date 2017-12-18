@@ -84,16 +84,20 @@ class AdminController extends Controller
             $role = $request->admin == true ? 1 : 0;
             $actuator = $request->actuator == true ? 1 : 0;
 
-            
-            $extension = Input::file('logo')->getClientOriginalExtension();
-            $newImageName = 'logo-'.str_slug($request->name).'-'. time().'.' . $extension;
-            //upload -- ottimizzazione: impostare max un logo per ogni user --> verificare se già esiste --> se sì: delete image in folder loghi
-            $request->file('logo')->move( base_path(). '/public/img/loghi/', $newImageName);
+            if(Input::file('logo')){ 
+                $extension = Input::file('logo')->getClientOriginalExtension();
+                $newImageName = 'logo-'.str_slug($request->name).'-'. time().'.' . $extension;
+                //upload -- ottimizzazione: impostare max un logo per ogni user --> verificare se già esiste --> se sì: delete image in folder loghi
+                $request->file('logo')->move( base_path(). '/public/img/loghi/', $newImageName);
+                $logo = '/img/loghi/'. $newImageName;
+            } else {
+                $logo = null;
+            }
             
             $newUser = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'logo' => '/img/loghi/'. $newImageName,   //////////////////////////////////////////
+                'logo' => $logo,   //////////////////////////////////////////
                 'password' => bcrypt($request->password),
                 'is_admin' => $role,
                 'is_actuator' => $actuator
