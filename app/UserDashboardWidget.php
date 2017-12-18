@@ -33,9 +33,9 @@ class UserDashboardWidget extends Model
     *
     *
     */
-    public function user()
+    public function users()
     {
-        return $this->belongsToMany('App\User', 'user_id'); 
+        return $this->belongsTo('App\User', 'user_id'); 
     }
 
 

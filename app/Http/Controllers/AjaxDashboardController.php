@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\UserDashboardWidget;
+use App\Dashboard;
+use App\User;
 use \DB;
 
 
@@ -127,6 +129,35 @@ class AjaxDashboardController extends Controller
                         ->get();*/
 
         return json_encode($dashboards);
+
+    }
+
+
+
+
+    /**
+    *   Admin side: Dashboard customization & redesign
+    *
+    */
+    public function redesign_user_dashboard($user_id, $dashboard_id) {
+
+        $user_name = User::find($user_id)->first()->name;
+        $dashboard_name = Dashboard::find($dashboard_id)->first()->name;
+        $title = '<p>User Dashboard: '. $user_name . '</p><p>Title Dashboard: '. $dashboard_name .'</p>';
+        // return json_encode($title);
+
+        $widgets = UserDashboardWidget::where('user_id', $user_id )
+                                        ->where('dashboard_id', $dashboard_id)
+                                        // ->with('widgets', 'users')
+                                        ->get();
+
+
+
+        return json_encode($widgets);
+
+        // deve ritornare la stessa pagina con tutti i widget querizzati       
+
+        // return view('admin.home', compact('title', 'current_dashboard', 'widgets')); 
 
     }
 
