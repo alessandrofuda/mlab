@@ -19,11 +19,12 @@ Route::get('/', function () {
 
 
 // ajax calls (todo: MIDDLEWARE!!!! GROUP !!)
-Route::post('ajax/dashboard', 'AjaxDashboardController@repositioning');
-Route::post('/ajax/deactivate-widget', 'AjaxDashboardController@deactivate_widget');
-// Route::post('/ajax/activate-widget', 'AjaxDashboardController@activate_widget');
-Route::get('ajax/dashboard-customization/user-{user_id}', 'AjaxDashboardController@admin_select_user');
-
+Route::group(['middleware' => 'ajax'], function() {
+	Route::post('ajax/dashboard', 'AjaxDashboardController@repositioning');
+	Route::post('/ajax/deactivate-widget', 'AjaxDashboardController@deactivate_widget');
+	// Route::post('/ajax/activate-widget', 'AjaxDashboardController@activate_widget');
+	Route::get('ajax/dashboard-customization/user-{user_id}', 'AjaxDashboardController@admin_select_user');
+});
 
 
 // Auths
