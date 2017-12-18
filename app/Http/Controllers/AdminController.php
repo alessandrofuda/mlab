@@ -258,7 +258,7 @@ class AdminController extends Controller
         $user = User::find($id);
         $user->delete();
 
-        return Redirect::to('admin/users')->with('success-message', 'Utente cancellato correttamente');
+        return Redirect::back()->with('success-message', 'Utente cancellato correttamente');
     }
 
     /**
