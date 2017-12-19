@@ -59,10 +59,10 @@
 		var current_dashboard = '{{ $current_dashboard }}';
 		var serialized_data = [
 			@foreach ($widgets as $widget)
-				{ id:{{ $widget->widget_id }}, name:'{{ $widget->widgets->name }}', x: {{$widget->x}}, y: {{$widget->y}}, width: {{$widget->width}}, height:{{$widget->height}}, active: {{$widget->active?'true':'false'}} },
+				{ id:{{ $widget->widget_id }}, name:'{{ $widget->widgets->name }}', x: {{$widget->x}}, y: {{$widget->y}}, width: {{$widget->width}}, height:{{$widget->height}}, template: {{ $widget->template }}, active: {{$widget->active?'true':'false'}} },
 			@endforeach
 		];
-
+				 
 		/*
 		var serialized_data = [
 			{id: 1, name: 'Widget 1', x: 0, y: 0, width: 1, height: 3, active: true},
@@ -78,7 +78,20 @@
 			{id: 11, name: 'Widget 11', x: 1, y: 1, width: 2, height: 1, active: false},	
 		];
 		*/
+
+
+		//var template_1 = 'template-1_AAAA';		// include ... plain html charts ...
+		//var template_2 = 'template-2_BBBB';
+		//var template_3 = 'template-3_CCCC';
+		//var template_4 = 'template-4_DDDD';
+		//var template_5 = 'template-5_EEEE';
+
+
 	</script>
+
+	{{-- // !! IMPORTANT !! TEMPLATE DEFINITIONS --}}
+	@include('layouts.widget-templates') 
+
 
 	<script type="text/javascript">
 		$(function () {

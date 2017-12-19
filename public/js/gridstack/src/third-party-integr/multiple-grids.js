@@ -102,12 +102,31 @@ var dashboardFn = {
        var items = GridStackUI.Utils.sort(serialized_data);
        var widget;
        _.each(items, function (node) {
+
 		      // Quick and dirty example using clone of a template widget div
 		      widget = $("#template .widget").clone();
 		      // Set Widget Id
 		      widget.attr('data-widget-id', node.id);
 		      // Set widget name
 		      widget.find('.header').html(node.name);
+          
+          // Set widget content - Hard coded
+          if(node.id == 1) {
+            var template = template_1; 
+          } else if(node.id == 2) {
+            var template = template_2;
+          } else if(node.id == 3) {
+            var template = template_3;
+          } else if(node.id == 4) {
+            var template = template_4;
+          } else if(node.id == 5) {
+            var template = template_5;
+          } else {
+            var template = null;
+          }
+
+          widget.find('.content').html(template); 
+          
           if(node.active == true){
   					// Add 'close' widget button
       			widget.find('.portlet-header .header').after('<span class="na-icon na-icon-close portlet-close" title="Close"></span>');
