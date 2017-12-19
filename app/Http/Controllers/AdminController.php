@@ -309,6 +309,34 @@ class AdminController extends Controller
 
 
 
+
+    public function dashboards_customization_post(Request $request){
+
+        $user_id = $request->user;
+        $dashboard_id = $request->dashboard;
+        
+        // dd($current_dashboard);
+        $title = 'Dashboards customization';
+        $sub_title = '<p>User: '.User::find($user_id)->name.'</p><p>Dashboard: '.$dashboard_id.'</p>';
+        $users = User::all();
+        $current_dashboard = $dashboard_id;
+        $current_user = $user_id;
+        $widgets = UserDashboardWidget::where('user_id', $user_id)
+                                        ->where('dashboard_id', $dashboard_id)
+                                        ->with('widgets')
+                                        ->get();
+
+        // dd($widgets);
+
+        return view('admin.dashboards_customization', compact('title', 'sub_title', 'users', 'current_dashboard', 'current_user', 'widgets')); 
+
+
+    }
+
+
+
+
+
     /**
     *   Export Data section
     *

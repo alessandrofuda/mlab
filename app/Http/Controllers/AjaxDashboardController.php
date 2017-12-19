@@ -47,6 +47,11 @@ class AjaxDashboardController extends Controller
 
             // update in db
             $user_id = Auth::user()->id;  // per utente autenticato !! Per modificare le dashboard di altri user (da Admin) modificare questa variabile.
+
+            if(isset($request->widgets[0]['user_id'])) {
+                $user_id = $request->widgets[0]['user_id'];   // ..for dashboards-customization page
+            }
+
 	        $dashboard_id = $request->widgets[0]['dashboard_id']; 
 	        
 	        foreach ($request->widgets as $widget) {
@@ -139,16 +144,18 @@ class AjaxDashboardController extends Controller
     *   Admin side: Dashboard customization & redesign
     *
     */
-    public function redesign_user_dashboard($user_id, $dashboard_id) {
+    /* public function redesign_user_dashboard($user_id, $dashboard_id) {
 
         $user_name = User::find($user_id)->first()->name;
         $dashboard_name = Dashboard::find($dashboard_id)->first()->name;
         $title = '<p>User Dashboard: '. $user_name . '</p><p>Title Dashboard: '. $dashboard_name .'</p>';
         // return json_encode($title);
 
+        $current_dashboard = $dashboard_id;
+
         $widgets = UserDashboardWidget::where('user_id', $user_id )
                                         ->where('dashboard_id', $dashboard_id)
-                                        // ->with('widgets', 'users')
+                                        ->with('widgets', 'users')
                                         ->get();
 
 
@@ -159,7 +166,7 @@ class AjaxDashboardController extends Controller
 
         // return view('admin.home', compact('title', 'current_dashboard', 'widgets')); 
 
-    }
+    } */
 
 
 

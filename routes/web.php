@@ -24,7 +24,7 @@ Route::group(['middleware' => 'ajax'], function() {
 	Route::post('/ajax/deactivate-widget', 'AjaxDashboardController@deactivate_widget');
 	// Route::post('/ajax/activate-widget', 'AjaxDashboardController@activate_widget');
 	Route::get('ajax/dashboard-customization/user-{user_id}', 'AjaxDashboardController@admin_select_user');
-	Route::get('ajax/dashboard-redesign/user-{user_id}/dashboard-{dashboard_id}', 'AjaxDashboardController@redesign_user_dashboard');
+	// Route::get('ajax/dashboard-redesign/user-{user_id}/dashboard-{dashboard_id}', 'AjaxDashboardController@redesign_user_dashboard');
 });
 
 
@@ -47,6 +47,7 @@ Route::group(['middleware' => 'auth'], function() {
 		// Route::post('user/{user_id}/reset-psw', 'AdminController@reset_psw');
 		// dashboard customization
 		Route::get('dashboards-customization', 'AdminController@dashboards_customization');
+		Route::post('dashboards-customization', 'AdminController@dashboards_customization_post');
 
 		// export data
 		Route::get('exports', 'AdminController@exports');

@@ -88,49 +88,6 @@
 
 
 	<script>
-      // Ajax call for repositioning (x,y) on dragstop event
-       /* $('.grid-stack').on('dragstop', function(event, ui) { // !! RIPRENDE LE COORDINATE INIZIALI NON LE NUOVE, FUNZIONA SE RIAGGIORNO LA POSIZIONE
-        var grid = this;
-        var element = event.target;
-        var id = $(element).attr('data-widget-id');
-        var x = $(element).attr('data-gs-x');
-        var y = $(element).attr('data-gs-y');
-        var active = 1;
-        if( $(grid).hasClass('grid-stack-inactive') ){
-          var active = 0;
-        }
-        // console.log('id:'+ id + ' x:'+ x + ' y:'+ y + ' active:' + active);
-        console.log('start ajax');
-        $.ajaxSetup({
-            headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            }
-        });
-        $.ajax({
-            type: 'POST',
-            url: host + '/ajax/dashboard',
-            data: {id: id, x: x, y: y, active: active},
-            success: function( msg ) {
-
-              console.log('chiamata ajax OK: ' + msg);
-                
-            },
-            error: function(req, err) {
-              console.log('errore ');
-              console.log(req);
-            }
-        });
-        console.log('end ajax')
-
-      });  */
-
-      // Ajax call for resizing (width,height) on gsresizestop event
-       /*$('.grid-stack').on('gsresizestop', function(event, elem) {
-          var newHeight = $(elem).attr('data-gs-height');
-          console.log('New height: ' + newHeight);
-       }); */
-
-
        // Ajax call for re-positioning & resizing grid-stack-item
        	$('.grid-stack').on('change', function() {  
        		
