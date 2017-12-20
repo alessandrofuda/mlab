@@ -19,8 +19,13 @@
       	var data = new google.visualization.DataTable(jsonData);
 
       	// Instantiate and draw our chart, passing in some options.
-      	var chart = new google.visualization.PieChart(document.getElementById('widget_1'));
-      	chart.draw(data, {width: 400, height: 240});  // change to dynamic according to container dimensions
+      	var chart = new google.visualization.LineChart(document.getElementById('widget_1'));
+
+      	// responsive layout
+      	var width = $('#widget_1 .grid-stack-item-content .content').width();
+      	var height = $('#widget_1 .grid-stack-item-content .content').height();
+
+      	chart.draw(data, {width: width, height: height});  // change to dynamic according to container dimensions
     }
 
 	</script>

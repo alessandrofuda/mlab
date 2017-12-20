@@ -24,29 +24,22 @@ class AjaxWidgetsController extends Controller
     public function getDataWidgetOne() {
 
     	//
-    	$data = [
-    			'cols' => [
-    				'id' => '',
-    				'label' => '',
-    				'pattern' => '',
-    				'type' => '',
-    			],
-    			'rows' => [
-    				'c' => [
-    						[
-    						'v' => '',
-    						'f' => '',
-    						],
-    						[
-    						'v' => '',
-    						'f' => '',
-    						],
-    					
-    				],
-    			],
-    			];
-    	
-    	return response()->json($data);
+    	$data1 = '{
+		  "cols": [
+		        {"id":"","label":"Dates","pattern":"","type":"string"},
+		        {"id":"","label":"Hourly Energy","pattern":"","type":"number"}
+		      ],
+		  "rows": [
+		        {"c":[{"v":"data1","f":null},{"v":9,"f":null}]},
+		        {"c":[{"v":"data2","f":null},{"v":8,"f":null}]},
+		        {"c":[{"v":"data3","f":null},{"v":6,"f":null}]},
+		        {"c":[{"v":"data4","f":null},{"v":9,"f":null}]},
+		        {"c":[{"v":"data5","f":null},{"v":10,"f":null}]},
+		      ]
+		}';
+
+		return $data1;
+    	// return response()->json($queryResults); // !!  also can use the facade
     }
 
 
