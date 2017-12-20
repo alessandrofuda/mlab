@@ -13,7 +13,7 @@
 
 
 // testing route
-Route::get('test', 'AjaxWidgetsController@getDataWidgetOne');
+Route::get('test', 'AjaxWidgetsController@getDataWidgetTwo');
 
 
 
@@ -32,6 +32,7 @@ Route::group(['middleware' => 'ajax'], function() {
 	// Route::get('ajax/dashboard-redesign/user-{user_id}/dashboard-{dashboard_id}', 'AjaxDashboardController@redesign_user_dashboard');
 	// get data for google charts
 	Route::get('ajax/data-widget-1', 'AjaxWidgetsController@getDataWidgetOne');
+	Route::get('ajax/data-widget-2', 'AjaxWidgetsController@getDataWidgetTwo');
 });
 
 

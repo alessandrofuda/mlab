@@ -1,7 +1,7 @@
 
 
 <div id="template_1" style="display: none;">
-	<p>import template: template-1_AAAA</p>
+	
 	<div id="widget_1"> </div>
 
 	<script type="text/javascript">
@@ -35,7 +35,35 @@
 
 
 <div id="template_2" style="display: none;">
-	<p>import template: template-2_BBBB</p>
+	
+	<div id="widget_2"> </div>
+
+	<script type="text/javascript">
+		// Set a callback to run when the Google Visualization API is loaded.
+    	google.charts.setOnLoadCallback(drawChart);
+      
+    	function drawChart() {
+      		var jsonData = $.ajax({
+          	url: "{{ url('ajax/data-widget-2') }}",
+          	dataType: "json",
+          	async: false
+          	}).responseText;
+          
+      	// Create our data table out of JSON data loaded from server.
+      	var data = new google.visualization.DataTable(jsonData);
+
+      	// Instantiate and draw our chart, passing in some options.
+      	var chart = new google.visualization.ColumnChart(document.getElementById('widget_2'));
+
+      	// responsive layout
+      	var width = $('#widget_2 .grid-stack-item-content .content').width();
+      	var height = $('#widget_2 .grid-stack-item-content .content').height();
+
+      	chart.draw(data, {width: width, height: height});  // change to dynamic according to container dimensions
+    }
+
+	</script>
+
 </div>
 
 
