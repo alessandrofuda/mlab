@@ -12,6 +12,11 @@
 */
 
 
+// testing route
+Route::get('test', 'AjaxWidgetsController@getDataWidgetOne');
+
+
+
 // public pages
 Route::get('/', function () {
     return view('welcome');
@@ -25,6 +30,8 @@ Route::group(['middleware' => 'ajax'], function() {
 	// Route::post('/ajax/activate-widget', 'AjaxDashboardController@activate_widget');
 	Route::get('ajax/dashboard-customization/user-{user_id}', 'AjaxDashboardController@admin_select_user');
 	// Route::get('ajax/dashboard-redesign/user-{user_id}/dashboard-{dashboard_id}', 'AjaxDashboardController@redesign_user_dashboard');
+	// get data for google charts
+	Route::get('ajax/data-widget-1', 'AjaxWidgetsController@getDataWidgetOne');
 });
 
 
@@ -53,8 +60,7 @@ Route::group(['middleware' => 'auth'], function() {
 		Route::get('exports', 'AdminController@exports');
 
 
-		// testing route
-		// Route::get('test-{user_id}', 'AdminController@init_widgets');
+		
 
 
 	});

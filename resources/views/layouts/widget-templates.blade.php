@@ -2,6 +2,29 @@
 
 <div id="template_1" style="display: none;">
 	<p>import template: template-1_AAAA</p>
+	<div id="widget_1"> </div>
+
+	<script type="text/javascript">
+		// Set a callback to run when the Google Visualization API is loaded.
+    	google.charts.setOnLoadCallback(drawChart);
+      
+    	function drawChart() {
+      		var jsonData = $.ajax({
+          	url: "{{ url('ajax/data-widget-1') }}",
+          	dataType: "json",
+          	async: false
+          	}).responseText;
+          
+      	// Create our data table out of JSON data loaded from server.
+      	var data = new google.visualization.DataTable(jsonData);
+
+      	// Instantiate and draw our chart, passing in some options.
+      	var chart = new google.visualization.PieChart(document.getElementById('widget_1'));
+      	chart.draw(data, {width: 400, height: 240});  // change to dynamic according to container dimensions
+    }
+
+	</script>
+
 </div>
 
 
@@ -39,9 +62,7 @@
 	// var template_4 = $('#template_4').html();
 	// var template_5 = $('#template_5').html();
 
-	@foreach ($widgets as $widget)
-		
+	@foreach ($widgets as $widget)		
 		var template_{{ $widget->widget_id }} = $('#template_{{ $widget->widget_id }}').html();
-
 	@endforeach
 </script>

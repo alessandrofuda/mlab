@@ -76,7 +76,13 @@
     <script src="{{ asset('js/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js') }}"></script>
     <script src="{{ asset('js/gridstack/src/gridstack.js') }}"></script>
     <script src="{{ asset('js/gridstack/src/gridstack.jQueryUI.js') }}"></script>
-    
+
+    <!-- google charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        // Load Charts and the corechart package.
+        google.charts.load('current', {'packages':['corechart']});
+    </script>
 
 
     @yield('body')
