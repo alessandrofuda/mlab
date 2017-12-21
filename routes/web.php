@@ -33,6 +33,9 @@ Route::group(['middleware' => 'ajax'], function() {
 	// get data for google charts
 	Route::get('ajax/data-widget-1', 'AjaxWidgetsController@getDataWidgetOne');
 	Route::get('ajax/data-widget-2', 'AjaxWidgetsController@getDataWidgetTwo');
+	Route::get('ajax/data-widget-3', 'AjaxWidgetsController@getDataWidgetThree');
+	Route::get('ajax/data-widget-4', 'AjaxWidgetsController@getDataWidgetFour');
+	Route::get('ajax/data-widget-5', 'AjaxWidgetsController@getDataWidgetFive');
 });
 
 
