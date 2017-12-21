@@ -4,7 +4,7 @@ var dashboardFn = {
             // Grid area to hold active widgets
             var active_grid_options = {
             		width: 4,
-            		height: 10,
+            		height: 100,  // max height of the grid
 	            	cellHeight:100,
 					      alwaysShowResizeHandle: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
                 resizable: {
@@ -21,7 +21,7 @@ var dashboardFn = {
             // Grid area to hold in-active widgets
             var inactive_grid_options = {
             		width: 1,
-            		height: 10,
+            		height: 100,
             		cellHeight:100,
             		animate: false,
             		// grid_class: 'grid-stack-inactive',
