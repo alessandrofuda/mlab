@@ -40,6 +40,7 @@ class AdminController extends Controller
                                         ->get();
 
         // dd($widgets);
+        // dd($current_dashboard);
 
         return view('admin.home', compact('title', 'current_dashboard', 'widgets')); 
     }

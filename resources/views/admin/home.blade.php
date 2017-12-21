@@ -59,8 +59,8 @@
 		var current_dashboard = '{{ $current_dashboard }}';
 		var serialized_data = [
 			@foreach ($widgets as $widget)
-				{ id:{{ $widget->widget_id }}, name:'{{ $widget->widgets->name }}', x: {{$widget->x}}, y: {{$widget->y}}, width: {{$widget->width}}, height:{{$widget->height}}, template: {{ $widget->template }}, active: {{$widget->active?'true':'false'}} },
-			@endforeach
+				{ id:{{ $widget->widget_id }}, name:'{{ $widget->widgets->name }}', x: {{$widget->x}}, y: {{$widget->y}}, width: {{$widget->width}}, height:{{$widget->height}}, active: {{$widget->active?'true':'false'}} },
+			@endforeach  
 		];
 				 
 		/*
