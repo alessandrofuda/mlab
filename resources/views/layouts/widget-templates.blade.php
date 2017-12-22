@@ -183,7 +183,14 @@
 	// var template_4 = $('#template_4').html();
 	// var template_5 = $('#template_5').html();
 
-	@foreach ($widgets as $widget)		
-		var template_{{ $widget->widget_id }} = $('#template_{{ $widget->widget_id }}').html();
-	@endforeach
+  @if(isset($widgets)) 
+
+  	@foreach ($widgets as $widget)		
+  		var template_{{ $widget->widget_id }} = $('#template_{{ $widget->widget_id }}').html();
+  	@endforeach
+
+  {{-- @else --}}
+
+  @endif
+
 </script>
