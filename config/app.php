@@ -15,6 +15,14 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    /**
+    *
+    *   Custom Configuration Params
+    *
+    */
+    'version' => env('APP_VERSION', '(..)'),
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -229,11 +237,5 @@ return [
     ],
 
 
-    /**
-    *
-    *   Custom Configuration Params
-    *
-    */
-    'version' => env('APP_VERSION', '(no ver)'),
-
+    
 ];
