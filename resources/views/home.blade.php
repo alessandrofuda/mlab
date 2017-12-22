@@ -21,7 +21,7 @@
     <p>My user dashboard</p>
 
 
-
+    @include('layouts.gridstack-layout')
 
     
 
