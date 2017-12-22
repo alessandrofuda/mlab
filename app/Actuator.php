@@ -3,21 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\SensorsData;
 
-
-
-class Sensor extends Model
+class Actuator extends Model
 {
-    //
-
-
+    
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'el_sensors';
+    protected $table = 'el_actuators';
 
 
     /**
@@ -29,18 +24,6 @@ class Sensor extends Model
 
 
 
-
-    /**
-    * Relationships
-    *
-    *
-    */
-    public function sensorsData()
-    {
-        return $this->hasMany('App\SensorsData', 'el_sensor_id'); 
-    }
-
-
     /**
     * Relationships
     *
@@ -48,9 +31,8 @@ class Sensor extends Model
     */
     public function subscriptions()
     {
-        return $this->hasMany('App\Subscription', 'sensor_id'); 
+        return $this->hasMany('App\Subscription', 'actuator_id'); 
     }
-
 
 
 }

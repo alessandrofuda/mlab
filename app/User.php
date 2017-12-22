@@ -77,4 +77,14 @@ class User extends Authenticatable
     }
 
 
+    /**
+    * Relationships
+    *
+    *
+    */
+    public function subscriptions()
+    {
+        return $this->hasMany('App\Subscription', 'user_id'); 
+    }
+
 }
