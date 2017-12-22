@@ -70,10 +70,12 @@
 								//console.log(value.dashboard.name);
 								$('select[name="dashboard"]').append('<option value="'+ value.dashboard_id +'">'+ value.dashboard.name +'</option>');
 							});
+							$('input[type="submit"]').removeAttr('disabled');
 						} else {
 							$('select[name="dashboard"]').empty();
 							$('select[name="dashboard"]').attr('disabled', 'disabled');
 							$('select[name="dashboard"]').append('<option value="">No dashboards found for this user</option>');
+							$('input[type="submit"]').attr('disabled', 'disabled');
 						}
 					},
 					error: function(req, err){
@@ -204,6 +206,9 @@
 		];
 		*/
 	</script>
+
+	{{-- // !! IMPORTANT !! TEMPLATE DEFINITIONS --}}
+	@include('layouts.widget-templates')
 
 	<script type="text/javascript">
 		$(function () {

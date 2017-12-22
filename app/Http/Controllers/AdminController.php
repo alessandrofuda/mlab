@@ -302,7 +302,7 @@ class AdminController extends Controller
     public function dashboards_customization()
     {
         $title = 'Dashboards customization';
-        $users = User::all();
+        $users = User::get(['id', 'name']);
         // dd($users);
 
         return view('admin.dashboards_customization', compact('title', 'users'));
@@ -319,7 +319,7 @@ class AdminController extends Controller
         // dd($current_dashboard);
         $title = 'Dashboards customization';
         $sub_title = '<p>User: '.User::find($user_id)->name.'</p><p>Dashboard: '.$dashboard_id.'</p>';
-        $users = User::all();
+        $users = User::get(['id','name']);  //all();
         $current_dashboard = $dashboard_id;
         $current_user = $user_id;
         $widgets = UserDashboardWidget::where('user_id', $user_id)

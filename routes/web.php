@@ -12,8 +12,6 @@
 */
 
 
-// testing route
-Route::get('test', 'AjaxWidgetsController@getDataWidgetTwo');
 
 
 
@@ -64,7 +62,9 @@ Route::group(['middleware' => 'auth'], function() {
 		Route::get('exports', 'AdminController@exports');
 
 
-		
+		// IMPORTANT! Service's / testing Routes
+		Route::get('test', 'AjaxWidgetsController@getDataWidgetTwo');
+
 
 
 	});
