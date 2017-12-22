@@ -374,7 +374,7 @@
 
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
-                <b>{{ env('APP_NAME', '') }}</b> - <small>version {{ env('APP_VERSION', '') }}</small>
+                <b>{{ config('app.name', '...') }}</b> - <small>version {{ config('app.version', '..') }}</small>
             </div>
             <strong>Copyright &copy; {{ date('Y') }} <a href=""></a>.</strong> All rights reserved.
         </footer>
