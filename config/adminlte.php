@@ -342,14 +342,4 @@ return [
 
 
 
-    /**
-    *
-    *   Custom Configuration Params
-    *
-    */
-    'version' => env('APP_VERSION', '(..)'),
-
-
-
-
 ];
