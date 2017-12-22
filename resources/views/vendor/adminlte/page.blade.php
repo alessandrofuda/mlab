@@ -374,7 +374,7 @@
 
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
-                <b>{{ config('app.name', '...') }}</b> - <small>version {{ config('app.version', '..') }}</small>
+                <b>{{ config('app.name', '...') }}</b> - <small>version {{ config('adminlte.version', '..') }}</small>
             </div>
             <strong>Copyright &copy; {{ date('Y') }} <a href=""></a>.</strong> All rights reserved.
         </footer>

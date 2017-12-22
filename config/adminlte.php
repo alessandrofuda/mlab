@@ -339,4 +339,17 @@ return [
         'chartjs' => true,
     ]
     */
+
+
+
+    /**
+    *
+    *   Custom Configuration Params
+    *
+    */
+    'version' => env('APP_VERSION', '(..)'),
+
+
+
+
 ];
