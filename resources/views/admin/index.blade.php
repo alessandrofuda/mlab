@@ -19,8 +19,9 @@
 	<div class="box-body">
 		<div class="text-right">
 	  		<button class="btn btn-primary" data-toggle="modal" data-target="#user-create" title="Create user">
-	  			<i class="fa fa-fw fa-plus"></i> Crea nuovo utente <i class="fa fa-fw fa-user"></i>
+	  			<i class="fa fa-fw fa-plus"></i> Create new user <i class="fa fa-fw fa-user"></i>
 	  		</button>
+	  		<a href="/admin/update-UserDashboardWidget/ALL-users" class="btn btn-primary">Update Dashboards&Widgets</a>
 	  	</div>
 	</div>
 
@@ -29,12 +30,12 @@
 	    <thead>
 		    <tr>
 				<th>Id</th>
-				<th>Nome</th>
+				<th>Name</th>
 				<th>Email</th>
-				<th>Ruolo</th>
+				<th>Role</th>
 				<th>Actuator</th>
-				<th>Data creazione</th>
-				<th>Azione</th>
+				<th>Created on</th>
+				<th></th>
 		    </tr>
 	    </thead>
 	    <tbody>
@@ -56,11 +57,12 @@
 	    <tfoot>
 			<tr>
 			  	<th>Id</th>
-			  	<th>Nome</th>
+			  	<th>Name</th>
 			  	<th>Email</th>
-			  	<th>Ruolo</th>
-			  	<th>Data creazione</th>
-			  	<th>Azione</th>
+			  	<th>Role</th>
+			  	<th>Actuator</th>
+			  	<th>Created on</th>
+			  	<th></th>
 			</tr>
 	    </tfoot>
 	  </table>

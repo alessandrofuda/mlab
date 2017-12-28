@@ -105,5 +105,55 @@ class AdminDashboardController extends Controller
 
 
 
+    /**
+    *
+    * Se si creano nuovi widgets o dashboards --> li aggiunge agli utenti già creati in precedenza (new records in UserDashboardWidget).
+    * [ONLY add records that don't already exist. If already exist NOT update.]
+    * --> Loop between ALL USERS
+    */
+    public function updateUserDashboardWidgetAllUsers(){  // $user_id
+        
+        $users = User::get(['id']);
+        $dashboards = Dashboard::get(['id']);               //all();
+        $widgets = Widget::get(['id']);         //all();
+        
+
+        // dd($widgets[0]->id);
+        $i = 0;
+        foreach ($users as $user) {
+            foreach ($dashboards as $dashboard) {
+                foreach ($widgets as $widget) {
+                    
+                    $dashboardProfile = UserDashboardWidget::firstOrCreate([
+                        'user_id' => $user->id,
+                        'dashboard_id' => $dashboard->id, 
+                        'widget_id' => $widget->id,
+                    ]);
+
+                    if ($dashboardProfile->wasRecentlyCreated) {
+                        // "firstOrCreate" didn't find the user in the DB, so it created it.
+                        $dashboardProfile->fill([
+                            'x' => 0,
+                            'y' => 0,
+                            'width' => 1,
+                            'height' => 1,
+                            'active' => false,
+                        ]);
+
+                        $i++;
+
+                    } // else {
+                        // "firstOrCreate" found the user in the DB and fetched it.
+
+                    //}
+                    
+                }
+            }
+        }
+        
+        return Redirect::back()->with('success-message', '[Admin notification] OK: \'lr_user_dashboard_widget\' table updated correctly. <b>'.$i.'</b> new records created.');
+
+    }
     
+
 }

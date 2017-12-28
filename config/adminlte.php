@@ -137,11 +137,11 @@ return [
                                 'url' => 'admin/dashboard-3',
                                 'icon' => 'chevron-circle-right',
                             ],
-                            //[
-                            //    'text' => 'Dashboard 4',
-                            //    'url' => 'admin/dashboard-4',
-                            //    'icon' => 'chevron-circle-right',
-                            //],
+                            [
+                                'text' => 'Dashboard 4',
+                                'url' => 'admin/dashboard-4',
+                                'icon' => 'chevron-circle-right',
+                            ],
                         ],
             'can' => 'manage-app',
         ],
@@ -202,6 +202,11 @@ return [
                             [
                                 'text' => 'Dashboard 3',
                                 'url' => 'dashboard-3',
+                                'icon' => 'chevron-circle-right',
+                            ],
+                            [
+                                'text' => 'Dashboard 4',
+                                'url' => 'dashboard-4',
                                 'icon' => 'chevron-circle-right',
                             ],
                         ],
