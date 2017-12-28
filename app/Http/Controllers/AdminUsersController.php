@@ -140,9 +140,9 @@ class AdminUsersController extends Controller
 
 
     /**
-    *  Cread "gruppo widget" di default alla creazione di ogni nuovo utente 
+    *  Crea "gruppo widgets" e "gruppo dashboards" di default alla creazione di ogni nuovo utente 
     *
-    *
+    *  return true
     */
     public function init_widgets($user_id){
 

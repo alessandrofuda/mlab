@@ -15,8 +15,8 @@ $(document).ready(function() {
 	});
 
 	// admin page - reset psw form
-	var inpt1 = "<input type='text' name='password' placeholder='Nuova password'>",
-		inpt2 = "<input type='text' name='password_confirmation' placeholder='Reimmetti password'>";	
+	var inpt1 = "<input type='password' name='password' placeholder='Nuova password'>",
+		inpt2 = "<input type='password' name='password_confirmation' placeholder='Reimmetti password'>";	
 	function isEmpty(el){
       return !$.trim(el.html())
   	}	

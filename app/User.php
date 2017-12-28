@@ -87,4 +87,17 @@ class User extends Authenticatable
         return $this->hasMany('App\Subscription', 'user_id'); 
     }
 
+
+    /**
+    * Relationships
+    *
+    *
+    */
+    public function nodes()
+    {
+        return $this->belongsTo('App\Node', 'node_id'); 
+    }
+
+
+
 }
