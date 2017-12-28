@@ -73,14 +73,14 @@
 				<div class="modal-content">
 					<div class="modal-header">
 				    	<button type="button" class="close" data-dismiss="modal">&times;</button>
-				    	<h3 class="modal-title">Modifica utente</h3>
+				    	<h3 class="modal-title">Edit User</h3>
 				    </div>
 				    <div class="modal-body">
-						<form role="form" id="form-{{ $user->id }}" method="post" action="{{ asset('admin/user/'. $user->id . '/update') }}">
+						<form enctype="multipart/form-data" role="form" id="form-{{ $user->id }}" method="post" action="{{ asset('admin/user/'. $user->id . '/update') }}">
 							{!! csrf_field() !!}
 							<div class="box-body">
 								<div class="col-md-6 form-group">
-									<label for="name">Nome</label>
+									<label for="name">Name</label>
 									<input type="text" name="name" class="form-control" value="{{ $user->name }}" placeholder="Insert name" required>
 								</div>
 								<div class="col-md-6 form-group">
@@ -88,16 +88,48 @@
 									<input type="email" name="email" class="form-control" value="{{ $user->email }}">
 								</div>
 								<div class="clearfix"></div>
+
+
+
+
+
+
+
+								
+									
 								<div class="col-md-6 form-group">
+									<label for="logo">Logo</label>
+
+									@if ($user->logo !== null && !empty($user->logo) )
+									<img src="{{ $user->logo }}" alt="{{$user->name}} - Logo" title="{{$user->name}} - Logo" width="130px" height="auto">
+									<button id="change-logo-{{$user->id}}">Change Logo</button>
+						            <input id="input-logo-{{$user->id}}" class="btn btn-default" type="file" name="logo" style="width: 100%; border-radius: 0px; text-align: left;">
+									
+									@else
+						            <input id="logo-{{$user->id}}" class="btn btn-default" type="file" name="logo" style="width: 100%; border-radius: 0px; text-align: left;">
+
+									@endif
+								</div>
+
+								
+
+
+
+
+
+
+
+								<div class="col-md-6 form-group">
+									<label for="reset-psw-{{$user->id}}">Password</label>
 									<div id="reset-psw-{{$user->id}}" class="btn btn-block btn-danger">Reset Password</div>
 									<div class="form-group rst-psw"></div>
 								</div>
 								<div class="col-md-6 form-group">
-									<span class=""><b><i>Amministratore ?</i></b></span>
+									<span class=""><b><i>Administrator Role ?</i></b></span>
 									<span class=""><input type="checkbox" name="admin" value="true" {{ $user->is_admin ? 'checked' : '' }}></span>
 								</div>
 								<div class="col-md-6 form-group">
-									<span class=""><b><i>Abilitato all'uso degli attuatori?</i></b></span>
+									<span class=""><b><i>Enabled to use Actuators?</i></b></span>
 									<span class=""><input type="checkbox" name="actuator" value="true" {{ $user->is_actuator ? 'checked' : '' }}></span>
 								</div>
 								<div class="clearfix"></div>

@@ -40,4 +40,13 @@ $(document).ready(function() {
 		}
 	}); 
 
+	// admin page - change logo form
+	$("input[id^='input-logo-']").hide();
+	$("button[id^='change-logo-']").click( function(e){	
+		e.preventDefault();
+		$("input[id^='input-logo-']").toggle();
+	});
+
+									
+
 });

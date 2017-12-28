@@ -71,20 +71,22 @@ class AdminUsersController extends Controller
             $role = $request->admin == true ? 1 : 0;
             $actuator = $request->actuator == true ? 1 : 0;
 
-            if(Input::file('logo')){ 
-                $extension = Input::file('logo')->getClientOriginalExtension();
-                $newImageName = 'logo-'.str_slug($request->name).'-'. time().'.' . $extension;
+            //if(Input::file('logo')){ 
+            //    $extension = Input::file('logo')->getClientOriginalExtension();
+            //    $newImageName = 'logo-'.str_slug($request->name).'-'. time().'.' . $extension;
                 //upload -- ottimizzazione: impostare max un logo per ogni user --> verificare se già esiste --> se sì: delete image in folder loghi
-                $request->file('logo')->move( base_path(). '/public/img/loghi/', $newImageName);
-                $logo = '/img/loghi/'. $newImageName;
-            } else {
-                $logo = null;
-            }
+            //    $request->file('logo')->move( base_path(). '/public/img/loghi/', $newImageName);
+            //    $logo = '/img/loghi/'. $newImageName;
+            //} else {
+            //    $logo = null;
+            //}
             
+            $logo = $this->logoUrlDefine($request->name, $request->file('logo'));
+
             $newUser = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'logo' => $logo,   //////////////////////////////////////////
+                'logo' => $logo,        ////////////////////////////////////////////////////////////
                 'password' => bcrypt($request->password),
                 'is_admin' => $role,
                 'is_actuator' => $actuator
@@ -111,6 +113,29 @@ class AdminUsersController extends Controller
             }
         }
     }
+
+
+    /**
+    * Define Uploaded Logo image  URL
+    *
+    * return null OR url: /img/loghi/logo-name-4346378.ext
+    */
+    public function logoUrlDefine($name, $file){
+
+        //
+        if(Input::file('logo')){ 
+            $extension = Input::file('logo')->getClientOriginalExtension();
+            $newImageName = 'logo-'.str_slug($name).'-'. time().'.' . $extension;
+            //upload -- ottimizzazione: impostare max un logo per ogni user --> verificare se già esiste --> se sì: delete image in folder loghi
+            $file->move( base_path(). '/public/img/loghi/', $newImageName);
+            $logo = '/img/loghi/'. $newImageName;
+        } else {
+            $logo = null;
+        }
+
+        return $logo;
+    }
+
 
 
 
@@ -164,7 +189,8 @@ class AdminUsersController extends Controller
         // validation form
         $rules = array(
             'name' => 'string|required',
-            'email' => 'email|required'
+            'email' => 'email|required',
+            'logo' => 'image|mimes:jpg,png,jpeg,gif,svg|dimensions:min_width=20,max_width=600,min_height=20,max_height=600',
         );
 
         if (isset($request->password)) { 
@@ -182,9 +208,12 @@ class AdminUsersController extends Controller
             $role = $request->admin == true ? 1 : 0;
             $actuator = $request->actuator == true ? 1 : 0;
 
+            $logo = $this->logoUrlDefine($request->name, $request->file('logo'));
+
             $user = User::find($id);
             $user->name = $request->name;
             $user->email = $request->email;
+            $user->logo = $logo;    //////////////////////////////////////////////////
             $user->is_admin = $role;
             $user->is_actuator = $actuator;
             
