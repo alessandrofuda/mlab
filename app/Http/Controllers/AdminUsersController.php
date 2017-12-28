@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
@@ -14,8 +15,10 @@ use App\User;
 use Session;
 
 
-class AdminController extends Controller
-{   
+
+class AdminUsersController extends Controller
+{
+    
 
     /**
      * Create a new controller instance.
@@ -26,25 +29,6 @@ class AdminController extends Controller
     {
         $this->middleware('admin'); 
     }
-
-    /**
-    * 
-    */
-    public function dashboard($current_dashboard = 1)
-    {   
-        // dd($current_dashboard);
-        $title = 'My Admin Dashboard '. $current_dashboard;
-        $widgets = UserDashboardWidget::where('user_id', Auth::user()->id)
-                                        ->where('dashboard_id', $current_dashboard)
-                                        ->with('widgets')
-                                        ->get();
-
-        // dd($widgets);
-        // dd($current_dashboard);
-
-        return view('admin.home', compact('title', 'current_dashboard', 'widgets')); 
-    }
-
 
 
     /**
@@ -57,6 +41,8 @@ class AdminController extends Controller
         $users = User::all();
         return view('admin.index', compact('users'));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -166,41 +152,6 @@ class AdminController extends Controller
 
 
 
-
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      *
@@ -251,7 +202,7 @@ class AdminController extends Controller
 
 
 
-    /**
+	/**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -266,8 +217,12 @@ class AdminController extends Controller
         return Redirect::back()->with('success-message', 'Utente cancellato correttamente');
     }
 
+
+
     /**
     * reimposta password utente lato admin
+    *
+    *
     */
     public function reset_psw(Request $request, $id) //     SISTEMARE INTEGRARE CON L'UPDATE FUNC
     {
@@ -294,63 +249,10 @@ class AdminController extends Controller
     }
 
 
-    /**
-    *   Dashboard Customization
-    *
-    *
-    */
-    public function dashboards_customization()
-    {
-        $title = 'Dashboards customization';
-        $users = User::get(['id', 'name']);
-        // dd($users);
-
-        return view('admin.dashboards_customization', compact('title', 'users'));
-    }
-
-
-
-
-    public function dashboards_customization_post(Request $request){
-
-        $user_id = $request->user;
-        $dashboard_id = $request->dashboard;
-        
-        // dd($current_dashboard);
-        $title = 'Dashboards customization';
-        $sub_title = '<p>User: '.User::find($user_id)->name.'</p><p>Dashboard: '.$dashboard_id.'</p>';
-        $users = User::get(['id','name']);  //all();
-        $current_dashboard = $dashboard_id;
-        $current_user = $user_id;
-        $widgets = UserDashboardWidget::where('user_id', $user_id)
-                                        ->where('dashboard_id', $dashboard_id)
-                                        ->with('widgets')
-                                        ->get();
-
-        // dd($widgets);
-
-        return view('admin.dashboards_customization', compact('title', 'sub_title', 'users', 'current_dashboard', 'current_user', 'widgets')); 
-
-
-    }
 
 
 
 
 
-    /**
-    *   Export Data section
-    *
-    *
-    */
-    public function exports()
-    {
-        $title = 'Exports Data';
 
-        return view('admin.exports_data', compact('title'));
-    }
-
-
-
-    
 }
