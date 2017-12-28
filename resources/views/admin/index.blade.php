@@ -21,7 +21,7 @@
 	  		<button class="btn btn-primary" data-toggle="modal" data-target="#user-create" title="Create user">
 	  			<i class="fa fa-fw fa-plus"></i> Create new user <i class="fa fa-fw fa-user"></i>
 	  		</button>
-	  		<a href="/admin/update-UserDashboardWidget/ALL-users" class="btn btn-primary">Update Dashboards&Widgets</a>
+	  		<a href="/admin/update-UserDashboardWidget/ALL-users" class="btn btn-primary"><i class="fa fa-fw fa-cogs"></i> Update All Dashboards</a>
 	  	</div>
 	</div>
 

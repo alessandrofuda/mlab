@@ -241,7 +241,9 @@ class AdminUsersController extends Controller
     {
         //
         $user = User::find($id);
-        $user->delete();
+        $user->delete();  // soft delete
+
+        $deleteRows = UserDashboardWidget::where('user_id', $id)->delete();  // hard delete
 
         return Redirect::back()->with('success-message', 'Utente cancellato correttamente');
     }
