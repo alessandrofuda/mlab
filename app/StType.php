@@ -4,15 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Node extends Model
+class StType extends Model
 {
+    
     //
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'st_nodes';
+    protected $table = 'df_stTypes';
 
 
     /**
@@ -24,28 +25,17 @@ class Node extends Model
 
 
 
-
     /**
     * Relationships
     *
     *
     */
-    public function user()
+    public function nodes()
     {
-        return $this->hasOne('App\User', 'node_id'); 
+        return $this->hasMany('App\Node', 'df_stType_id'); 
     }
 
 
-
-    /**
-    * Relationships
-    *
-    *
-    */
-    public function stType()
-    {
-        return $this->belongsTo('App\StType', 'df_stType_id'); 
-    }
 
 
 
