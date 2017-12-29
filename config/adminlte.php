@@ -165,7 +165,7 @@ return [
         ],
         [
             'text' => 'Tree Chart',
-            'url'  => '#',
+            'url'  => 'admin/tree-chart',
             'icon' => 'sitemap',
             'can'  => 'manage-app',
         ],
@@ -241,7 +241,7 @@ return [
         'NODES',
         [
             'text' => 'My Tree',
-            'url'  => '#',
+            'url'  => 'my-tree',
             'icon' => 'sitemap',
             'can'  => 'not-manage-app',
         ],

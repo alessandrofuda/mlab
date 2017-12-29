@@ -55,6 +55,9 @@ Route::group(['middleware' => 'auth'], function() {
 		Route::get('home', 'AdminDashboardController@dashboard');			
 		Route::get('dashboard-{id?}', 'AdminDashboardController@dashboard'); 
 
+		// tree charts
+		Route::get('tree-chart', 'AdminTreeChartController@tree_chart');
+
 		// user-dashboards customization
 		Route::get('dashboards-customization', 'AdminDashboardController@dashboards_customization');
 		Route::post('dashboards-customization', 'AdminDashboardController@dashboards_customization_post');
@@ -81,6 +84,7 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('dashboard-{id?}', 'UserController@index');   
 	Route::get('my-profile', 'UserController@my_profile')->name('myprofile');
 	Route::get('change-my-psw', 'UserController@change_my_psw')->name('changeMyPsw');
+	Route::get('my-tree', 'MyTreeChartController@my_tree');
 
 
 
