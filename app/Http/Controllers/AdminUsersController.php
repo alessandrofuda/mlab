@@ -12,7 +12,9 @@ use App\UserDashboardWidget;
 use App\Dashboard;
 use App\Widget;
 use App\User;
+use App\Node;
 use Session;
+use DB;
 
 
 
@@ -39,7 +41,8 @@ class AdminUsersController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('admin.index', compact('users'));
+        $nodes = Node::all();
+        return view('admin.index', compact('users', 'nodes'));
     }
 
 
@@ -51,13 +54,15 @@ class AdminUsersController extends Controller
      */
     public function create(Request $request)
     {   
+
         // validation form
         $rules = array(
             'name' => 'required|string|unique:lr_users',
             'email'=> 'required|email',
             'logo' => 'image|mimes:jpg,png,jpeg,gif,svg|dimensions:min_width=20,max_width=600,min_height=20,max_height=600',
             'password' => 'required|confirmed',
-            'password_confirmation' => 'required'
+            'password_confirmation' => 'required',
+            'node' => 'required|integer',
         );
 
         $validator = Validator::make($request->all(), $rules);
@@ -70,16 +75,8 @@ class AdminUsersController extends Controller
             // store
             $role = $request->admin == true ? 1 : 0;
             $actuator = $request->actuator == true ? 1 : 0;
+            $nodeId = $request->admin == true ? null : $request->node;
 
-            //if(Input::file('logo')){ 
-            //    $extension = Input::file('logo')->getClientOriginalExtension();
-            //    $newImageName = 'logo-'.str_slug($request->name).'-'. time().'.' . $extension;
-                //upload -- ottimizzazione: impostare max un logo per ogni user --> verificare se già esiste --> se sì: delete image in folder loghi
-            //    $request->file('logo')->move( base_path(). '/public/img/loghi/', $newImageName);
-            //    $logo = '/img/loghi/'. $newImageName;
-            //} else {
-            //    $logo = null;
-            //}
             
             $logo = $this->logoUrlDefine($request->name, $request->file('logo'));
 
@@ -88,8 +85,9 @@ class AdminUsersController extends Controller
                 'email' => $request->email,
                 'logo' => $logo,        ////////////////////////////////////////////////////////////
                 'password' => bcrypt($request->password),
-                'is_admin' => $role,
-                'is_actuator' => $actuator
+                'node_id' => $nodeId, 
+                'is_admin' => $role, 
+                'is_actuator' => $actuator,
             ]);
 
             //dd($newUser);
@@ -98,7 +96,6 @@ class AdminUsersController extends Controller
             if($newUser) {
 
                 // create default widgets profile
-
                 $init_widgets = $this->init_widgets($newUser->id);
 
                 if($init_widgets !== true) {
@@ -191,6 +188,7 @@ class AdminUsersController extends Controller
             'name' => 'string|required',
             'email' => 'email|required',
             'logo' => 'image|mimes:jpg,png,jpeg,gif,svg|dimensions:min_width=20,max_width=600,min_height=20,max_height=600',
+            'node' => 'required|integer',
         );
 
         if (isset($request->password)) { 
@@ -207,6 +205,7 @@ class AdminUsersController extends Controller
             // store
             $role = $request->admin == true ? 1 : 0;
             $actuator = $request->actuator == true ? 1 : 0;
+            $nodeId = $request->admin == true ? null : $request->node;
 
             $logo = $this->logoUrlDefine($request->name, $request->file('logo'));
 
@@ -214,6 +213,7 @@ class AdminUsersController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->logo = $logo;    //////////////////////////////////////////////////
+            $user->node_id = $nodeId;
             $user->is_admin = $role;
             $user->is_actuator = $actuator;
             
@@ -281,7 +281,18 @@ class AdminUsersController extends Controller
 
 
 
+    /**
+    *   MySql Stored Procedure call subTree($node_id);
+    *
+    *   return all subnodes of the parent $node_id
+    */
+    public function getSubTree($node_id) {
 
+        $subTree = DB::select('call subTree('.$node_id.')');
+
+        dd($subTree);
+
+    }
 
 
 

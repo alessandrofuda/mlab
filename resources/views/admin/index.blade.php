@@ -89,16 +89,7 @@
 									<label for="email">Email</label>
 									<input type="email" name="email" class="form-control" value="{{ $user->email }}">
 								</div>
-								<div class="clearfix"></div>
-
-
-
-
-
-
-
-								
-									
+								<div class="clearfix"></div>									
 								<div class="col-md-6 form-group">
 									<label for="logo">Logo</label>
 
@@ -112,19 +103,20 @@
 
 									@endif
 								</div>
-
-								
-
-
-
-
-
-
-
 								<div class="col-md-6 form-group">
 									<label for="reset-psw-{{$user->id}}">Password</label>
 									<div id="reset-psw-{{$user->id}}" class="btn btn-block btn-danger">Reset Password</div>
 									<div class="form-group rst-psw"></div>
+								</div>
+								<div class="col-md-6 form-group">
+									<label for="node">Assigned Node</label>
+									<select name="node" class="form-control">
+										<option value="" {{ is_null($user->node_id) && $user->is_admin == 0 ? 'selected' : '' }}>--- Not yet assigned ---</option>
+										<option value="0" {{$user->is_admin == 1 ? 'selected' : '' }} disabled> -- Admin -- </option>
+										@foreach ($nodes as $node)
+											<option value="{{ $node->id }}" {{ $user->node_id == $node->id ? 'selected' : '' }}>{{ $node->id }}</option>
+										@endforeach
+									</select>
 								</div>
 								<div class="col-md-6 form-group">
 									<span class=""><b><i>Administrator Role ?</i></b></span>
@@ -208,6 +200,21 @@
 					                        </span>
 					                    @endif
 					                </div>
+					                
+
+
+
+					                <select id="node_list" name="node" class="form-control">
+										<option value="">--- Select Node Id ---</option>
+										<option value="0" disabled> Admin </option>
+										@foreach ($nodes as $node)
+											<option value="{{ $node->id }}">{{ $node->id }}</option>
+										@endforeach
+									</select>
+
+
+
+
 					                <div class="form-group">
 					                	<span>Iscrivi come <b><i>Amministratore</i></b></span>
 					                	<input type="checkbox" name="admin" value="true">
@@ -223,10 +230,6 @@
 					        </div>
 					        <!-- /.form-box -->
 					    </div><!-- /.register-box -->
-
-
-
-
 
 
 					</div><!--.modal-body-->

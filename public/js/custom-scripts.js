@@ -10,8 +10,18 @@ $(document).ready(function() {
 	// admin page - create new user form
 	var chk1 = $("input[type='checkbox'][name='admin'][value='true']");
 	var chk2 = $("input[type='checkbox'][name='actuator'][value='true']");
+	var dropdown = $("select[name='node']");  // [id='node_list']
+	var nodezero = $("select[name='node'] option[value='0']");   // [id='node_list']
+
 	chk1.on('change', function(){
 	  chk2.prop('checked',this.checked);
+	  nodezero.prop('selected', this.checked);
+	  dropdown.prop('disabled', this.checked);
+	  if(this.checked){
+	  	$(dropdown).after("<input id='nodezero' type='hidden' name='node' value='0'>");
+	  } else {
+	  	$('input#nodezero').remove();
+	  }
 	});
 
 	// admin page - reset psw form

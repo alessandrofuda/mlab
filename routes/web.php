@@ -68,6 +68,7 @@ Route::group(['middleware' => 'auth'], function() {
 		Route::get('test', 'AjaxWidgetsController@getDataWidgetTwo');
 		Route::get('update-UserDashboardWidget/ALL-users', 'AdminDashboardController@updateUserDashboardWidgetAllUsers');  // update user in UserDashboardWidget model (only update if not exist --> firstOrCreate )
 		//Route::get('regenerate-subscription-profile/{user_id}', 'AdminDashboardControler@ ..... '); // re-init user in Subscription model
+		Route::get('subtree-of-{node_id}', 'AdminUsersController@getSubTree');
 
 
 
