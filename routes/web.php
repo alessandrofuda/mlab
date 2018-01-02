@@ -36,6 +36,7 @@ Route::group(['middleware' => 'ajax'], function() {
 	Route::get('ajax/data-widget-5', 'AjaxWidgetsController@getDataWidgetFive');
 
 	Route::get('ajax/data-treechart', 'AjaxTreeController@getDataTreechart');
+	Route::get('ajax/data-myTreechart', 'AjaxTreeController@getDataMyTreechart');
 });
 
 

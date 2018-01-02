@@ -24,29 +24,24 @@ class AdminTreeChartController extends Controller
 
     public function tree_chart() {
 
-    	// TEST
-    	$node_id = 3;
 
-
-
-
-    	$title = 'Tree Chart';
+    	$title = 'Tree Chart: all nodes';
     	
 
-    	$subTree = DB::select('call subTree('.$node_id.')');
-    	$subNodes = [];
-    	foreach ($subTree as $subNode) {
-    		$subNodes[] = $subNode->id;
-    	}
+    	//$subTree = DB::select('call subTree('.$node_id.')');
+    	//$subNodes = [];
+    	//foreach ($subTree as $subNode) {
+    	//	$subNodes[] = $subNode->id;
+    	//}
     	
-    	// dd($subNodes);
+    	
 
-    	$nodes = Node::with('stType')->whereIn('id', $subNodes)->get();
-    	//dd($nodes);
+    	// $nodes = Node::with('stType')->whereIn('id', $subNodes)->get();
+    	
 
 
 
-    	return view('admin.treechart', compact('title','node_id','nodes'));
+    	return view('admin.treechart', compact('title'));   // ,'nodes'
 
     }
 }

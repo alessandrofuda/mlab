@@ -36,9 +36,7 @@ class MyTreeChartController extends Controller
     	$subTree = DB::select('call subTree('.$mynode.')');
 
 
-    	return view('my-tree', compact('subTree'));
-
-
+    	return view('my-tree', compact('mynode','subTree'));
 
     }
 
