@@ -5,28 +5,37 @@
 	<div id="widget_1"> </div>
 
 	<script type="text/javascript">
-		// Set a callback to run when the Google Visualization API is loaded.
-    	google.charts.setOnLoadCallback(drawChart);
+      // Set a callback to run when the Google Visualization API is loaded.
+    	google.charts.setOnLoadCallback(drawChart1);
       
-    	function drawChart() {
-      		var jsonData = $.ajax({
-          	url: "{{ url('ajax/data-widget-1') }}",
-          	dataType: "json",
-          	async: false
-          	}).responseText;
-          
-      	// Create our data table out of JSON data loaded from server.
-      	var data = new google.visualization.DataTable(jsonData);
+    	function drawChart1() {
+        
+        var jsonData = $.ajax({
+        url: "{{ url('ajax/data-widget-1') }}",
+        dataType: "json",
+        async: false
+        }).responseText;
+    
+        // Create our data table out of JSON data loaded from server.
+        var data = new google.visualization.DataTable(jsonData);
 
       	// Instantiate and draw our chart, passing in some options.
       	var chart = new google.visualization.LineChart(document.getElementById('widget_1'));
 
       	// responsive layout
-      	var width = $('#widget_1 .grid-stack-item-content .content').width();
-      	var height = $('#widget_1 .grid-stack-item-content .content').height();
+      	var width = '100%';  
+      	var height = '100%'; 
 
-      	chart.draw(data, {width: width, height: height, title: 'Dummy Data', legend: {position: "top"}, curveType: 'function', });  // change to dynamic according to container dimensions
+      	chart.draw(data, { width: width, height: height, title: 'Dummy Data', legend: {position: "top"}, curveType: 'function', });  // change to dynamic according to container dimensions
+
     }
+
+    // resize on runtime (timeout to avoid data overflows)
+    var resizeId1;
+    $(window).resize(function() {
+      clearTimeout(resizeId1);
+      resizeId1 = setTimeout(drawChart1, 200);
+    });
 
 	</script>
 
@@ -40,9 +49,9 @@
 
 	<script type="text/javascript">
 		// Set a callback to run when the Google Visualization API is loaded.
-    	google.charts.setOnLoadCallback(drawChart);
+    	google.charts.setOnLoadCallback(drawChart2);
       
-    	function drawChart() {
+    	function drawChart2() {
       		var jsonData = $.ajax({
           	url: "{{ url('ajax/data-widget-2') }}",
           	dataType: "json",
@@ -56,11 +65,18 @@
       	var chart = new google.visualization.ColumnChart(document.getElementById('widget_2'));
 
       	// responsive layout
-      	var width = $('#widget_2 .grid-stack-item-content .content').width();
-      	var height = $('#widget_2 .grid-stack-item-content .content').height();
+      	var width = '100%';  
+        var height = '100%'; 
 
       	chart.draw(data, {width: width, height: height, title: 'Ciabatta ufficio, quartoraria - dati "reali" agganciati a Database', legend:{ position:'bottom' }, });  // change to dynamic according to container dimensions
     }
+
+    // resize on runtime (timeout to avoid data overflows)
+    var resizeId2;
+    $(window).resize(function() {
+      clearTimeout(resizeId2);
+      resizeId2 = setTimeout(drawChart2, 200);
+    });
 
 	</script>
 
@@ -74,9 +90,9 @@
 
   <script type="text/javascript">
     // Set a callback to run when the Google Visualization API is loaded.
-      google.charts.setOnLoadCallback(drawChart);
+      google.charts.setOnLoadCallback(drawChart3);
       
-      function drawChart() {
+      function drawChart3() {
           var jsonData = $.ajax({
             url: "{{ url('ajax/data-widget-3') }}",
             dataType: "json",
@@ -90,11 +106,18 @@
         var chart = new google.visualization.BarChart(document.getElementById('widget_3'));
 
         // responsive layout
-        var width = $('#widget_3 .grid-stack-item-content .content').width();
-        var height = $('#widget_3 .grid-stack-item-content .content').height();
+        var width = '100%';  
+        var height = '100%'; 
 
         chart.draw(data, {width: width, height: height, title: 'Titolo', legend: {position: "bottom"}, });  // change to dynamic according to container dimensions
     }
+
+    // resize on runtime (timeout to avoid data overflows)
+    var resizeId3;
+    $(window).resize(function() {
+      clearTimeout(resizeId3);
+      resizeId3 = setTimeout(drawChart3, 200);
+    });
 
   </script>	
 </div>
@@ -108,9 +131,9 @@
 
   <script type="text/javascript">
     // Set a callback to run when the Google Visualization API is loaded.
-      google.charts.setOnLoadCallback(drawChart);
+      google.charts.setOnLoadCallback(drawChart4);
       
-      function drawChart() {
+      function drawChart4() {
           var jsonData = $.ajax({
             url: "{{ url('ajax/data-widget-4') }}",
             dataType: "json",
@@ -124,11 +147,18 @@
         var chart = new google.visualization.AreaChart(document.getElementById('widget_4'));
 
         // responsive layout
-        var width = $('#widget_4 .grid-stack-item-content .content').width();
-        var height = $('#widget_4 .grid-stack-item-content .content').height();
+        var width = '100%';  
+        var height = '100%'; 
 
         chart.draw(data, {width: width, height: height, title: 'Sub-title', legend: {position: "bottom"}, });  // change to dynamic according to container dimensions
     }
+
+    // resize on runtime (timeout to avoid data overflows)
+    var resizeId4;
+    $(window).resize(function() {
+      clearTimeout(resizeId4);
+      resizeId4 = setTimeout(drawChart4, 200);
+    });
 
   </script>
 
@@ -143,9 +173,9 @@
 
   <script type="text/javascript">
     // Set a callback to run when the Google Visualization API is loaded.
-      google.charts.setOnLoadCallback(drawChart);
+      google.charts.setOnLoadCallback(drawChart5);
       
-      function drawChart() {
+      function drawChart5() {
           var jsonData = $.ajax({
             url: "{{ url('ajax/data-widget-5') }}",
             dataType: "json",
@@ -159,11 +189,18 @@
         var chart = new google.visualization.PieChart(document.getElementById('widget_5'));
 
         // responsive layout
-        var width = $('#widget_5 .grid-stack-item-content .content').width();
-        var height = $('#widget_5 .grid-stack-item-content .content').height();
+        var width = '100%';  
+        var height = '100%'; 
 
         chart.draw(data, {width: width, height: height, title: 'Consumption per Departement - %', pieHole: 0.4, legend: {position: "right", alignment: "center"}, });  // change to dynamic according to container dimensions
     }
+
+    // resize on runtime (timeout to avoid data overflows)
+    var resizeId5;
+    $(window).resize(function() {
+      clearTimeout(resizeId5);
+      resizeId5 = setTimeout(drawChart5, 200);
+    });
 
   </script>
 

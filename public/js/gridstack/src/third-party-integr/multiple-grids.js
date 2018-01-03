@@ -110,7 +110,7 @@ var dashboardFn = {
 		      // Set widget name
 		      widget.find('.header').html(node.name);
           
-          // Set widget content - Hard coded
+          // Set widget content 
           if(node.id == 1) {
             var template = template_1; 
           } else if(node.id == 2) {
