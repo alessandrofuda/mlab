@@ -121,6 +121,14 @@ var dashboardFn = {
             var template = template_4;
           } else if(node.id == 5) {
             var template = template_5;
+          } else if(node.id == 6) {
+            var template = template_6;
+          } else if(node.id == 7) {
+            var template = template_7;
+          } else if(node.id == 8) {
+            var template = template_8;
+          } else if(node.id == 9) {
+            var template = template_9;
           } else {
             var template = null;
           }

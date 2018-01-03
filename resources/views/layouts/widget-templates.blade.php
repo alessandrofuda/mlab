@@ -26,7 +26,7 @@
       	var width = '100%';  
       	var height = '100%'; 
 
-      	chart.draw(data, { width: width, height: height, title: 'Dummy Data', legend: {position: "top"}, curveType: 'function', });  // change to dynamic according to container dimensions
+      	chart.draw(data, { width: width, height: height, title: 'Dummy Data', legend: {position: "top"}, /*curveType: 'function',*/ });  // change to dynamic according to container dimensions
 
     }
 
@@ -206,6 +206,83 @@
 
 
 </div>
+
+
+
+
+<div id="template_6" style="display: none;">
+  
+  <h4>Energy consumption per department - Pie</h4>
+  <div id="widget_6"> </div>
+
+  <script type="text/javascript">
+    // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawChart6);
+      
+      function drawChart6() {
+          var jsonData = $.ajax({
+            url: "{{ url('ajax/data-widget-6') }}",
+            dataType: "json",
+            async: false
+            }).responseText;
+          
+        // Create our data table out of JSON data loaded from server.
+        var data = new google.visualization.DataTable(jsonData);
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('widget_6'));
+
+        // responsive layout
+        var width = '100%';  
+        var height = '100%'; 
+
+        chart.draw(data, {width: width, height: height, title: 'Title - %', legend: {position: "right", alignment: "center"}, });  // change to dynamic according to container dimensions
+    }
+
+    // resize on runtime (timeout to avoid data overflows)
+    var resizeId6;
+    $(window).resize(function() {
+      clearTimeout(resizeId6);
+      resizeId6 = setTimeout(drawChart6, 200);
+    });
+
+  </script>
+
+
+</div>
+
+
+
+<div id="template_7" style="display: none;">
+  
+  <h4>Instant Power - kW</h4>
+  <style>
+    .plain-text { text-align: center; font-size: 80px; display: block; line-height: normal; margin: auto; }
+  </style>
+  <div id="widget_7"> </div>
+
+  <script type="text/javascript">
+      
+    var jsonData = $.ajax({
+        url: "{{ url('ajax/data-widget-7') }}",
+        dataType: "json",
+        async: false
+        }).responseText;
+
+    $('#widget_7').html('<div class="plain-text">'+jsonData+'</div>');
+
+    // resize on runtime (timeout to avoid data overflows)
+    //var resizeId7;
+    //$(window).resize(function() {
+    //  clearTimeout(resizeId7);
+    //  resizeId7 = setTimeout(drawChart7, 200);
+    //});
+
+  </script>
+
+
+</div>
+
 
 
 

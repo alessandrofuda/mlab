@@ -291,4 +291,63 @@ class AjaxWidgetsController extends Controller
 
 
 
+    public function getDataWidgetSix(){
+
+    	//
+    	$queryResults = SensorsData::with('sensors')->where('el_sensor_id', 6)->get(['el_sensor_id','readOn','sensorData']); 
+		$columnTwoLabel = $queryResults[0]->sensors->shortDescr;
+    	
+
+    	
+		//foreach ($queryResults->first()->getAttributes() as $key => $value) {
+			$cols_arr =  '{"id":"1","label":"Dates","pattern":"","type":"string"},';  // sostituire string con date (anche sopra)!
+			$cols_arr .= '{"id":"2","label":"'. $columnTwoLabel .'","pattern":"","type":"number"},';
+		//}
+    	
+		$rows_arr = '';
+
+		foreach ($queryResults as $queryResult) {
+			// dd($queryResult);
+			$date = explode(' ', $queryResult->readOn)[0];  // $date = $date[0];
+			$rows_arr .= '{"c":[{"v":"'.$date.'","f":null},{"v":'.$queryResult->sensorData.',"f":null}]},';
+		}
+    	
+    	$cols = '"cols": [' . $cols_arr . '],';
+    	$rows = '"rows": [' . $rows_arr . '],';
+    	$data = '{'. $cols . $rows . '}'; 
+
+    	
+    	// DUMMY DATA PERCENTAGE
+    	$data = '{   
+			  	"cols": [
+			        {"id":"A","label":"Departements","pattern":"","type":"string"},  
+			        {"id":"B","label":"Consumption percentage","pattern":"","type":"number"},
+			    ],
+			  	"rows": [
+			        {"c":[{"v":"Departement-1","f":null},{"v": 48, "f":null}, ]}, 
+			        {"c":[{"v":"Departement-2","f":null},{"v": 12, "f":null}, ]},
+			        {"c":[{"v":"Departement-3","f":null},{"v": 20, "f":null}, ]},
+			        {"c":[{"v":"Departement-4","f":null},{"v":  5, "f":null}, ]},
+			        {"c":[{"v":"Departement-5","f":null},{"v": 15, "f":null}, ]},
+			    ],
+			    "p": {  }
+		}';
+
+
+    	return $data;
+
+
+    }
+
+    public function getDataWidgetSeven() {
+
+    	//
+    	$data = '123';
+
+
+    	return $data;
+    }
+
+
+
 }
