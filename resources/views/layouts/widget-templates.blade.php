@@ -11,9 +11,15 @@
     	function drawChart1() {
         
         var jsonData = $.ajax({
-        url: "{{ url('ajax/data-widget-1') }}",
-        dataType: "json",
-        async: false
+          url: "{{ url('ajax/data-widget-1') }}",
+          dataType: "json",
+          async: false,
+          success: function(data){
+            console.log(data);
+          },
+          error: function(err){
+            console.log(err);
+          }
         }).responseText;
     
         // Create our data table out of JSON data loaded from server.

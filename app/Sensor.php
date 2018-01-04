@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\SensorsDescriptor;
 use App\SensorsData;
 
 
@@ -46,9 +47,9 @@ class Sensor extends Model
     *
     *
     */
-    public function subscriptions()
+    public function sensorsDescriptor()
     {
-        return $this->hasMany('App\Subscription', 'sensor_id'); 
+        return $this->belongsTo('App\SensorsDescriptor', 'el_sensorsDescriptor_id'); 
     }
 
 

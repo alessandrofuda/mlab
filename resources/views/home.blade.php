@@ -17,8 +17,8 @@
 @stop
 
 @section('content')
-    <p>You are logged in!</p>
-    <p>My user dashboard</p>
+    <!--p>You are logged in!</p>
+    <p>My user dashboard</p-->
 
 
     @include('layouts.gridstack-layout')

@@ -14,7 +14,7 @@
 
 	{{-- var_dump($subTree) --}} 
 
-    <div id="my_tree_chart" style="overflow-x: scroll; overflow-y: auto;"> </div>
+    <div id="my_tree_chart" style="overflow-x: auto; overflow-y: auto;"> </div>
 
     <script type="text/javascript">
 	// Set packages (in theory must be in header)

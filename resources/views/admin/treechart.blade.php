@@ -22,7 +22,7 @@
 
 
 
-<div id="tree_chart" style="overflow-x: scroll; overflow-y: auto;"> </div>
+<div id="tree_chart" style="overflow-x: auto; overflow-y: auto;"> </div>
 
 
 <script type="text/javascript">
