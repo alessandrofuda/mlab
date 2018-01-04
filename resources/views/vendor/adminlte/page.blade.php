@@ -394,9 +394,9 @@
                 <div class="inactive-widgets">      
                     <div class="grid-stack grid-stack-inactive">
                     </div>
-                    <div class="" style="text-align: center; margin: 10px auto;">
+                    <!--div class="" style="text-align: center; margin: 10px auto;">
                         <div id="reposition-widgets" class="btn btn-default">Reposition all Widgets</div>
-                    </div>
+                    </div-->
                 </div>
             </div>
         </aside>
