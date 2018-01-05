@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\SensorsData;
+use Carbon\Carbon; 
 use App\Sensor;
 use Auth;
 use DB;
@@ -59,8 +60,8 @@ class AjaxWidgetsController extends Controller
     	$sensors_arr = $this->getSensorsArray($node_id);
 
 		// query "di default" --> all data of Auth user
-		$queryRows = SensorsData::with('sensors')->whereIn('el_sensor_id', $sensors_arr)->get(['el_sensor_id','createdOn','sensorData']);  
-		$queryCols = SensorsData::with('sensors.sensorsDescriptor')->whereIn('el_sensor_id', $sensors_arr)->groupBy('el_sensor_id')->get(['el_sensor_id','sensorData']);	
+		  
+			
 
 		// echo dropdownmenu of array sensors (meglio: elenco flaggabile individuarne alcuni di default)
     	// echo dropdownmenu of "today", "last week", "last month", "last 30 days".
@@ -69,43 +70,83 @@ class AjaxWidgetsController extends Controller
     	
     	
 		
+    	/* ----------- BLOCCO COLS ---------------------- */
+    	$queryCols = SensorsData::with('sensors.sensorsDescriptor')->whereIn('el_sensor_id', $sensors_arr)->groupBy('el_sensor_id')->get(['el_sensor_id','sensorData']);
     	$cols_arr = '';
 		$cols_arr .=  '{"id":"day","label":"Days","pattern":"","type":"date"},';
 		foreach ($queryCols as $queryCol) {
 		  	$cols_arr .= '{"id":"sensor-'.$queryCol->el_sensor_id.'","label":"'.$queryCol->sensors->sensorsDescriptor->shortDescr.'","pattern":"","type":"number"},';
 		}  
-			
+		//return $cols_arr;
+		/* ------------- FINE BLOCCO COLS ------------------ */
+    	
+    	
+    
+
+    	/*--------------- BLOCCO ROWS ------------------- */
+    	$values_per_sensors = [];
+    	foreach ($sensors_arr as $sensor) {
+	    	
+			$values_per_sensors[] = SensorsData::with('sensors') //->whereIn('el_sensor_id', $sensors_arr)
+													 ->where('el_sensor_id', $sensor)
+													 ->groupBy(['el_sensor_id', DB::raw('Date(createdOn)')])
+													 ->orderBy('el_sensor_id', 'ASC')
+													 ->orderBy('createdOn', 'ASC')
+													 ->get(['el_sensor_id',
+													 		'createdOn',
+													 		DB::raw('max(sensorData) - min(sensorData) as kWh_day')
+													 		]
+													 ); 
+		}
 		
-    	
-    	
+		// return $values_per_sensors;  // <--- array valori splittati per sensore
+		
+
 		$rows_arr = '';
+		foreach ($values_per_sensors[0] as $values_per_sensor) {
 
-		foreach ($queryRows as $queryRow) {
-
-			$date = explode(' ', $queryRow->createdOn)[0];  // $date = $date[0];
-			$time = explode(' ', $queryRow->createdOn)[1];
-			$date = explode('-', $date); 
-			$time = explode(':', $time);
-			$yyyy = $date[0];
-			$mm = $date[1];
-			$dd = $date[2];
-			$hh = $time[0];
-			$mm = $time[1];
-
-			// subArray for values: foreach
+			//return $values_per_sensor;
+			
 			$sub_array = '';
-			foreach ($queryCols as $value) {
-				$sub_array .= '{"v":'.$value->sensorData.',"f":null},';
+			/* foreach ($values_per_sensor as $vps_subarray) {
+
+				// subArray for values: foreach
+				$sub_array = '';
+				//return $vps_subarray;
+				//foreach ($queryCols as $value) {
+					$sub_array .= '{"v":'.$vps_subarray->kWh_day.',"f":null},';
+				//}					
+				
+			} */
+			if(isset($values_per_sensor[0]->createdOn)) {
+				$date = explode(' ', $values_per_sensor[0]->createdOn)[0];  // $date = $date[0];
+				//$time = explode(' ', $vps_subarray->createdOn)[1];
+				$date = explode('-', $date); 
+				//$time = explode(':', $time);
+				$yyyy = $date[0];
+				$mm = $date[1];
+				$dd = $date[2];
+				//$hh = $time[0];
+				//$mm = $time[1];
+			} else {
+				$yyyy = null;
+				$mm = null;
+				$dd = null;
 			}
 
-			$rows_arr .= '{"c":[{"v":"Date('.$yyyy.', '.$mm.', '.$dd.', '.$hh.', '.$mm.')","f":null},'.$sub_array.']},';
+			$rows_arr .= '{"c":[{"v":"Date('.$yyyy.', '.$mm.', '.$dd.')","f":null},'.$sub_array.']},';
+
+			//return $rows_arr;
 
 		}
 
-		// test
 		return $rows_arr;
+		/* ---------------- FINE BLOCCO ROWS ------------------ */
 
-		// !!!!! SISTEMARE, PRODUCE UNA SERIE DI QUESTO TIPO (SBAGLIATA perchè fa merge di sensor 5 e 6)
+
+
+
+		// !!!!! SISTEMARE, PRODUCE UNA SERIE DI QUESTO TIPO (SBAGLIATA perchè fa il merge di sensor 5 e 6)
 		/*
 {"c":[{"v":"Date(2018, 15, 02, 19, 15)","f":null},{"v":4653,"f":null},{"v":4653,"f":null},]},
 {"c":[{"v":"Date(2018, 30, 02, 19, 30)","f":null},{"v":4653,"f":null},{"v":4653,"f":null},]},
@@ -133,23 +174,25 @@ class AjaxWidgetsController extends Controller
 
 
     	// DUMMY   "type":"date"  -->> v: "Date(2018, 01, 03)" 
+											    				/* {"id":"sensor-31","label":"Sensor-31","pattern":"","type":"number"},
+														        {"id":"sensor-32","label":"Sensor-32","pattern":"","type":"number"},
+														        {"id":"sensor-33","label":"Sensor-33","pattern":"","type":"number"},
+														        {"id":"sensor-34","label":"Sensor-34","pattern":"","type":"number"},
+														        {"id":"sensor-35","label":"Sensor-35","pattern":"","type":"number"},
+														        {"id":"sensor-36","label":"Sensor-36","pattern":"","type":"number"},
+														        {"id":"sensor-37","label":"Sensor-37","pattern":"","type":"number"},
+														        {"id":"sensor-38","label":"Sensor-38","pattern":"","type":"number"}, */
+
     	$data = '{   
 			  	"cols": [
 			        {"id":"day","label":"Days","pattern":"","type":"date"},  
 			        {"id":"sensor-5","label":"Sensor-5","pattern":"","type":"number"}, 
 			        {"id":"sensor-6","label":"Sensor-6","pattern":"","type":"number"},
 			        {"id":"sensor-7","label":"Sensor-7","pattern":"","type":"number"},
-			        {"id":"sensor-31","label":"Sensor-31","pattern":"","type":"number"},
-			        {"id":"sensor-32","label":"Sensor-32","pattern":"","type":"number"},
-			        {"id":"sensor-33","label":"Sensor-33","pattern":"","type":"number"},
-			        {"id":"sensor-34","label":"Sensor-34","pattern":"","type":"number"},
-			        {"id":"sensor-35","label":"Sensor-35","pattern":"","type":"number"},
-			        {"id":"sensor-36","label":"Sensor-36","pattern":"","type":"number"},
-			        {"id":"sensor-37","label":"Sensor-37","pattern":"","type":"number"},
-			        {"id":"sensor-38","label":"Sensor-38","pattern":"","type":"number"},
+			    ],    
 
-			    ],
-			  	"rows": [
+			    
+			  	"rows": [										
 			        {"c":[{"v":"Date(2017, 12, 01)","f":null},{"v": 88, "f":null},{"v": 99,"f":null},{"v": 85,"f":null}]}, 
 			        {"c":[{"v":"Date(2017, 12, 02)","f":null},{"v": 90, "f":null},{"v": 95,"f":null},{"v": 75,"f":null}]},
 			        {"c":[{"v":"Date(2017, 12, 03)","f":null},{"v": 95, "f":null},{"v": 84,"f":null},{"v": 96,"f":null}]},
