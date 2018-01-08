@@ -32,33 +32,45 @@ class AjaxWidgetsController extends Controller
      *
      *	@return array of sensors of Auth user
      */
-    public function getSensorsArray($node_id) {
+    public function getSensorsArray() {
 
-    	//
-    	$subtree = DB::select('call subTree('.$node_id.')');
-    	$sensors_arr = [];
-    	$sensorType = 6;  // IMP. 6 identifica solo il sensore! (esclude actuator)
-    	foreach ($subtree as $subNode) {
-    		if($subNode->df_stType_id == $sensorType) {
-    			$sensors_arr[] = $subNode->id;
+		// if Admin --> fetch all sensors
+    	if (Auth::user()->is_admin == 1) {
+
+    		$node_id = null;
+    		$all_sensors = Sensor::get(['id']);
+    		$sensors_arr = [];
+    		foreach ($all_sensors as $all_sensor) {
+    			$sensors_arr[] = $all_sensor->id;
     		}
+
+    	} else {  // fetch only subTree nodes
+
+    		if(!isset(Auth::user()->node_id)){
+    			return 'error: node_id not set for this user.';
+    		}
+
+    		$node_id = Auth::user()->node_id;
+    		$subtree = DB::select('call subTree('.$node_id.')');
+	    	$sensors_arr = [];
+	    	$sensorType = 6;  // IMP. 6 identifica solo il sensore! (esclude actuator)
+	    	foreach ($subtree as $subNode) {
+	    		if($subNode->df_stType_id == $sensorType) {
+	    			$sensors_arr[] = $subNode->id;
+	    		}
+	    	}
     	}
 
     	return $sensors_arr;
-
     }
 
 
 
     public function getDataWidgetOne() {
-
-    	if(!isset(Auth::user()->node_id)) {
-    		return 'error: node_id not set for this user, or this user is Admin. (Log-in like user).';
-    	}
-
-    	$node_id = Auth::user()->node_id;
-    	$sensors_arr = $this->getSensorsArray($node_id);
-
+ 
+    	$sensors_arr = $this->getSensorsArray();
+    	// return $sensors_arr;
+    	
 		// query "di default" --> all data of Auth user
 		  
 			
@@ -66,8 +78,6 @@ class AjaxWidgetsController extends Controller
 		// echo dropdownmenu of array sensors (meglio: elenco flaggabile individuarne alcuni di default)
     	// echo dropdownmenu of "today", "last week", "last month", "last 30 days".
     	// query "di affinamento"
-
-    	
     	
 		
     	/* ----------- BLOCCO COLS ---------------------- */
@@ -77,55 +87,37 @@ class AjaxWidgetsController extends Controller
 		foreach ($queryCols as $queryCol) {
 		  	$cols_arr .= '{"id":"sensor-'.$queryCol->el_sensor_id.'","label":"'.$queryCol->sensors->sensorsDescriptor->shortDescr.'","pattern":"","type":"number"},';
 		}  
-		//return $cols_arr;
+		// return $cols_arr;
 		/* ------------- FINE BLOCCO COLS ------------------ */
     	
     	
     
 
     	/*--------------- BLOCCO ROWS ------------------- */
-    	$values_per_sensors = [];
-    	foreach ($sensors_arr as $sensor) {
-	    	
-			$values_per_sensors[] = SensorsData::with('sensors') //->whereIn('el_sensor_id', $sensors_arr)
-													 ->where('el_sensor_id', $sensor)
-													 ->groupBy(['el_sensor_id', DB::raw('Date(createdOn)')])
-													 ->orderBy('el_sensor_id', 'ASC')
-													 ->orderBy('createdOn', 'ASC')
-													 ->get(['el_sensor_id',
-													 		'createdOn',
-													 		DB::raw('max(sensorData) - min(sensorData) as kWh_day')
-													 		]
-													 ); 
-		}
-		
-		// return $values_per_sensors;  // <--- array valori splittati per sensore
-		
-
-		$rows_arr = '';
-		foreach ($values_per_sensors[0] as $values_per_sensor) {
-
-			//return $values_per_sensor;
-			
-			$sub_array = '';
-			/* foreach ($values_per_sensor as $vps_subarray) {
-
-				// subArray for values: foreach
-				$sub_array = '';
-				//return $vps_subarray;
-				//foreach ($queryCols as $value) {
-					$sub_array .= '{"v":'.$vps_subarray->kWh_day.',"f":null},';
-				//}					
+		$sensorsData = DB::table('vl_sensorsData')->whereIn('el_sensor_id', $sensors_arr);
 				
-			} */
-			if(isset($values_per_sensor[0]->createdOn)) {
-				$date = explode(' ', $values_per_sensor[0]->createdOn)[0];  // $date = $date[0];
+		$dates_arr_obj = $sensorsData->select(DB::raw('Date(createdOn) as createdOn'))
+									->get();
+									// return $dates_arr_obj;  // array of objects
+		$dates_arr = [];
+		foreach ($dates_arr_obj as $value) {
+			//return $value->createdOn;
+			$dates_arr[] = $value->createdOn;
+		}
+		$dates_arr = array_unique($dates_arr, SORT_REGULAR);  // ['2018-12-02', '2018-12-03', ...]
+		//return $dates_arr;
+		
+		$rows_arr = '';
+		foreach ($dates_arr as $date) {
+			
+			if(isset($date)) {
+				// $date_str = explode(' ', $date)[0];  // $date = $date[0];
 				//$time = explode(' ', $vps_subarray->createdOn)[1];
-				$date = explode('-', $date); 
+				$date_arr = explode('-', $date); 
 				//$time = explode(':', $time);
-				$yyyy = $date[0];
-				$mm = $date[1];
-				$dd = $date[2];
+				$yyyy = $date_arr[0];
+				$mm = $date_arr[1];
+				$dd = $date_arr[2];
 				//$hh = $time[0];
 				//$mm = $time[1];
 			} else {
@@ -134,13 +126,79 @@ class AjaxWidgetsController extends Controller
 				$dd = null;
 			}
 
+			$sub_string = '';
+			
+			foreach ($sensors_arr as $sensor) {  // $sensors_arr = [5,6,7,31, ... ]
+				// re-init $value
+
+				$value = [];
+				//$date = '2018-01-02';
+				$value = $sensorsData->select('el_sensor_id', 'createdOn', DB::raw('max(sensorData) - min(sensorData) as kWh_day'))
+									->groupBy(['el_sensor_id', DB::raw('Date(createdOn)')])   
+									->orderBy('el_sensor_id', 'ASC')
+									->orderBy('createdOn', 'ASC')
+									->where('createdOn', 'like', '%'.$date.'%')     // 00:00:00')
+									->where('el_sensor_id', $sensor)
+									->get()
+									//->first()
+									;
+				// return $value;
+				// return $value[0]->kWh_day;
+				$v = isset($value[0]) ? $value[0]->kWh_day : 'null';		
+				$sub_string .= '{"v":'.$v.',"f":null},';
+				// return $sub_string;
+			} 
+			//return $sub_string;
+
+			$rows_arr .= '{"c":[{"v":"Date('.$yyyy.', '.$mm.', '.$dd.')","f":null},'.$sub_string.']},';
+		}
+
+		return $rows_arr;
+
+		/*
+		$rows_arr = '';
+		foreach ($values_per_sensors as $values_per_sensor) {
+
+			//return $values_per_sensor;
+			
+			$sub_array = '';
+			foreach ($values_per_sensor as $vps_subarray) {
+
+				// subArray for values: foreach
+				$sub_array = '';
+				//return $vps_subarray;
+				foreach ($queryCols as $value) {
+					$sub_array .= '{"v":'.$vps_subarray->kWh_day.',"f":null},';
+				}					
+			
+
+
+				if(isset($vps_subarray->createdOn)) {
+					$date = explode(' ', $vps_subarray->createdOn)[0];  // $date = $date[0];
+					//$time = explode(' ', $vps_subarray->createdOn)[1];
+					$date = explode('-', $date); 
+					//$time = explode(':', $time);
+					$yyyy = $date[0];
+					$mm = $date[1];
+					$dd = $date[2];
+					//$hh = $time[0];
+					//$mm = $time[1];
+				} else {
+					$yyyy = null;
+					$mm = null;
+					$dd = null;
+				}
+
 			$rows_arr .= '{"c":[{"v":"Date('.$yyyy.', '.$mm.', '.$dd.')","f":null},'.$sub_array.']},';
 
 			//return $rows_arr;
 
-		}
 
-		return $rows_arr;
+			}
+			
+		} */
+
+		//return $rows_arr;
 		/* ---------------- FINE BLOCCO ROWS ------------------ */
 
 
