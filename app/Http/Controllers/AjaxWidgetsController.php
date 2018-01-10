@@ -64,24 +64,39 @@ class AjaxWidgetsController extends Controller
     	return $sensors_arr;
     }
 
+    
+
+
+    public function getActuatorsArray() {
+    	//
+    }
+
+
+
+    public function createJsonData() {
+    	//
+    }
+
+
 
 
     public function getDataWidgetOne() {
  
-    	$sensors_arr = $this->getSensorsArray();
+    	$sensors_arr = $this->getSensorsArray();  // IMPORTANTE: filtrare l'array con i soli sensori NON HIDDEN !!!!
     	// return $sensors_arr;
-    	
-		// query "di default" --> all data of Auth user
-		  
-			
+    	// hourly/daily/monthly/yearly
+    	$aggregationLevel = 'Date(createdOn)';  // daily
+    	//$aggregationLevel = 'Month(createdOn)'; //monthly
+		$startDate = '';
+		$endDate = '';
 
-		// echo dropdownmenu of array sensors (meglio: elenco flaggabile individuarne alcuni di default)
-    	// echo dropdownmenu of "today", "last week", "last month", "last 30 days".
-    	// query "di affinamento"
-    	
-		
+
+
     	/* ----------- BLOCCO COLS ---------------------- */
-    	$queryCols = SensorsData::with('sensors.sensorsDescriptor')->whereIn('el_sensor_id', $sensors_arr)->groupBy('el_sensor_id')->get(['el_sensor_id','sensorData']);
+    	$queryCols = SensorsData::with('sensors.sensorsDescriptor')->whereIn('el_sensor_id', $sensors_arr)
+    															   ->groupBy('el_sensor_id')
+    															   ->get(['el_sensor_id','sensorData']);
+    	//return $queryCols;
     	$cols_arr = '';
 		$cols_arr .=  '{"id":"day","label":"Days","pattern":"","type":"date"},';
 		foreach ($queryCols as $queryCol) {
@@ -89,159 +104,70 @@ class AjaxWidgetsController extends Controller
 		}  
 		// return $cols_arr;
 		/* ------------- FINE BLOCCO COLS ------------------ */
-    	
-    	
-    
+
 
     	/*--------------- BLOCCO ROWS ------------------- */
-		$sensorsData = DB::table('vl_sensorsData')->whereIn('el_sensor_id', $sensors_arr);
-				
-		$dates_arr_obj = $sensorsData->select(DB::raw('Date(createdOn) as createdOn'))
-									->get();
-									// return $dates_arr_obj;  // array of objects
-		$dates_arr = [];
-		foreach ($dates_arr_obj as $value) {
-			//return $value->createdOn;
-			$dates_arr[] = $value->createdOn;
+		$rows_arr = '';
+
+		// ---> array DATES/TIMES
+		$dates_obj = SensorsData::whereIn('el_sensor_id', $sensors_arr)
+								//->where('createdOn', '>=', '%'.$startDate.'%')
+								//->where('createdOn', '<=', '%'.$endDate.'%')
+								->groupBy(DB::raw( $aggregationLevel ))
+								->get([DB::raw('Date(createdOn) as date')]);
+		$dates = [];
+		foreach ($dates_obj as $date_item) {
+			$dates[] = $date_item->date;   // ["2018-01-02", "2018-01-03", "2018-01-04"]
 		}
-		$dates_arr = array_unique($dates_arr, SORT_REGULAR);  // ['2018-12-02', '2018-12-03', ...]
-		//return $dates_arr;
+return $dates;
+
+		// ---> array SENSORS (realmente presenti in DB!->important!)
+		$sensors_obj = SensorsData::whereIn('el_sensor_id', $sensors_arr)
+								  ->groupBy('el_sensor_id')
+								  ->get(['el_sensor_id']);
+		$sensors = [];
+		foreach ($sensors_obj as $sensor_item) {
+			$sensors[] = $sensor_item->el_sensor_id;
+		}
+
 		
-		$rows_arr = '';
-		foreach ($dates_arr as $date) {
-			
-			if(isset($date)) {
-				// $date_str = explode(' ', $date)[0];  // $date = $date[0];
-				//$time = explode(' ', $vps_subarray->createdOn)[1];
-				$date_arr = explode('-', $date); 
-				//$time = explode(':', $time);
-				$yyyy = $date_arr[0];
-				$mm = $date_arr[1];
-				$dd = $date_arr[2];
-				//$hh = $time[0];
-				//$mm = $time[1];
-			} else {
-				$yyyy = null;
-				$mm = null;
-				$dd = null;
-			}
-
-			$sub_string = '';
-			
-			foreach ($sensors_arr as $sensor) {  // $sensors_arr = [5,6,7,31, ... ]
-				// re-init $value
-
-				$value = [];
-				//$date = '2018-01-02';
-				$value = $sensorsData->select('el_sensor_id', 'createdOn', DB::raw('max(sensorData) - min(sensorData) as kWh_day'))
-									->groupBy(['el_sensor_id', DB::raw('Date(createdOn)')])   
-									->orderBy('el_sensor_id', 'ASC')
-									->orderBy('createdOn', 'ASC')
-									->where('createdOn', 'like', '%'.$date.'%')     // 00:00:00')
+		// ---> MAIN QUERY
+		foreach ($dates as $date) {
+			$sensors_values = '';
+			foreach ($sensors as $sensor) {
+				
+				$value = SensorsData::groupBy(DB::raw('Date(createdOn)'), 'el_sensor_id')
+									->where('createdOn', 'LIKE', '%'.$date.'%')
 									->where('el_sensor_id', $sensor)
-									->get()
-									//->first()
-									;
-				// return $value;
-				// return $value[0]->kWh_day;
-				$v = isset($value[0]) ? $value[0]->kWh_day : 'null';		
-				$sub_string .= '{"v":'.$v.',"f":null},';
-				// return $sub_string;
-			} 
-			//return $sub_string;
+									//->select('createdOn', 'el_sensor_id', DB::raw('SUM(sensorData) as sum'))
+									->select(DB::raw('SUM(sensorData) as sum'))
+									//->get()
+									->first()
+									->sum;
+									//return $value;
 
-			$rows_arr .= '{"c":[{"v":"Date('.$yyyy.', '.$mm.', '.$dd.')","f":null},'.$sub_string.']},';
-		}
-
-		return $rows_arr;
-
-		/*
-		$rows_arr = '';
-		foreach ($values_per_sensors as $values_per_sensor) {
-
-			//return $values_per_sensor;
-			
-			$sub_array = '';
-			foreach ($values_per_sensor as $vps_subarray) {
-
-				// subArray for values: foreach
-				$sub_array = '';
-				//return $vps_subarray;
-				foreach ($queryCols as $value) {
-					$sub_array .= '{"v":'.$vps_subarray->kWh_day.',"f":null},';
-				}					
-			
-
-
-				if(isset($vps_subarray->createdOn)) {
-					$date = explode(' ', $vps_subarray->createdOn)[0];  // $date = $date[0];
-					//$time = explode(' ', $vps_subarray->createdOn)[1];
-					$date = explode('-', $date); 
-					//$time = explode(':', $time);
-					$yyyy = $date[0];
-					$mm = $date[1];
-					$dd = $date[2];
-					//$hh = $time[0];
-					//$mm = $time[1];
-				} else {
-					$yyyy = null;
-					$mm = null;
-					$dd = null;
-				}
-
-			$rows_arr .= '{"c":[{"v":"Date('.$yyyy.', '.$mm.', '.$dd.')","f":null},'.$sub_array.']},';
-
-			//return $rows_arr;
-
-
+				$sensors_values .= '{"v": '.$value.', "f":null},'; // qui impostare query .. $sensor->value
+				// return $sensors_values;
 			}
-			
-		} */
-
-		//return $rows_arr;
+			//return $sensors_values;
+			$expl_date = explode('-', $date);
+			$yyyy = $expl_date[0];
+			$mm = $expl_date[1] - 1;  // in js date object, months era indexed starting at zero and go up to eleven !
+			$dd = $expl_date[2];
+			$rows_arr .= '{"c":[{"v":"Date('.$yyyy.', '.$mm.', '.$dd.')","f":null}, '.$sensors_values. ']}, ';
+		}
+		// return $rows_arr;
 		/* ---------------- FINE BLOCCO ROWS ------------------ */
 
-
-
-
-		// !!!!! SISTEMARE, PRODUCE UNA SERIE DI QUESTO TIPO (SBAGLIATA perchè fa il merge di sensor 5 e 6)
-		/*
-{"c":[{"v":"Date(2018, 15, 02, 19, 15)","f":null},{"v":4653,"f":null},{"v":4653,"f":null},]},
-{"c":[{"v":"Date(2018, 30, 02, 19, 30)","f":null},{"v":4653,"f":null},{"v":4653,"f":null},]},
-{"c":[{"v":"Date(2018, 45, 02, 19, 45)","f":null},{"v":4653,"f":null},{"v":4653,"f":null},]},
-{"c":[{"v":"Date(2018, 00, 02, 20, 00)","f":null},{"v":4653,"f":null},{"v":4653,"f":null},]},  <--- vedi orario
-{"c":[{"v":"Date(2018, 00, 02, 20, 00)","f":null},{"v":4653,"f":null},{"v":4653,"f":null},]},
-{"c":[{"v":"Date(2018, 15, 02, 20, 15)","f":null},{"v":4653,"f":null},{"v":4653,"f":null},]},
-{"c":[{"v":"Date(2018, 30, 02, 20, 30)","f":null},{"v":4653,"f":null},{"v":4653,"f":null},]},
-{"c":[{"v":"Date(2018, 45, 02, 20, 45)","f":null},{"v":4653,"f":null},{"v":4653,"f":null},]},
-{"c":[{"v":"Date(2018, 00, 02, 21, 00)","f":null},{"v":4653,"f":null},{"v":4653,"f":null},]},  <--- vedi orario
-{"c":[{"v":"Date(2018, 00, 02, 21, 00)","f":null},{"v":4653,"f":null},{"v":4653,"f":null},]},
-*/
-
-
-
-
-
-
-
     	
+    	// ---> CREATE JSON DATA
     	$cols = '"cols": [' . $cols_arr . '],';
     	$rows = '"rows": [' . $rows_arr . '],';
     	$data = '{'. $cols . $rows . '}'; 
 
 
 
-    	// DUMMY   "type":"date"  -->> v: "Date(2018, 01, 03)" 
-											    				/* {"id":"sensor-31","label":"Sensor-31","pattern":"","type":"number"},
-														        {"id":"sensor-32","label":"Sensor-32","pattern":"","type":"number"},
-														        {"id":"sensor-33","label":"Sensor-33","pattern":"","type":"number"},
-														        {"id":"sensor-34","label":"Sensor-34","pattern":"","type":"number"},
-														        {"id":"sensor-35","label":"Sensor-35","pattern":"","type":"number"},
-														        {"id":"sensor-36","label":"Sensor-36","pattern":"","type":"number"},
-														        {"id":"sensor-37","label":"Sensor-37","pattern":"","type":"number"},
-														        {"id":"sensor-38","label":"Sensor-38","pattern":"","type":"number"}, */
-
-    	$data = '{   
+    	/* $data = '{   
 			  	"cols": [
 			        {"id":"day","label":"Days","pattern":"","type":"date"},  
 			        {"id":"sensor-5","label":"Sensor-5","pattern":"","type":"number"}, 
@@ -265,7 +191,7 @@ class AjaxWidgetsController extends Controller
 			        {"c":[{"v":"Date(2017, 12, 12)","f":null},{"v": 58, "f":null},{"v": 40,"f":null},{"v": 80,"f":null}]},
 			    ],
 			    "p": {  }
-		}';
+		}'; */
 
 
     	return $data;
