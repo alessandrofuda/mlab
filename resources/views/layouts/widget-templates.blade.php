@@ -1,8 +1,25 @@
 
 
 <div id="template_1" style="display: none;">
-	
-	<div id="widget_1"> </div>
+
+
+	<!--form id="sensors-selector" action="">
+      {{-- @foreach ($sensors_arr as $sensor)
+        <input type="checkbox" name="sensor" value="5">sensor 5
+      @endforeach --}}
+        
+        <input type="submit" name="Filter sensors" value="Filter sensors">
+        {{-- on.change -> reload ajax call --}}
+  </form-->
+
+
+	<div id="widget_1">
+      <div id="filter_div"></div>
+      <div id="chart_div"></div>
+  </div>
+
+
+
 
 	<script type="text/javascript">
       // Set a callback to run when the Google Visualization API is loaded.
@@ -11,28 +28,125 @@
     	function drawChart1() {
         
         var jsonData = $.ajax({
-          url: "{{ url('ajax/data-widget-1') }}",
+          url: "{{ url('ajax/data-widget-1') }}",  // add parameters from front-end controls
           dataType: "json",
           async: false,
           success: function(data){
-            console.log(data);
+            // console.log(data);
           },
           error: function(err){
             console.log(err);
           }
-        }).responseText;
-    
+        }).responseText;   
+
+
+
+var jsonData = '';
+// $('#json').html(jsonData);
+//console.log(JSON.parse(jsonData));
+
+
+
+
+
+// FINIRE FILTRO jquery delle colonne sensor
+
+
+
+
+
+console.log(jsonData);
+var filtered = $([{"name":"AAAAAAAA","website":"test222"}, {"name":"BBBBBBB","website":"test"}]).filter(function (i,n) { return n.website==='test'; });
+console.log(filtered);
+
+
+
         // Create our data table out of JSON data loaded from server.
         var data = new google.visualization.DataTable(jsonData);
 
       	// Instantiate and draw our chart, passing in some options.
-      	var chart = new google.visualization.LineChart(document.getElementById('widget_1'));
+      	//var chart = new google.visualization.LineChart(document.getElementById('widget_1'));
+
+
+
+
+
+
+
+
+        // Create a dashboard.
+        var dashboard = new google.visualization.Dashboard(
+            document.getElementById('widget_1')
+            );
+
+        // Create a sensors selector, passing some options
+        var linechartSensorSelector = new google.visualization.ControlWrapper({
+          'controlType': 'CategoryFilter',
+          'containerId': 'filter_div',
+          'options': {
+           //'filterColumnLabel': 'Donuts eaten',
+           'filterColumnIndex': 1,
+           'ui': {
+                'allowTyping': false,
+                'allowMultiple': true,
+                'selectedValuesLayout': 'belowStacked',
+            }
+          },
+          // 'state': {'selectedValues': ['CPU', 'Memory']}
+        });
+
+        // Create line chart, passing some options
+        // responsive layout
+        var width = '100%';  
+        var height = '100%'; 
+        var lineChart = new google.visualization.ChartWrapper({
+          'chartType': 'LineChart',
+          'containerId': 'chart_div',
+          'options': {
+            'width': width,
+            'height': height,
+            //'pieSliceText': 'value', // ?? for linechart?
+            'legend': 'top'
+          }
+        });
+
+        // Establish dependencies, declaring that 'filter' drives 'lineChart',
+        // so that the line chart will only display entries that are let through
+        // given the chosen sensors.
+        dashboard.bind(linechartSensorSelector, lineChart);
+
+        // Draw the dashboard.
+        dashboard.draw(data);
+
+
+
+
+
+
+
+
+
+
 
       	// responsive layout
-      	var width = '100%';  
-      	var height = '100%'; 
+      	//var width = '100%';  
+      	//var height = '100%'; 
 
-      	chart.draw(data, { width: width, height: height, title: 'Dummy Data', legend: {position: "top"}, /*curveType: 'function',*/ });  // change to dynamic according to container dimensions
+        /*var options = {
+          width: width, 
+          height: height, 
+          title: 'Dummy Data', 
+          legend: {position: "top"}, 
+          // curveType: 'function',
+          hAxis: {
+            title: 'Time',
+          },
+          vAxis: {
+            title: 'kWh',
+          },
+        }; */
+
+      	// chart.draw(data, options);  // change to dynamic according to container dimensions
 
     }
 

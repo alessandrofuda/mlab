@@ -85,10 +85,16 @@ class AjaxWidgetsController extends Controller
     	$sensors_arr = $this->getSensorsArray();  // IMPORTANTE: filtrare l'array con i soli sensori NON HIDDEN !!!!
     	// return $sensors_arr;
     	// hourly/daily/monthly/yearly
-    	$aggregationLevel = 'Date(createdOn)';  // daily
+    	//$aggregationLevel = 'Hour(createdOn)';  // hourly
+    	// $aggregationLevel = 'Date(createdOn)';  // daily
     	//$aggregationLevel = 'Month(createdOn)'; //monthly
+    	//$aggregationLevel = 'Year(createdOn)';  // yearly
 		$startDate = '';
 		$endDate = '';
+
+
+
+		
 
 
 
@@ -98,11 +104,14 @@ class AjaxWidgetsController extends Controller
     															   ->get(['el_sensor_id','sensorData']);
     	//return $queryCols;
     	$cols_arr = '';
-		$cols_arr .=  '{"id":"day","label":"Days","pattern":"","type":"date"},';
+		$cols_arr .= '{"id":"time","label":"time","pattern":"","type":"date"},';
+
 		foreach ($queryCols as $queryCol) {
-		  	$cols_arr .= '{"id":"sensor-'.$queryCol->el_sensor_id.'","label":"'.$queryCol->sensors->sensorsDescriptor->shortDescr.'","pattern":"","type":"number"},';
+			$cols_arr .= '{"id":"sensor-'.$queryCol->el_sensor_id.'","label":"'.$queryCol->sensors->sensorsDescriptor->shortDescr.'","pattern":"","type":"number"},';
 		}  
-		// return $cols_arr;
+		$cols_arr = rtrim($cols_arr, ',');
+
+//return $cols_arr;
 		/* ------------- FINE BLOCCO COLS ------------------ */
 
 
@@ -111,15 +120,45 @@ class AjaxWidgetsController extends Controller
 
 		// ---> array DATES/TIMES
 		$dates_obj = SensorsData::whereIn('el_sensor_id', $sensors_arr)
-								//->where('createdOn', '>=', '%'.$startDate.'%')
-								//->where('createdOn', '<=', '%'.$endDate.'%')
-								->groupBy(DB::raw( $aggregationLevel ))
-								->get([DB::raw('Date(createdOn) as date')]);
+								//->whereDate('createdOn', '>=', '%'.$startDate.'%')
+								//->whereDate('createdOn', '<=', '%'.$endDate.'%')
+								//->groupBy(DB::raw( $aggregationLevel ))   // Date(createdOn)
+								//->get([DB::raw($aggregationLevel.' as datetime')]);   
+								->get(['createdOn as datetime']);
+								//return $dates_obj;
 		$dates = [];
 		foreach ($dates_obj as $date_item) {
-			$dates[] = $date_item->date;   // ["2018-01-02", "2018-01-03", "2018-01-04"]
+			/* $datetime_expl = explode(' ', $date_item->datetime);
+			$date = $datetime_expl[0];
+			$time = $datetime_expl[1];
+			$date_expl = explode('-', $date);
+			 
+			if ( $aggregationLevel == 'Hour(createdOn)' ) {   // hourly
+				$dates[] = $time;
+			} elseif ($aggregationLevel == 'Date(createdOn)') {  // daily
+				$dates[] = $date;
+			} elseif ($aggregationLevel == 'Month(createdOn)') {  // monthly
+				$month = $date_expl[1];
+				$dates[] = '-'.$month.'-';
+			} elseif ($aggregationLevel == 'Year(createdOn)') {   // yearly
+				$year = $date_expl[0];
+				$dates[] = $year.'-';
+			} else {
+				$dates[] = $date;
+			}*/
+			$dates[] = $date_item->datetime;
+			
 		}
-return $dates;
+
+
+
+
+// return $dates;
+
+
+
+
+
 
 		// ---> array SENSORS (realmente presenti in DB!->important!)
 		$sensors_obj = SensorsData::whereIn('el_sensor_id', $sensors_arr)
@@ -132,67 +171,120 @@ return $dates;
 
 		
 		// ---> MAIN QUERY
-		foreach ($dates as $date) {
+		foreach ($dates as $date) { // [0,1,2,3,4,5,6,7,8,9,....23] hourly
 			$sensors_values = '';
+			//$sensors = [5,6];  // TEST 5 -> quartoraria   6->oraria
 			foreach ($sensors as $sensor) {
 				
-				$value = SensorsData::groupBy(DB::raw('Date(createdOn)'), 'el_sensor_id')
-									->where('createdOn', 'LIKE', '%'.$date.'%')
+				$value = SensorsData::where('createdOn', $date)
+									//->groupBy(DB::raw('Date(createdOn)'), 'el_sensor_id')  //   // pulisce in caso di doppioni
 									->where('el_sensor_id', $sensor)
-									//->select('createdOn', 'el_sensor_id', DB::raw('SUM(sensorData) as sum'))
-									->select(DB::raw('SUM(sensorData) as sum'))
-									//->get()
-									->first()
-									->sum;
-									//return $value;
+												//->select('createdOn', 'el_sensor_id', DB::raw('SUM(sensorData) as sum'))
+									//->select(DB::raw('SUM(sensorData) as sum'))
+									->first();  // ->sum only if exist
+									
+				$value = $value === null ? '0' : $value->sensorData; // !! IMPORT.cambiare quando ci sarà la tab. con consumi energia (anzichè con le letture)!!
+//return $value;
 
 				$sensors_values .= '{"v": '.$value.', "f":null},'; // qui impostare query .. $sensor->value
 				// return $sensors_values;
 			}
-			//return $sensors_values;
-			$expl_date = explode('-', $date);
-			$yyyy = $expl_date[0];
-			$mm = $expl_date[1] - 1;  // in js date object, months era indexed starting at zero and go up to eleven !
-			$dd = $expl_date[2];
-			$rows_arr .= '{"c":[{"v":"Date('.$yyyy.', '.$mm.', '.$dd.')","f":null}, '.$sensors_values. ']}, ';
+			$sensors_values = rtrim($sensors_values, ',');
+			
+
+			// return $date;
+
+			
+			/* if ( $aggregationLevel == 'Hour(createdOn)' ) {
+				$time = explode(':', $date);
+				$hh = $time[0];
+				$ii = $time[1];
+				$ss = $time[2];
+				$time_values = '['.$hh.' , '.$ii.', '.$ss.']';
+
+			} elseif ( $aggregationLevel == 'Date(createdOn)' ) {
+				///////////////////////////////////////////////
+
+				$time_values = 'Date('.$yyyy.', '.$mm.', '.$dd.', '.$hh.', '.$ii.', '.$ss.')';
+
+			} elseif ( $aggregationLevel == 'Month(createdOn)' ) {
+				$time_values = 'Date('.$yyyy.', '.$mm.')';
+
+			} elseif ( $aggregationLevel == 'Year(createdOn)' ) {
+				$time_values = 'Date('.$yyyy.')';
+			} else {
+				$time_values = '';
+			} */
+			 
+			//$rows_arr .= '{"c":[{"v":"Date('.$yyyy.', '.$mm.', '.$dd.', '.$hh.', '.$ii.', '.$ss.')","f":null}, '.$sensors_values. ']}, ';
+			$date_arr = explode(' ', $date);
+			$date1 = $date_arr[0];
+			$date1 = explode('-', $date1);
+			$time = $date_arr[1];
+			$time = explode(':', $time);
+			$yyyy = $date1[0];
+			$mm = $date1[1]-1;  // js months format from 0 to 11
+			$dd = $date1[2];
+			$hh = $time[0];
+			$ii = $time[1];
+			$ss = $time[2];
+
+			$rows_arr .= '{"c":[{"v":"Date('.$yyyy.', '.$mm.', '.$dd.', '.$hh.', '.$ii.', '.$ss.')","f":null}, '.$sensors_values. ']},';
+			
 		}
-		// return $rows_arr;
+		//return $rows_arr;
+		$rows_arr = rtrim($rows_arr, ',');
+		//return $rows_arr;
+
+
+
+
+
+
+// return $rows_arr;
 		/* ---------------- FINE BLOCCO ROWS ------------------ */
 
     	
     	// ---> CREATE JSON DATA
     	$cols = '"cols": [' . $cols_arr . '],';
-    	$rows = '"rows": [' . $rows_arr . '],';
+    	$rows = '"rows": [' . $rows_arr . ']';
     	$data = '{'. $cols . $rows . '}'; 
 
 
+    	
+    	// come settare timeofday nel json ??? : https://developers.google.com/chart/interactive/docs/datesandtimes  search time of day
+    	// 													"type":"date"
+    	// https://developers.google.com/chart/interactive/docs/reference#dateformatter
+    	// timeofday: v: senza virgolette !!!!!!!
 
-    	/* $data = '{   
-			  	"cols": [
-			        {"id":"day","label":"Days","pattern":"","type":"date"},  
+
+    	 /*$data = '{
+				"cols": [
+			        {"id":"month","label":"Months","pattern":"","type":"date"},  
 			        {"id":"sensor-5","label":"Sensor-5","pattern":"","type":"number"}, 
-			        {"id":"sensor-6","label":"Sensor-6","pattern":"","type":"number"},
-			        {"id":"sensor-7","label":"Sensor-7","pattern":"","type":"number"},
-			    ],    
+			        {"id":"sensor-6","label":"Sensor-6","pattern":"","type":"number"}
 
-			    
+			    ],			    
 			  	"rows": [										
-			        {"c":[{"v":"Date(2017, 12, 01)","f":null},{"v": 88, "f":null},{"v": 99,"f":null},{"v": 85,"f":null}]}, 
-			        {"c":[{"v":"Date(2017, 12, 02)","f":null},{"v": 90, "f":null},{"v": 95,"f":null},{"v": 75,"f":null}]},
-			        {"c":[{"v":"Date(2017, 12, 03)","f":null},{"v": 95, "f":null},{"v": 84,"f":null},{"v": 96,"f":null}]},
-			        {"c":[{"v":"Date(2017, 12, 04)","f":null},{"v": 80, "f":null},{"v": 49,"f":null},{"v": 88,"f":null}]},
-			        {"c":[{"v":"Date(2017, 12, 05)","f":null},{"v": 70, "f":null},{"v": 70,"f":null},{"v": 99,"f":null}]},
-			        {"c":[{"v":"Date(2017, 12, 06)","f":null},{"v": 78, "f":null},{"v": 60,"f":null},{"v": 80,"f":null}]},
-			        {"c":[{"v":"Date(2017, 12, 07)","f":null},{"v": 78, "f":null},{"v": 60,"f":null},{"v": 70,"f":null}]},
-			        {"c":[{"v":"Date(2017, 12, 08)","f":null},{"v": 58, "f":null},{"v": 40,"f":null},{"v": 60,"f":null}]},
-			        {"c":[{"v":"Date(2017, 12, 09)","f":null},{"v": 72, "f":null},{"v": 60,"f":null},{"v": 79,"f":null}]},
-			        {"c":[{"v":"Date(2017, 12, 10)","f":null},{"v": 68, "f":null},{"v": 70,"f":null},{"v": 89,"f":null}]},
-			        {"c":[{"v":"Date(2017, 12, 11)","f":null},{"v": 78, "f":null},{"v": 55,"f":null},{"v": 99,"f":null}]},
-			        {"c":[{"v":"Date(2017, 12, 12)","f":null},{"v": 58, "f":null},{"v": 40,"f":null},{"v": 80,"f":null}]},
+			        {"c":[{"v":"Date(2018, 01)","f":null},{"v": 88, "f":null},{"v": 99,"f":null},{"v": 85,"f":null}]}, 
+			        {"c":[{"v":"Date(2018, 02)","f":null},{"v": 90, "f":null},{"v": 95,"f":null},{"v": 75,"f":null}]},
+			        {"c":[{"v":"Date(2018, 03)","f":null},{"v": 90, "f":null},{"v": 95,"f":null},{"v": 75,"f":null}]}
 			    ],
-			    "p": {  }
+			    "p": []
 		}'; */
+		/*{"id":"sensor-7","label":"Sensor-7","pattern":"","type":"number"},*/
 
+/* {"c":[{"v":"Date(14, 00, 00)","f":null},{"v": 95, "f":null},{"v": 84,"f":null},{"v": 96,"f":null}]},
+			        {"c":[{"v":"Date(15, 00, 00)","f":null},{"v": 80, "f":null},{"v": 49,"f":null},{"v": 88,"f":null}]},
+			        {"c":[{"v":"Date(16, 00, 00)","f":null},{"v": 70, "f":null},{"v": 70,"f":null},{"v": 99,"f":null}]},
+			        {"c":[{"v":"Date(17, 00, 00)","f":null},{"v": 78, "f":null},{"v": 60,"f":null},{"v": 80,"f":null}]},
+			        {"c":[{"v":"Date(18, 00, 00)","f":null},{"v": 78, "f":null},{"v": 60,"f":null},{"v": 70,"f":null}]},
+			        {"c":[{"v":"Date(19, 00, 00)","f":null},{"v": 58, "f":null},{"v": 40,"f":null},{"v": 60,"f":null}]},
+			        {"c":[{"v":"Date(20, 00, 00)","f":null},{"v": 72, "f":null},{"v": 60,"f":null},{"v": 79,"f":null}]},
+			        {"c":[{"v":"Date(21, 00, 00)","f":null},{"v": 68, "f":null},{"v": 70,"f":null},{"v": 89,"f":null}]},
+			        {"c":[{"v":"Date(22, 00, 00)","f":null},{"v": 78, "f":null},{"v": 55,"f":null},{"v": 99,"f":null}]},
+			        {"c":[{"v":"Date(23, 00, 00)","f":null},{"v": 58, "f":null},{"v": 40,"f":null},{"v": 80,"f":null}]},
+*/
 
     	return $data;
 
@@ -218,7 +310,7 @@ return $dates;
 
 		foreach ($queryResults as $queryResult) {
 			// dd($queryResult);
-			$date = explode(' ', $queryResult->readOn)[0];  // $date = $date[0];
+			$date = explode(' ', $queryResult->createdOn)[0];  // $date = $date[0];
 			$rows_arr .= '{"c":[{"v":"'.$date.'","f":null},{"v":'.$queryResult->sensorData.',"f":null}]},';
 		}
     	

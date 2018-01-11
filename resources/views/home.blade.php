@@ -19,7 +19,7 @@
 @section('content')
     <!--p>You are logged in!</p>
     <p>My user dashboard</p-->
-
+    <div id="json"></div><!-- append json x test-->
 
     @include('layouts.gridstack-layout')
 
