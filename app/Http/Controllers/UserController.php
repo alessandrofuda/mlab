@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\User;
+use App\Sensor;
+use App\SensorsData;
 use Illuminate\Http\Request;
 use App\UserDashboardWidget;
+use App\Http\Controllers\AjaxWidgetsController;
 
 class UserController extends Controller
 {   
@@ -33,8 +36,14 @@ class UserController extends Controller
                                         ->where('dashboard_id', $current_dashboard)
                                         ->with('widgets')
                                         ->get();
+
+        $sensors = AjaxWidgetsController::getSensorsArray();
+        //dd($sensors);
+        $mysensors = Sensor::with('sensorsDescriptor')->whereIn('id', $sensors)->get();
+        //dd($mysensors);
+
         
-        return view('home', compact('title', 'current_dashboard', 'widgets'));
+        return view('home', compact('title', 'current_dashboard', 'widgets', 'mysensors'));
     }
     
 

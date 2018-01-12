@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\UserDashboardWidget;
 use App\Dashboard;
 use App\Widget;
+use App\Sensor;
 use App\User;
 use Session;
 
@@ -41,10 +42,11 @@ class AdminDashboardController extends Controller
                                         ->with('widgets')
                                         ->get();
 
-        // dd($widgets);
-        // dd($current_dashboard);
+        $sensors = AjaxWidgetsController::getSensorsArray();
+        $mysensors = Sensor::with('sensorsDescriptor')->whereIn('id', $sensors)->get();
 
-        return view('admin.home', compact('title', 'current_dashboard', 'widgets')); 
+
+        return view('admin.home', compact('title', 'current_dashboard', 'widgets', 'mysensors')); 
     }
 
 

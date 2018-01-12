@@ -32,7 +32,7 @@ class AjaxWidgetsController extends Controller
      *
      *	@return array of sensors of Auth user
      */
-    public function getSensorsArray() {
+    public static function getSensorsArray() {   // add static to function
 
 		// if Admin --> fetch all sensors
     	if (Auth::user()->is_admin == 1) {
@@ -61,7 +61,16 @@ class AjaxWidgetsController extends Controller
 	    	}
     	}
 
-    	return $sensors_arr;
+    	//filter only sensors that really exists in db
+    	$sensors_obj = SensorsData::whereIn('el_sensor_id', $sensors_arr)
+                                  ->groupBy('el_sensor_id')
+                                  ->get(['el_sensor_id']); 
+        $sensors_filtered = [];
+        foreach ($sensors_obj as $sensor_item) {
+            $sensors_filtered[] = $sensor_item->el_sensor_id;
+        }
+
+    	return $sensors_filtered;
     }
 
     
@@ -120,32 +129,10 @@ class AjaxWidgetsController extends Controller
 
 		// ---> array DATES/TIMES
 		$dates_obj = SensorsData::whereIn('el_sensor_id', $sensors_arr)
-								//->whereDate('createdOn', '>=', '%'.$startDate.'%')
-								//->whereDate('createdOn', '<=', '%'.$endDate.'%')
-								//->groupBy(DB::raw( $aggregationLevel ))   // Date(createdOn)
-								//->get([DB::raw($aggregationLevel.' as datetime')]);   
 								->get(['createdOn as datetime']);
-								//return $dates_obj;
+								
 		$dates = [];
 		foreach ($dates_obj as $date_item) {
-			/* $datetime_expl = explode(' ', $date_item->datetime);
-			$date = $datetime_expl[0];
-			$time = $datetime_expl[1];
-			$date_expl = explode('-', $date);
-			 
-			if ( $aggregationLevel == 'Hour(createdOn)' ) {   // hourly
-				$dates[] = $time;
-			} elseif ($aggregationLevel == 'Date(createdOn)') {  // daily
-				$dates[] = $date;
-			} elseif ($aggregationLevel == 'Month(createdOn)') {  // monthly
-				$month = $date_expl[1];
-				$dates[] = '-'.$month.'-';
-			} elseif ($aggregationLevel == 'Year(createdOn)') {   // yearly
-				$year = $date_expl[0];
-				$dates[] = $year.'-';
-			} else {
-				$dates[] = $date;
-			}*/
 			$dates[] = $date_item->datetime;
 			
 		}
@@ -171,7 +158,7 @@ class AjaxWidgetsController extends Controller
 
 		
 		// ---> MAIN QUERY
-		foreach ($dates as $date) { // [0,1,2,3,4,5,6,7,8,9,....23] hourly
+		foreach ($dates as $date) { 
 			$sensors_values = '';
 			//$sensors = [5,6];  // TEST 5 -> quartoraria   6->oraria
 			foreach ($sensors as $sensor) {
@@ -179,8 +166,6 @@ class AjaxWidgetsController extends Controller
 				$value = SensorsData::where('createdOn', $date)
 									//->groupBy(DB::raw('Date(createdOn)'), 'el_sensor_id')  //   // pulisce in caso di doppioni
 									->where('el_sensor_id', $sensor)
-												//->select('createdOn', 'el_sensor_id', DB::raw('SUM(sensorData) as sum'))
-									//->select(DB::raw('SUM(sensorData) as sum'))
 									->first();  // ->sum only if exist
 									
 				$value = $value === null ? '0' : $value->sensorData; // !! IMPORT.cambiare quando ci sarà la tab. con consumi energia (anzichè con le letture)!!
@@ -193,29 +178,7 @@ class AjaxWidgetsController extends Controller
 			
 
 			// return $date;
-
-			
-			/* if ( $aggregationLevel == 'Hour(createdOn)' ) {
-				$time = explode(':', $date);
-				$hh = $time[0];
-				$ii = $time[1];
-				$ss = $time[2];
-				$time_values = '['.$hh.' , '.$ii.', '.$ss.']';
-
-			} elseif ( $aggregationLevel == 'Date(createdOn)' ) {
-				///////////////////////////////////////////////
-
-				$time_values = 'Date('.$yyyy.', '.$mm.', '.$dd.', '.$hh.', '.$ii.', '.$ss.')';
-
-			} elseif ( $aggregationLevel == 'Month(createdOn)' ) {
-				$time_values = 'Date('.$yyyy.', '.$mm.')';
-
-			} elseif ( $aggregationLevel == 'Year(createdOn)' ) {
-				$time_values = 'Date('.$yyyy.')';
-			} else {
-				$time_values = '';
-			} */
-			 
+ 
 			//$rows_arr .= '{"c":[{"v":"Date('.$yyyy.', '.$mm.', '.$dd.', '.$hh.', '.$ii.', '.$ss.')","f":null}, '.$sensors_values. ']}, ';
 			$date_arr = explode(' ', $date);
 			$date1 = $date_arr[0];

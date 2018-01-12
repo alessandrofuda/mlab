@@ -3,14 +3,21 @@
 <div id="template_1" style="display: none;">
 
 
-	<!--form id="sensors-selector" action="">
-      {{-- @foreach ($sensors_arr as $sensor)
-        <input type="checkbox" name="sensor" value="5">sensor 5
-      @endforeach --}}
-        
-        <input type="submit" name="Filter sensors" value="Filter sensors">
-        {{-- on.change -> reload ajax call --}}
-  </form-->
+	<form id="sensors_selector_widget_1">
+      @if (isset($mysensors))  
+        <?php $i = 1; ?>
+        @foreach ($mysensors as $mysensor)
+          <input type="checkbox" name="sensors[]" value="{{ $i }}" checked="true">{{ $mysensor->sensorsDescriptor->shortDescr  }}
+          <?php $i++; ?>
+        @endforeach
+      <!--input class="btn btn-default btn-sm" type="submit" name="Filter sensors" value="Filter sensors"-->
+
+      @else
+
+        <p>No sensors filter found for this user (check user or admin controller controller)</p>
+
+      @endif
+  </form>
 
 
 	<div id="widget_1">
@@ -41,43 +48,38 @@
 
 
 
-var jsonData = '';
+
 // $('#json').html(jsonData);
 //console.log(JSON.parse(jsonData));
 
-
-
-
-
-// FINIRE FILTRO jquery delle colonne sensor
-
-
-
-
-
-console.log(jsonData);
-var filtered = $([{"name":"AAAAAAAA","website":"test222"}, {"name":"BBBBBBB","website":"test"}]).filter(function (i,n) { return n.website==='test'; });
-console.log(filtered);
+//console.log(jsonData);
+//var filtered = $([{"name":"AAAAAAAA","website":"test222"}, {"name":"BBBBBBB","website":"test"}]).filter(function (i,n) { return n.website==='test'; });
+//console.log(filtered);
 
 
 
         // Create our data table out of JSON data loaded from server.
         var data = new google.visualization.DataTable(jsonData);
+        //var columnnumber = data.getNumberOfColumns(); 
+        //console.log(columnnumber);
+
+        // Create a view that shows/hide columns.
+        var view = new google.visualization.DataView(data);
+
+        var indexes = $("#sensors_selector_widget_1 input:checkbox:not(:checked)").map(function(){
+                          return eval($(this).val());
+                      }).get();
+        view.hideColumns(indexes);
 
       	// Instantiate and draw our chart, passing in some options.
-      	//var chart = new google.visualization.LineChart(document.getElementById('widget_1'));
+      	var chart = new google.visualization.LineChart(document.getElementById('widget_1'));
 
-
-
-
-
-
-
-
+        /*
         // Create a dashboard.
         var dashboard = new google.visualization.Dashboard(
             document.getElementById('widget_1')
             );
+
 
         // Create a sensors selector, passing some options
         var linechartSensorSelector = new google.visualization.ControlWrapper({
@@ -97,19 +99,17 @@ console.log(filtered);
 
         // Create line chart, passing some options
         // responsive layout
-        var width = '100%';  
-        var height = '100%'; 
         var lineChart = new google.visualization.ChartWrapper({
           'chartType': 'LineChart',
           'containerId': 'chart_div',
           'options': {
-            'width': width,
-            'height': height,
+            'width': '100%',
+            'height': '100%',
             //'pieSliceText': 'value', // ?? for linechart?
             'legend': 'top'
           }
         });
-
+        // linechart.setView({'columns': []}); // show only some column
         // Establish dependencies, declaring that 'filter' drives 'lineChart',
         // so that the line chart will only display entries that are let through
         // given the chosen sensors.
@@ -117,24 +117,12 @@ console.log(filtered);
 
         // Draw the dashboard.
         dashboard.draw(data);
+        */
 
 
-
-
-
-
-
-
-
-
-
-      	// responsive layout
-      	//var width = '100%';  
-      	//var height = '100%'; 
-
-        /*var options = {
-          width: width, 
-          height: height, 
+        var options = {
+          width: '100%', 
+          height: '100%', 
           title: 'Dummy Data', 
           legend: {position: "top"}, 
           // curveType: 'function',
@@ -144,9 +132,32 @@ console.log(filtered);
           vAxis: {
             title: 'kWh',
           },
-        }; */
+        };
 
-      	// chart.draw(data, options);  // change to dynamic according to container dimensions
+      	//chart.draw(data, options);  // change to dynamic according to container dimensions
+        chart.draw(view, options);
+
+
+
+
+        // checkbox column filter: on change --> set columns
+        $('#sensors_selector_widget_1').on('change',function(e) { 
+          e.preventDefault();
+          var indexes = [];
+          var indexes = $("#sensors_selector_widget_1 input:checkbox:not(:checked)").map(function(){
+                          return eval($(this).val());
+                      }).get();
+           console.log(indexes);
+
+          var view = new google.visualization.DataView(data);
+          //view.setColumns(array); 
+          view.hideColumns(indexes); 
+          
+          chart.draw(view, options);
+
+        });
+
+
 
     }
 
@@ -156,6 +167,8 @@ console.log(filtered);
       clearTimeout(resizeId1);
       resizeId1 = setTimeout(drawChart1, 200);
     });
+
+
 
 	</script>
 
