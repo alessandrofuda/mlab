@@ -4,12 +4,12 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\SoftDeletes;
+// use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
     use Notifiable;
-    use SoftDeletes;
+    // use SoftDeletes;
 
     /**
      * The database table used by the model.
@@ -41,7 +41,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    //protected $dates = ['deleted_at'];
 
 
     /**
