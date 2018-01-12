@@ -3,7 +3,7 @@
 <div id="template_1" style="display: none;">
 
 
-	<form id="sensors_selector_widget_1">
+	<form id="sensors_selector_widget_1" class="" style="float: left;">
       @if (isset($mysensors))  
         <?php $i = 1; ?>
         @foreach ($mysensors as $mysensor)
@@ -19,10 +19,38 @@
       @endif
   </form>
 
+  
 
 	<div id="widget_1">
-      <div id="filter_div"></div>
-      <div id="chart_div"></div>
+      <div id="date_selector_widget_1" class="" style="text-align: right;">
+          <input type="text" name="daterange" value="Select Date" />
+          <script type="text/javascript">
+          $(function() {
+              $('input[name="daterange"]').daterangepicker({
+                locale: {
+                    format: 'YYYY-MM-DD'
+                },
+                startDate: moment().subtract(6, 'days'),  // 1 week ago
+                endDate: moment(),  // today
+                ranges: {
+                  'Today': [moment(), moment()],
+                  'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                  'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                  'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                  'This Month': [moment().startOf('month'), moment().endOf('month')],
+                  'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                } 
+              },
+              function(start, end, label) {
+                alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+              }
+              );
+          });
+          </script>
+      </div>
+
+      <div id="control_div_widget_1"></div>
+      <div id="chart_div_widget_1"></div>
   </div>
 
 
@@ -44,18 +72,7 @@
           error: function(err){
             console.log(err);
           }
-        }).responseText;   
-
-
-
-
-// $('#json').html(jsonData);
-//console.log(JSON.parse(jsonData));
-
-//console.log(jsonData);
-//var filtered = $([{"name":"AAAAAAAA","website":"test222"}, {"name":"BBBBBBB","website":"test"}]).filter(function (i,n) { return n.website==='test'; });
-//console.log(filtered);
-
+        }).responseText;
 
 
         // Create our data table out of JSON data loaded from server.
@@ -72,72 +89,52 @@
         view.hideColumns(indexes);
 
       	// Instantiate and draw our chart, passing in some options.
-      	var chart = new google.visualization.LineChart(document.getElementById('widget_1'));
-
-        /*
+      	// var chart = new google.visualization.LineChart(document.getElementById('widget_1'));
+        
         // Create a dashboard.
         var dashboard = new google.visualization.Dashboard(
             document.getElementById('widget_1')
             );
 
-
         // Create a sensors selector, passing some options
-        var linechartSensorSelector = new google.visualization.ControlWrapper({
-          'controlType': 'CategoryFilter',
-          'containerId': 'filter_div',
+        var datesRangeSelector = new google.visualization.ControlWrapper({
+          'controlType': 'StringFilter',  // CategoryFilter, NumberRangeFilter, 
+          'containerId': 'date_selector_widget_1',  // control_div_widget_1
           'options': {
-           //'filterColumnLabel': 'Donuts eaten',
-           'filterColumnIndex': 1,
-           'ui': {
-                'allowTyping': false,
-                'allowMultiple': true,
-                'selectedValuesLayout': 'belowStacked',
+           'filterColumnIndex': 0,  //column dates
+          },
+          state: {
+            range: {
+              start: new Date('05/03/2016 12:00:00'),   // agganciare date range picker
+              end:   new Date('05/03/2016 12:15:00')
             }
           },
-          // 'state': {'selectedValues': ['CPU', 'Memory']}
         });
 
         // Create line chart, passing some options
-        // responsive layout
         var lineChart = new google.visualization.ChartWrapper({
           'chartType': 'LineChart',
-          'containerId': 'chart_div',
+          'containerId': 'chart_div_widget_1',
           'options': {
             'width': '100%',
             'height': '100%',
             //'pieSliceText': 'value', // ?? for linechart?
-            'legend': 'top'
+            'legend': 'top',
+            'title': 'Energy consumption',
+            // curveType: 'function',
+            'hAxis': {
+              'title': 'Time',
+            },
+            'vAxis': {
+              'title': 'kWh',
+            },
           }
         });
-        // linechart.setView({'columns': []}); // show only some column
-        // Establish dependencies, declaring that 'filter' drives 'lineChart',
-        // so that the line chart will only display entries that are let through
-        // given the chosen sensors.
-        dashboard.bind(linechartSensorSelector, lineChart);
+        
+        dashboard.bind(datesRangeSelector, lineChart);
 
         // Draw the dashboard.
-        dashboard.draw(data);
-        */
-
-
-        var options = {
-          width: '100%', 
-          height: '100%', 
-          title: 'Dummy Data', 
-          legend: {position: "top"}, 
-          // curveType: 'function',
-          hAxis: {
-            title: 'Time',
-          },
-          vAxis: {
-            title: 'kWh',
-          },
-        };
-
-      	//chart.draw(data, options);  // change to dynamic according to container dimensions
-        chart.draw(view, options);
-
-
+        dashboard.draw(view);
 
 
         // checkbox column filter: on change --> set columns
@@ -147,15 +144,29 @@
           var indexes = $("#sensors_selector_widget_1 input:checkbox:not(:checked)").map(function(){
                           return eval($(this).val());
                       }).get();
-           console.log(indexes);
+          // console.log(indexes);
 
           var view = new google.visualization.DataView(data);
           //view.setColumns(array); 
           view.hideColumns(indexes); 
           
-          chart.draw(view, options);
+          // chart.draw(view, options);
+          dashboard.draw(view);
 
         });
+
+
+
+
+        // date range rows filter: on change --> set rows
+        /* $('#date_selector_widget_1').on('change',function(e) {
+          e.preventDefault();
+
+          var view = new google.visualization.DataView(data);
+
+          chart.draw(view, options);          
+        }); */
+
 
 
 
