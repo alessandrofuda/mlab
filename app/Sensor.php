@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\SensorsDescriptor;
 use App\SensorsData;
+use App\SensorsCode;
 
 
 
@@ -50,6 +51,11 @@ class Sensor extends Model
     public function sensorsDescriptor()
     {
         return $this->belongsTo('App\SensorsDescriptor', 'el_sensorsDescriptor_id'); 
+    }
+
+    public function sensorsCode()
+    {
+        return $this->belongsTo('App\SensorsCode', 'df_sensorsCode_id');
     }
 
 

@@ -70,8 +70,34 @@ class AjaxWidgetsController extends Controller
             $sensors_filtered[] = $sensor_item->el_sensor_id;
         }
 
+        $sensors_filtered = self::filterNotHiddenSensors($sensors_filtered);  // filter NOT HIDDEN
+
     	return $sensors_filtered;
     }
+
+
+
+
+
+    /**
+    *  Get NOT HIDDEN sensors's Array of current user
+    *
+    *  @return array of sensors of Auth user 
+    */
+    public static function filterNotHiddenSensors($sensors_array){
+
+    	$sensors = Sensor::whereIn('id', $sensors_array)->get();
+
+    	$notHiddenSensors = [];
+    	foreach ($sensors as $sensor) {
+    		if($sensor->sensorsCode->df_display_id !== 5) {
+    			$notHiddenSensors[] = $sensor->id;
+    		}
+    	} 
+
+    	return $notHiddenSensors;
+    }
+
 
     
 
@@ -91,7 +117,7 @@ class AjaxWidgetsController extends Controller
 
     public function getDataWidgetOne() {
  
-    	$sensors_arr = $this->getSensorsArray();  // IMPORTANTE: filtrare l'array con i soli sensori NON HIDDEN !!!!
+    	$sensors_arr = $this->getSensorsArray();  
     	// return $sensors_arr;
     	// hourly/daily/monthly/yearly
     	//$aggregationLevel = 'Hour(createdOn)';  // hourly
