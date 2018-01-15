@@ -97,9 +97,9 @@
             );
 
         // Create a sensors selector, passing some options
-        var datesRangeSelector = new google.visualization.ControlWrapper({
+        /* var datesRangeSelector = new google.visualization.ControlWrapper({
           'controlType': 'StringFilter',  // CategoryFilter, NumberRangeFilter, 
-          'containerId': 'date_selector_widget_1',  // control_div_widget_1
+          'containerId': 'control_div_widget_1',  // date_selector_widget_1
           'options': {
            'filterColumnIndex': 0,  //column dates
           },
@@ -109,7 +109,7 @@
               end:   new Date('05/03/2016 12:15:00')
             }
           },
-        });
+        }); */
 
         // Create line chart, passing some options
         var lineChart = new google.visualization.ChartWrapper({

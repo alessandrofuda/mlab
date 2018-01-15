@@ -21,7 +21,7 @@
 
 
 
-
+<style>table.google-visualization-orgchart-table {border-collapse: separate!important;}</style>
 <div id="tree_chart" style="overflow-x: auto; overflow-y: auto;"> </div>
 
 
