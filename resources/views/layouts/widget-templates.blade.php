@@ -22,13 +22,18 @@
   <div id="date_selector_widget_1" class="" style="text-align: right;">
       <input type="text" name="daterange" value="Select Date" />
       <script type="text/javascript">
+
+      // default dates range
+      var startDate = moment().subtract(6, 'days');  // 1 week ago
+      var endDate = moment();
+
       $(function() {
           $('input[name="daterange"]').daterangepicker({
             locale: {
                 format: 'YYYY-MM-DD'
             },
-            startDate: moment().subtract(6, 'days'),  // 1 week ago
-            endDate: moment(),  // today
+            startDate: startDate, 
+            endDate: endDate,      
             ranges: {
               'Today': [moment(), moment()],
               'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -46,10 +51,7 @@
       </script>
   </div>
 
-	<div id="widget_1">
-      <!--div id="control_div_widget_1"></div>
-      <div id="chart_div_widget_1"></div-->
-  </div>
+	<div id="widget_1">  </div>
 
 
 
@@ -84,64 +86,31 @@
         var indexes = $("#sensors_selector_widget_1 input:checkbox:not(:checked)").map(function(){
                           return eval($(this).val());
                       }).get();
-        view.hideColumns(indexes);
+        view.hideColumns(indexes); 
 
-      	// Instantiate and draw our chart, passing in some options.
-      	// var chart = new google.visualization.LineChart(document.getElementById('widget_1'));
         
 
 
 
 
 
+        // create view that select/filter dates range
+        var minValue = startDate.format('YYYY-MM-DD').split('-');
+        var maxValue = endDate.format('YYYY-MM-DD').split('-');
+        var min_yyyy = minValue[0], min_mm = minValue[1]-1, min_dd = minValue[2];  // zero based months !
+        var max_yyyy = maxValue[0], max_mm = maxValue[1]-1, max_dd = maxValue[2];
+
+        //console.log(min_mm - 1);
+
+        var filters = [{
+            column: 0, 
+            minValue: new Date(min_yyyy, min_mm, min_dd),  // months zero based 
+            maxValue: new Date(max_yyyy, max_mm, max_dd),
+        }]; 
+        view.setRows(view.getFilteredRows(filters));
 
 
-        /*
-        // Create a dashboard.
-        var dashboard = new google.visualization.Dashboard(
-            document.getElementById('widget_1')
-            );
 
-        // Create a sensors selector, passing some options
-        var datesRangeSelector = new google.visualization.ControlWrapper({
-          //'controlType': 'StringFilter',  // CategoryFilter, NumberRangeFilter, 
-          'containerId': 'control_div_widget_1',  // date_selector_widget_1
-          'options': {
-           'filterColumnIndex': 0,  //column dates
-          },
-          state: {
-            range: {
-              start: new Date('05/03/2016 12:00:00'),   // agganciare date range picker
-              end:   new Date('05/03/2016 12:15:00')
-            }
-          },
-        });
-
-        // Create line chart, passing some options
-        var lineChart = new google.visualization.ChartWrapper({
-          'chartType': 'LineChart',
-          'containerId': 'chart_div_widget_1',
-          'options': {
-            'width': '100%',
-            'height': '100%',
-            //'pieSliceText': 'value', // ?? for linechart?
-            'legend': 'top',
-            'title': 'Energy consumption',
-            // curveType: 'function',
-            'hAxis': {
-              'title': 'Time',
-            },
-            'vAxis': {
-              'title': 'kWh',
-            },
-          }
-        });
-        
-        dashboard.bind(datesRangeSelector, lineChart);
-
-        // Draw the dashboard.
-        dashboard.draw(view);
-        */
 
 
 
@@ -164,10 +133,7 @@
 
 
         var chart = new google.visualization.LineChart(document.getElementById('widget_1'));
-        chart.draw(view, options);
-
-
-
+        chart.draw(view, options);  
 
 
 
