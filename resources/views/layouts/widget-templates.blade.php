@@ -19,38 +19,36 @@
       @endif
   </form>
 
-  
+  <div id="date_selector_widget_1" class="" style="text-align: right;">
+      <input type="text" name="daterange" value="Select Date" />
+      <script type="text/javascript">
+      $(function() {
+          $('input[name="daterange"]').daterangepicker({
+            locale: {
+                format: 'YYYY-MM-DD'
+            },
+            startDate: moment().subtract(6, 'days'),  // 1 week ago
+            endDate: moment(),  // today
+            ranges: {
+              'Today': [moment(), moment()],
+              'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+              'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+              'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+              'This Month': [moment().startOf('month'), moment().endOf('month')],
+              'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            } 
+          },
+          function(start, end, label) {
+            alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+          }
+          );
+      });
+      </script>
+  </div>
 
 	<div id="widget_1">
-      <div id="date_selector_widget_1" class="" style="text-align: right;">
-          <input type="text" name="daterange" value="Select Date" />
-          <script type="text/javascript">
-          $(function() {
-              $('input[name="daterange"]').daterangepicker({
-                locale: {
-                    format: 'YYYY-MM-DD'
-                },
-                startDate: moment().subtract(6, 'days'),  // 1 week ago
-                endDate: moment(),  // today
-                ranges: {
-                  'Today': [moment(), moment()],
-                  'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                  'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                  'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                  'This Month': [moment().startOf('month'), moment().endOf('month')],
-                  'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                } 
-              },
-              function(start, end, label) {
-                alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-              }
-              );
-          });
-          </script>
-      </div>
-
-      <div id="control_div_widget_1"></div>
-      <div id="chart_div_widget_1"></div>
+      <!--div id="control_div_widget_1"></div>
+      <div id="chart_div_widget_1"></div-->
   </div>
 
 
@@ -91,14 +89,22 @@
       	// Instantiate and draw our chart, passing in some options.
       	// var chart = new google.visualization.LineChart(document.getElementById('widget_1'));
         
+
+
+
+
+
+
+
+        /*
         // Create a dashboard.
         var dashboard = new google.visualization.Dashboard(
             document.getElementById('widget_1')
             );
 
         // Create a sensors selector, passing some options
-        /* var datesRangeSelector = new google.visualization.ControlWrapper({
-          'controlType': 'StringFilter',  // CategoryFilter, NumberRangeFilter, 
+        var datesRangeSelector = new google.visualization.ControlWrapper({
+          //'controlType': 'StringFilter',  // CategoryFilter, NumberRangeFilter, 
           'containerId': 'control_div_widget_1',  // date_selector_widget_1
           'options': {
            'filterColumnIndex': 0,  //column dates
@@ -109,7 +115,7 @@
               end:   new Date('05/03/2016 12:15:00')
             }
           },
-        }); */
+        });
 
         // Create line chart, passing some options
         var lineChart = new google.visualization.ChartWrapper({
@@ -135,6 +141,36 @@
 
         // Draw the dashboard.
         dashboard.draw(view);
+        */
+
+
+
+
+
+
+        var options = {
+            'width': '100%',
+            'height': '100%',
+            'legend': 'top',
+            'title': 'Energy consumption',
+            // curveType: 'function',
+            'hAxis': {
+              'title': 'Time',
+            },
+            'vAxis': {
+              'title': 'kWh',
+            },
+          };
+
+
+        var chart = new google.visualization.LineChart(document.getElementById('widget_1'));
+        chart.draw(view, options);
+
+
+
+
+
+
 
 
         // checkbox column filter: on change --> set columns
@@ -151,7 +187,7 @@
           view.hideColumns(indexes); 
           
           // chart.draw(view, options);
-          dashboard.draw(view);
+          chart.draw(view, options);
 
         });
 
